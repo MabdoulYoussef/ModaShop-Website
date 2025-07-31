@@ -5,6 +5,8 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\Api\ReviewController;
 
 // Public routes
 Route::get('/products', [ProductController::class, 'index']);
@@ -21,6 +23,19 @@ Route::middleware('auth:sanctum')->group(function () {
     // Orders (for authenticated users)
     Route::post('/orders', [OrderController::class, 'store']);
     Route::get('/orders', [OrderController::class, 'index']);
+
+    // Cart routes
+    Route::get('/cart', [CartController::class, 'index']);
+    Route::post('/cart/add', [CartController::class, 'addItem']);
+    Route::put('/cart/items/{itemId}', [CartController::class, 'updateItem']);
+    Route::delete('/cart/items/{itemId}', [CartController::class, 'removeItem']);
+    Route::delete('/cart/clear', [CartController::class, 'clear']);
+
+    // Review routes
+    Route::get('/products/{productId}/reviews', [ReviewController::class, 'index']);
+    Route::post('/products/{productId}/reviews', [ReviewController::class, 'store']);
+    Route::put('/reviews/{reviewId}', [ReviewController::class, 'update']);
+    Route::delete('/reviews/{reviewId}', [ReviewController::class, 'destroy']);
 
     // Admin routes (only for admins)
     Route::middleware('admin')->group(function () {

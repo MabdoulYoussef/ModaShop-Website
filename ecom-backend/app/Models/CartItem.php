@@ -5,26 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OrderItem extends Model
+class CartItem extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'order_id',
+        'cart_id',
         'product_id',
         'quantity',
-        'price',
     ];
 
     protected $casts = [
-        'price' => 'decimal:2',
         'quantity' => 'integer',
     ];
 
     // Relationships
-    public function order()
+    public function cart()
     {
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(Cart::class);
     }
 
     public function product()
@@ -35,6 +33,6 @@ class OrderItem extends Model
     // Helper methods
     public function getSubtotal()
     {
-        return $this->price * $this->quantity;
+        return $this->product->price * $this->quantity;
     }
 }

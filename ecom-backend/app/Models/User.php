@@ -42,4 +42,35 @@ protected $casts = [
     'email_verified_at' => 'datetime',
     'password' => 'hashed',
 ];
+
+    // User roles
+    const ROLE_USER = 'user';
+    const ROLE_ADMIN = 'admin';
+
+    // Relationships
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function cart()
+    {
+        return $this->hasOne(Cart::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    // Helper methods
+    public function isAdmin()
+    {
+        return $this->role === self::ROLE_ADMIN;
+    }
+
+    public function isUser()
+    {
+        return $this->role === self::ROLE_USER;
+    }
 }
