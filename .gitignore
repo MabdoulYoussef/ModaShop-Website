@@ -1,0 +1,10 @@
+*.zip
+*.iso
+*.exe
+*.rar
+*.tar
+*.7z
+.DS_Store
+node_modules/
+vendor/
+
