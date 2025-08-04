@@ -17,12 +17,25 @@ class OrderController extends Controller
             'items' => 'required|array|min:1',
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.quantity' => 'required|integer|min:1',
+            'shipping_address' => 'required|string',
+            'shipping_city' => 'required|string',
+            'shipping_state' => 'required|string',
+            'shipping_zip' => 'required|string',
+            'shipping_country' => 'required|string',
+            'payment_method' => 'required|string|in:stripe,paypal,cash',
         ]);
 
         $order = Order::create([
             'user_id' => Auth::id(),
-            'total' => 0, // We'll calculate this below
+            'total_price' => 0, // We'll calculate this below
             'status' => 'pending',
+            'shipping_address' => $validated['shipping_address'],
+            'shipping_city' => $validated['shipping_city'],
+            'shipping_state' => $validated['shipping_state'],
+            'shipping_zip' => $validated['shipping_zip'],
+            'shipping_country' => $validated['shipping_country'],
+            'payment_method' => $validated['payment_method'],
+            'payment_status' => 'pending',
         ]);
 
         $total = 0;
@@ -39,22 +52,22 @@ class OrderController extends Controller
             ]);
         }
 
-        $order->update(['total' => $total]);
+        $order->update(['total_price' => $total]);
 
-        return response()->json($order->load('items'), 201);
+        return response()->json($order->load('orderItems.product'), 201);
     }
 
     // List orders for the authenticated user
     public function index()
     {
-        $orders = Order::with('items.product')->where('user_id', Auth::id())->get();
+        $orders = Order::with('orderItems.product')->where('user_id', Auth::id())->get();
         return response()->json($orders);
     }
 
     // (Optional) Admin: List all orders
     public function allOrders()
     {
-        $orders = Order::with('items.product', 'user')->get();
+        $orders = Order::with('orderItems.product', 'user')->get();
         return response()->json($orders);
     }
 
@@ -66,7 +79,7 @@ class OrderController extends Controller
             return response()->json(['message' => 'Order not found'], 404);
         }
         $validated = $request->validate([
-            'status' => 'required|string',
+            'status' => 'required|string|in:pending,processing,shipped,delivered,cancelled',
         ]);
         $order->update(['status' => $validated['status']]);
         return response()->json($order);
