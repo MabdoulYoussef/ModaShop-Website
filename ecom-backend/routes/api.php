@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\ReviewController;
+use App\Http\Controllers\Api\AdminController;
 
 // Public routes
 Route::get('/products', [ProductController::class, 'index']);
@@ -39,10 +40,28 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Admin routes (only for admins)
     Route::middleware('admin')->group(function () {
+        // Product management
         Route::post('/products', [ProductController::class, 'store']);
         Route::put('/products/{id}', [ProductController::class, 'update']);
         Route::delete('/products/{id}', [ProductController::class, 'destroy']);
-        // Add more admin-only routes here if needed
+
+        // Admin dashboard
+        Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
+        Route::get('/admin/orders', [AdminController::class, 'getAllOrders']);
+        Route::put('/admin/orders/{id}/status', [AdminController::class, 'updateOrderStatus']);
+        Route::get('/admin/users', [AdminController::class, 'getAllUsers']);
+
+        // Review management
+        Route::get('/admin/reviews/pending', [AdminController::class, 'getPendingReviews']);
+        Route::put('/admin/reviews/{id}/approve', [AdminController::class, 'approveReview']);
+        Route::delete('/admin/reviews/{id}/reject', [AdminController::class, 'rejectReview']);
+
+        // Inventory management
+        Route::get('/admin/products/low-stock', [AdminController::class, 'getLowStockProducts']);
+        Route::put('/admin/products/{id}/stock', [AdminController::class, 'updateProductStock']);
+
+        // Sales statistics
+        Route::get('/admin/sales/stats', [AdminController::class, 'getSalesStats']);
     });
 
     // Logout
