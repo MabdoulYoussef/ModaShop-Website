@@ -150,7 +150,45 @@
 				</div>
 			</div>
 		</div>
-		
+		<!-- single home slider -->
+		<div class="single-homepage-slider homepage-bg-2">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-10 offset-lg-1 text-center">
+						<div class="hero-text">
+							<div class="hero-text-tablecell">
+								<p class="subtitle">Fresh Everyday</p>
+								<h1>100% Organic Collection</h1>
+								<div class="hero-btns">
+									<a href="shop.html" class="boxed-btn">Visit Shop</a>
+									<a href="contact.html" class="bordered-btn">Contact Us</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- single home slider -->
+		<div class="single-homepage-slider homepage-bg-3">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-10 offset-lg-1 text-right">
+						<div class="hero-text">
+							<div class="hero-text-tablecell">
+								<p class="subtitle">Mega Sale Going On!</p>
+								<h1>Get December Discount</h1>
+								<div class="hero-btns">
+									<a href="shop.html" class="boxed-btn">Visit Shop</a>
+									<a href="contact.html" class="bordered-btn">Contact Us</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<!-- end home page slider -->
 
 	<!-- features list section -->
@@ -269,7 +307,7 @@
                     <div class="text">Quisquam minus maiores repudiandae nobis, minima saepe id, fugit ullam similique! Beatae, minima quisquam molestias facere ea. Perspiciatis unde omnis iste natus error sit voluptatem accusant</div>
                     <!--Countdown Timer-->
                     <div class="time-counter"><div class="time-countdown clearfix" data-countdown="2020/2/01"><div class="counter-column"><div class="inner"><span class="count">00</span>Days</div></div> <div class="counter-column"><div class="inner"><span class="count">00</span>Hours</div></div>  <div class="counter-column"><div class="inner"><span class="count">00</span>Mins</div></div>  <div class="counter-column"><div class="inner"><span class="count">00</span>Secs</div></div></div></div>
-                <a href="cart.html" class="cart-btn mt-3"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                	<a href="cart.html" class="cart-btn mt-3"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
                 </div>
             </div>
         </div>
