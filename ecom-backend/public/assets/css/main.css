@@ -1403,7 +1403,7 @@ html, body {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 7px;
-  font-size: 15px;
+  font-size: 35px;
 }
 
 .hero-text h1 {
@@ -1468,9 +1468,16 @@ input[type="submit"] {
 }
 
 .homepage-bg-1 {
-  background-image: url(../img/hero-bg.jpg);
+  background-image: url(../img/fond-bei.jpg);
 }
 
+.homepage-bg-2 {
+  background-image: url(../img/hero-bg-2.jpg);
+}
+
+.homepage-bg-3 {
+  background-image: url(../img/hero-bg-3.jpg);
+}
 
 .homepage-slider {
   height: 100%;
