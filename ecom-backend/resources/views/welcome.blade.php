@@ -1,19 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
+	<meta name="description" content="ModaShop - متجر ملابس عربية عالية الجودة">
 
 	<!-- title -->
-	<title>Fruitkha</title>
+	<title>ModaShop - متجر الملابس العربية</title>
 
 	<!-- favicon -->
 	<link rel="shortcut icon" type="image/png" href="assets/img/favicon.png">
 	<!-- google font -->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link href="https://fonts.googleapis.com/css2?family=Playwrite+AU+QLD:wght@100..400&display=swap" rel="stylesheet">
+	<!-- Arabic fonts -->
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 	<!-- fontawesome -->
 	<link rel="stylesheet" href="assets/css/all.min.css">
 	<!-- bootstrap -->
@@ -30,6 +34,37 @@
 	<link rel="stylesheet" href="assets/css/main.css">
 	<!-- responsive -->
 	<link rel="stylesheet" href="assets/css/responsive.css">
+
+	<!-- Basic RTL Support -->
+	<style>
+		body {
+			font-family: 'Noto Sans Arabic', 'Open Sans', sans-serif;
+			direction: rtl;
+			text-align: right;
+		}
+
+		.arabic-text {
+			font-family: 'Noto Sans Arabic', sans-serif;
+			direction: rtl;
+		}
+
+		.hero-text-tablecell .subtitle {
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		/* Mobile responsive */
+		@media (max-width: 768px) {
+			.hero-text-tablecell h1 {
+				font-size: 2.5rem;
+			}
+
+			.hero-text-tablecell .subtitle {
+				font-size: 1.2rem;
+			}
+		}
+	</style>
 
 </head>
 <body>
@@ -51,7 +86,7 @@
 						<!-- logo -->
 						<div class="site-logo">
 							<a href="index.html">
-								<img src="assets/img/logo.png" alt="">
+								<img src="assets/img/logo.png" alt="ModaShop">
 							</a>
 						</div>
 						<!-- logo -->
@@ -59,37 +94,37 @@
 						<!-- menu start -->
 						<nav class="main-menu">
 							<ul>
-								<li class="current-list-item"><a href="#">Home</a>
+								<li class="current-list-item"><a href="#">الرئيسية</a>
 									<ul class="sub-menu">
-										<li><a href="index.html">Static Home</a></li>
-										<li><a href="index_2.html">Slider Home</a></li>
+										<li><a href="index.html">الصفحة الرئيسية</a></li>
+										<li><a href="index_2.html">الصفحة المتحركة</a></li>
 									</ul>
 								</li>
-								<li><a href="about.html">About</a></li>
-								<li><a href="#">Pages</a>
+								<li><a href="about.html">من نحن</a></li>
+								<li><a href="#">الصفحات</a>
 									<ul class="sub-menu">
-										<li><a href="404.html">404 page</a></li>
-										<li><a href="about.html">About</a></li>
-										<li><a href="cart.html">Cart</a></li>
-										<li><a href="checkout.html">Check Out</a></li>
-										<li><a href="contact.html">Contact</a></li>
-										<li><a href="news.html">News</a></li>
-										<li><a href="shop.html">Shop</a></li>
+										<li><a href="404.html">صفحة 404</a></li>
+										<li><a href="about.html">من نحن</a></li>
+										<li><a href="cart.html">سلة التسوق</a></li>
+										<li><a href="checkout.html">إتمام الطلب</a></li>
+										<li><a href="contact.html">اتصل بنا</a></li>
+										<li><a href="news.html">الأخبار</a></li>
+										<li><a href="shop.html">المتجر</a></li>
 									</ul>
 								</li>
-								<li><a href="news.html">News</a>
+								<li><a href="news.html">الأخبار</a>
 									<ul class="sub-menu">
-										<li><a href="news.html">News</a></li>
-										<li><a href="single-news.html">Single News</a></li>
+										<li><a href="news.html">الأخبار</a></li>
+										<li><a href="single-news.html">خبر واحد</a></li>
 									</ul>
 								</li>
-								<li><a href="contact.html">Contact</a></li>
-								<li><a href="shop.html">Shop</a>
+								<li><a href="contact.html">اتصل بنا</a></li>
+								<li><a href="shop.html">المتجر</a>
 									<ul class="sub-menu">
-										<li><a href="shop.html">Shop</a></li>
-										<li><a href="checkout.html">Check Out</a></li>
-										<li><a href="single-product.html">Single Product</a></li>
-										<li><a href="cart.html">Cart</a></li>
+										<li><a href="shop.html">المتجر</a></li>
+										<li><a href="checkout.html">إتمام الطلب</a></li>
+										<li><a href="single-product.html">منتج واحد</a></li>
+										<li><a href="cart.html">سلة التسوق</a></li>
 									</ul>
 								</li>
 								<li>
@@ -118,9 +153,9 @@
 					<span class="close-btn"><i class="fas fa-window-close"></i></span>
 					<div class="search-bar">
 						<div class="search-bar-tablecell">
-							<h3>Search For:</h3>
-							<input type="text" placeholder="Keywords">
-							<button type="submit">Search <i class="fas fa-search"></i></button>
+							<h3>البحث عن:</h3>
+							<input type="text" placeholder="الكلمات المفتاحية">
+							<button type="submit">بحث <i class="fas fa-search"></i></button>
 						</div>
 					</div>
 				</div>
@@ -130,25 +165,33 @@
 	<!-- end search area -->
 
 	<!-- hero area -->
-	<div class="hero-area hero-bg">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-9 offset-lg-2 text-center">
-					<div class="hero-text">
-						<div class="hero-text-tablecell">
-							<p class="subtitle">ملابس ذات جودة عالية</p>
-							<h1>MODA2SHOP</h1>
-							<div class="hero-btns">
-								<a href="shop.html" class="boxed-btn"> Collection</a>
-								<a href="contact.html" class="bordered-btn">Contact Us</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end hero area -->
+<div class="hero-area hero-bg">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Text -->
+            <div class="col-lg-6">
+                <div class="hero-text-tablecell">
+                    <p class="subtitle arabic-text">ملابس ذات جودة عالية</p>
+                    <h1>MODA2SHOP</h1>
+                    <div class="hero-btns">
+                        <a href="shop.html" class="boxed-btn">المجموعة</a>
+                        <a href="contact.html" class="bordered-btn">اتصل بنا</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image -->
+            <div class="col-lg-6 text-center">
+                <div class="hero-img">
+                    <img src="assets/img/Capture.PNG" alt="عرض المنتجات" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- end hero area -->
+
 
 	<!-- features list section -->
 	<div class="list-section pt-80 pb-80">
@@ -161,8 +204,8 @@
 							<i class="fas fa-shipping-fast"></i>
 						</div>
 						<div class="content">
-							<h3>Free Shipping</h3>
-							<p>When order over $75</p>
+							<h3 class="arabic-text">شحن مجاني</h3>
+							<p class="arabic-text">للطلبات أكثر من 75$</p>
 						</div>
 					</div>
 				</div>
@@ -172,8 +215,8 @@
 							<i class="fas fa-phone-volume"></i>
 						</div>
 						<div class="content">
-							<h3>24/7 Support</h3>
-							<p>Get support all day</p>
+							<h3 class="arabic-text">دعم 24/7</h3>
+							<p class="arabic-text">احصل على الدعم طوال اليوم</p>
 						</div>
 					</div>
 				</div>
@@ -183,8 +226,8 @@
 							<i class="fas fa-sync"></i>
 						</div>
 						<div class="content">
-							<h3>Refund</h3>
-							<p>Get refund within 3 days!</p>
+							<h3 class="arabic-text">استرداد الأموال</h3>
+							<p class="arabic-text">احصل على استرداد خلال 3 أيام!</p>
 						</div>
 					</div>
 				</div>
@@ -200,8 +243,8 @@
 			<div class="row">
 				<div class="col-lg-8 offset-lg-2 text-center">
 					<div class="section-title">
-						<h3><span class="orange-text">Our</span> Products</h3>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, fuga quas itaque eveniet beatae optio.</p>
+						<h3><span class="orange-text">منتجاتنا</span> المميزة</h3>
+						<p class="arabic-text">اكتشف مجموعتنا المتنوعة من الملابس العربية العصرية والأنيقة</p>
 					</div>
 				</div>
 			</div>
@@ -210,31 +253,31 @@
 				<div class="col-lg-4 col-md-6 text-center">
 					<div class="single-product-item">
 						<div class="product-image">
-							<a href="single-product.html"><img src="assets/img/products/product-img-1.jpg" alt=""></a>
+							<a href="single-product.html"><img src="assets/img/products/product-img-1.jpg" alt="عباية كلاسيكية"></a>
 						</div>
-						<h3>Strawberry</h3>
-						<p class="product-price"><span>Per Kg</span> 85$ </p>
-						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+						<h3 class="arabic-text">عباية كلاسيكية</h3>
+						<p class="product-price"><span>السعر</span> 85$ </p>
+						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> أضف إلى السلة</a>
 					</div>
 				</div>
 				<div class="col-lg-4 col-md-6 text-center">
 					<div class="single-product-item">
 						<div class="product-image">
-							<a href="single-product.html"><img src="assets/img/products/product-img-2.jpg" alt=""></a>
+							<a href="single-product.html"><img src="assets/img/products/product-img-2.jpg" alt="عباية عصرية"></a>
 						</div>
-						<h3>Berry</h3>
-						<p class="product-price"><span>Per Kg</span> 70$ </p>
-						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+						<h3 class="arabic-text">عباية عصرية</h3>
+						<p class="product-price"><span>السعر</span> 70$ </p>
+						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> أضف إلى السلة</a>
 					</div>
 				</div>
 				<div class="col-lg-4 col-md-6 offset-md-3 offset-lg-0 text-center">
 					<div class="single-product-item">
 						<div class="product-image">
-							<a href="single-product.html"><img src="assets/img/products/product-img-3.jpg" alt=""></a>
+							<a href="single-product.html"><img src="assets/img/products/product-img-3.jpg" alt="عباية أنيقة"></a>
 						</div>
-						<h3>Lemon</h3>
-						<p class="product-price"><span>Per Kg</span> 35$ </p>
-						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+						<h3 class="arabic-text">عباية أنيقة</h3>
+						<p class="product-price"><span>السعر</span> 35$ </p>
+						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> أضف إلى السلة</a>
 					</div>
 				</div>
 			</div>
@@ -252,21 +295,21 @@
                     	<div class="price-box">
                         	<div class="inner-price">
                                 <span class="price">
-                                    <strong>30%</strong> <br> off per kg
+                                    <strong>30%</strong> <br> خصم
                                 </span>
                             </div>
                         </div>
-                    	<img src="assets/img/a.jpg" alt="">
+                    	<img src="assets/img/a.jpg" alt="عرض خاص">
                     </div>
                 </div>
                 <!--Content Column-->
                 <div class="content-column col-lg-6">
-					<h3><span class="orange-text">Deal</span> of the month</h3>
-                    <h4>Hikan Strwaberry</h4>
-                    <div class="text">Quisquam minus maiores repudiandae nobis, minima saepe id, fugit ullam similique! Beatae, minima quisquam molestias facere ea. Perspiciatis unde omnis iste natus error sit voluptatem accusant</div>
+					<h3><span class="orange-text">عرض</span> الشهر</h3>
+                    <h4 class="arabic-text">عباية مميزة</h4>
+                    <div class="text arabic-text">اكتشف مجموعتنا المميزة من العبايات الأنيقة والعصرية. جودة عالية وأسعار منافسة مع خصم خاص هذا الشهر</div>
                     <!--Countdown Timer-->
-                    <div class="time-counter"><div class="time-countdown clearfix" data-countdown="2020/2/01"><div class="counter-column"><div class="inner"><span class="count">00</span>Days</div></div> <div class="counter-column"><div class="inner"><span class="count">00</span>Hours</div></div>  <div class="counter-column"><div class="inner"><span class="count">00</span>Mins</div></div>  <div class="counter-column"><div class="inner"><span class="count">00</span>Secs</div></div></div></div>
-                	<a href="cart.html" class="cart-btn mt-3"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                    <div class="time-counter"><div class="time-countdown clearfix" data-countdown="2020/2/01"><div class="counter-column"><div class="inner"><span class="count">00</span>أيام</div></div> <div class="counter-column"><div class="inner"><span class="count">00</span>ساعات</div></div>  <div class="counter-column"><div class="inner"><span class="count">00</span>دقائق</div></div>  <div class="counter-column"><div class="inner"><span class="count">00</span>ثواني</div></div></div></div></div>
+                	<a href="cart.html" class="cart-btn mt-3"><i class="fas fa-shopping-cart"></i> أضف إلى السلة</a>
                 </div>
             </div>
         </div>
@@ -281,12 +324,12 @@
 					<div class="testimonial-sliders">
 						<div class="single-testimonial-slider">
 							<div class="client-avater">
-								<img src="assets/img/avaters/avatar1.png" alt="">
+								<img src="assets/img/avaters/avatar1.png" alt="عميلة سعيدة">
 							</div>
 							<div class="client-meta">
-								<h3>Saira Hakim <span>Local shop owner</span></h3>
-								<p class="testimonial-body">
-									" Sed ut perspiciatis unde omnis iste natus error veritatis et  quasi architecto beatae vitae dict eaque ipsa quae ab illo inventore Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium "
+								<h3 class="arabic-text">سارة حكيم <span>عميلة دائمة</span></h3>
+								<p class="testimonial-body arabic-text">
+									"أشكر متجر ModaShop على الجودة العالية والخدمة المميزة. العبايات جميلة جداً والأسعار مناسبة"
 								</p>
 								<div class="last-icon">
 									<i class="fas fa-quote-right"></i>
@@ -295,12 +338,12 @@
 						</div>
 						<div class="single-testimonial-slider">
 							<div class="client-avater">
-								<img src="assets/img/avaters/avatar2.png" alt="">
+								<img src="assets/img/avaters/avatar2.png" alt="عميلة راضية">
 							</div>
 							<div class="client-meta">
-								<h3>David Niph <span>Local shop owner</span></h3>
-								<p class="testimonial-body">
-									" Sed ut perspiciatis unde omnis iste natus error veritatis et  quasi architecto beatae vitae dict eaque ipsa quae ab illo inventore Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium "
+								<h3 class="arabic-text">فاطمة أحمد <span>عميلة جديدة</span></h3>
+								<p class="testimonial-body arabic-text">
+									"تجربتي مع ModaShop كانت رائعة. الشحن سريع والمنتجات مطابقة للصور تماماً"
 								</p>
 								<div class="last-icon">
 									<i class="fas fa-quote-right"></i>
@@ -309,12 +352,12 @@
 						</div>
 						<div class="single-testimonial-slider">
 							<div class="client-avater">
-								<img src="assets/img/avaters/avatar3.png" alt="">
+								<img src="assets/img/avaters/avatar3.png" alt="عميلة مخلصة">
 							</div>
 							<div class="client-meta">
-								<h3>Jacob Sikim <span>Local shop owner</span></h3>
-								<p class="testimonial-body">
-									" Sed ut perspiciatis unde omnis iste natus error veritatis et  quasi architecto beatae vitae dict eaque ipsa quae ab illo inventore Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium "
+								<h3 class="arabic-text">مريم علي <span>عميلة منذ 3 سنوات</span></h3>
+								<p class="testimonial-body arabic-text">
+									"أشتري من ModaShop منذ سنوات وأشعر بالثقة دائماً. الجودة لا تتغير والأسعار معقولة"
 								</p>
 								<div class="last-icon">
 									<i class="fas fa-quote-right"></i>
@@ -339,11 +382,11 @@
 				</div>
 				<div class="col-lg-6 col-md-12">
 					<div class="abt-text">
-						<p class="top-sub">Since Year 1999</p>
-						<h2>We are <span class="orange-text">Fruitkha</span></h2>
-						<p>Etiam vulputate ut augue vel sodales. In sollicitudin neque et massa porttitor vestibulum ac vel nisi. Vestibulum placerat eget dolor sit amet posuere. In ut dolor aliquet, aliquet sapien sed, interdum velit. Nam eu molestie lorem.</p>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente facilis illo repellat veritatis minus, et labore minima mollitia qui ducimus.</p>
-						<a href="about.html" class="boxed-btn mt-4">know more</a>
+						<p class="top-sub arabic-text">منذ عام 2020</p>
+						<h2 class="arabic-text">نحن <span class="orange-text">ModaShop</span></h2>
+						<p class="arabic-text">متجر متخصص في الملابس العربية العصرية والأنيقة. نقدم أفضل الجودات والأسعار المناسبة لعملائنا الكرام.</p>
+						<p class="arabic-text">نحن نؤمن بأن كل امرأة تستحق أن تبدو جميلة وأنيقة. لذلك نحرص على تقديم أحدث التصاميم وأفضل الخامات.</p>
+						<a href="about.html" class="boxed-btn mt-4">اعرف المزيد</a>
 					</div>
 				</div>
 			</div>
@@ -354,9 +397,9 @@
 	<!-- shop banner -->
 	<section class="shop-banner">
     	<div class="container">
-        	<h3>December sale is on! <br> with big <span class="orange-text">Discount...</span></h3>
-            <div class="sale-percent"><span>Sale! <br> Upto</span>50% <span>off</span></div>
-            <a href="shop.html" class="cart-btn btn-lg">Shop Now</a>
+        	<h3 class="arabic-text">عرض ديسمبر مستمر! <br> مع <span class="orange-text">خصم كبير...</span></h3>
+            <div class="sale-percent"><span>عرض! <br> حتى</span>50% <span>خصم</span></div>
+            <a href="shop.html" class="cart-btn btn-lg">تسوق الآن</a>
         </div>
     </section>
 	<!-- end shop banner -->
@@ -368,8 +411,8 @@
 			<div class="row">
 				<div class="col-lg-8 offset-lg-2 text-center">
 					<div class="section-title">
-						<h3><span class="orange-text">Our</span> News</h3>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, fuga quas itaque eveniet beatae optio.</p>
+						<h3><span class="orange-text">أخبارنا</span> المميزة</h3>
+						<p class="arabic-text">تابع أحدث الأخبار والعروض الخاصة من متجر ModaShop</p>
 					</div>
 				</div>
 			</div>
@@ -379,13 +422,13 @@
 					<div class="single-latest-news">
 						<a href="single-news.html"><div class="latest-news-bg news-bg-1"></div></a>
 						<div class="news-text-box">
-							<h3><a href="single-news.html">You will vainly look for fruit on it in autumn.</a></h3>
+							<h3 class="arabic-text"><a href="single-news.html">مجموعة العبايات الجديدة للخريف 2024</a></h3>
 							<p class="blog-meta">
-								<span class="author"><i class="fas fa-user"></i> Admin</span>
-								<span class="date"><i class="fas fa-calendar"></i> 27 December, 2019</span>
+								<span class="author"><i class="fas fa-user"></i> الإدارة</span>
+								<span class="date"><i class="fas fa-calendar"></i> 27 ديسمبر, 2024</span>
 							</p>
-							<p class="excerpt">Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi. Praesent vitae mattis nunc, egestas viverra eros.</p>
-							<a href="single-news.html" class="read-more-btn">read more <i class="fas fa-angle-right"></i></a>
+							<p class="excerpt arabic-text">اكتشف مجموعتنا الجديدة من العبايات العصرية والأنيقة المناسبة لفصل الخريف</p>
+							<a href="single-news.html" class="read-more-btn">اقرأ المزيد <i class="fas fa-angle-right"></i></a>
 						</div>
 					</div>
 				</div>
@@ -393,13 +436,13 @@
 					<div class="single-latest-news">
 						<a href="single-news.html"><div class="latest-news-bg news-bg-2"></div></a>
 						<div class="news-text-box">
-							<h3><a href="single-news.html">A man's worth has its season, like tomato.</a></h3>
+							<h3 class="arabic-text"><a href="single-news.html">عرض خاص على جميع المنتجات</a></h3>
 							<p class="blog-meta">
-								<span class="author"><i class="fas fa-user"></i> Admin</span>
-								<span class="date"><i class="fas fa-calendar"></i> 27 December, 2019</span>
+								<span class="author"><i class="fas fa-user"></i> الإدارة</span>
+								<span class="date"><i class="fas fa-calendar"></i> 27 ديسمبر, 2024</span>
 							</p>
-							<p class="excerpt">Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi. Praesent vitae mattis nunc, egestas viverra eros.</p>
-							<a href="single-news.html" class="read-more-btn">read more <i class="fas fa-angle-right"></i></a>
+							<p class="excerpt arabic-text">خصم يصل إلى 50% على جميع المنتجات لفترة محدودة</p>
+							<a href="single-news.html" class="read-more-btn">اقرأ المزيد <i class="fas fa-angle-right"></i></a>
 						</div>
 					</div>
 				</div>
@@ -407,20 +450,20 @@
 					<div class="single-latest-news">
 						<a href="single-news.html"><div class="latest-news-bg news-bg-3"></div></a>
 						<div class="news-text-box">
-							<h3><a href="single-news.html">Good thoughts bear good fresh juicy fruit.</a></h3>
+							<h3 class="arabic-text"><a href="single-news.html">نصائح لاختيار العباية المناسبة</a></h3>
 							<p class="blog-meta">
-								<span class="author"><i class="fas fa-user"></i> Admin</span>
-								<span class="date"><i class="fas fa-calendar"></i> 27 December, 2019</span>
+								<span class="author"><i class="fas fa-user"></i> الإدارة</span>
+								<span class="date"><i class="fas fa-calendar"></i> 27 ديسمبر, 2024</span>
 							</p>
-							<p class="excerpt">Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi. Praesent vitae mattis nunc, egestas viverra eros.</p>
-							<a href="single-news.html" class="read-more-btn">read more <i class="fas fa-angle-right"></i></a>
+							<p class="excerpt arabic-text">دليلك الشامل لاختيار العباية المثالية التي تناسبك</p>
+							<a href="single-news.html" class="read-more-btn">اقرأ المزيد <i class="fas fa-angle-right"></i></a>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-lg-12 text-center">
-					<a href="news.html" class="boxed-btn">More News</a>
+					<a href="news.html" class="boxed-btn">المزيد من الأخبار</a>
 				</div>
 			</div>
 		</div>
@@ -461,38 +504,38 @@
 			<div class="row">
 				<div class="col-lg-3 col-md-6">
 					<div class="footer-box about-widget">
-						<h2 class="widget-title">About us</h2>
-						<p>Ut enim ad minim veniam perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae.</p>
+						<h2 class="widget-title arabic-text">من نحن</h2>
+						<p class="arabic-text">متجر ModaShop متخصص في الملابس العربية العصرية والأنيقة. نقدم أفضل الجودات والأسعار المناسبة لعملائنا الكرام.</p>
 					</div>
 				</div>
 				<div class="col-lg-3 col-md-6">
 					<div class="footer-box get-in-touch">
-						<h2 class="widget-title">Get in Touch</h2>
+						<h2 class="widget-title arabic-text">تواصل معنا</h2>
 						<ul>
-							<li>34/8, East Hukupara, Gifirtok, Sadan.</li>
-							<li>support@fruitkha.com</li>
-							<li>+00 111 222 3333</li>
+							<li class="arabic-text">شارع الملك فهد، الرياض، المملكة العربية السعودية</li>
+							<li>support@modashop.com</li>
+							<li>+966 50 123 4567</li>
 						</ul>
 					</div>
 				</div>
 				<div class="col-lg-3 col-md-6">
 					<div class="footer-box pages">
-						<h2 class="widget-title">Pages</h2>
+						<h2 class="widget-title arabic-text">الصفحات</h2>
 						<ul>
-							<li><a href="index.html">Home</a></li>
-							<li><a href="about.html">About</a></li>
-							<li><a href="services.html">Shop</a></li>
-							<li><a href="news.html">News</a></li>
-							<li><a href="contact.html">Contact</a></li>
+							<li><a href="index.html" class="arabic-text">الرئيسية</a></li>
+							<li><a href="about.html" class="arabic-text">من نحن</a></li>
+							<li><a href="services.html" class="arabic-text">المتجر</a></li>
+							<li><a href="news.html" class="arabic-text">الأخبار</a></li>
+							<li><a href="contact.html" class="arabic-text">اتصل بنا</a></li>
 						</ul>
 					</div>
 				</div>
 				<div class="col-lg-3 col-md-6">
 					<div class="footer-box subscribe">
-						<h2 class="widget-title">Subscribe</h2>
-						<p>Subscribe to our mailing list to get the latest updates.</p>
+						<h2 class="widget-title arabic-text">اشترك معنا</h2>
+						<p class="arabic-text">اشترك في قائمتنا البريدية للحصول على أحدث التحديثات والعروض.</p>
 						<form action="index.html">
-							<input type="email" placeholder="Email">
+							<input type="email" placeholder="البريد الإلكتروني">
 							<button type="submit"><i class="fas fa-paper-plane"></i></button>
 						</form>
 					</div>
@@ -507,8 +550,8 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-6 col-md-12">
-					<p>Copyrights &copy; 2019 - <a href="https://imransdesign.com/">Imran Hossain</a>,  All Rights Reserved.<br>
-						Distributed By - <a href="https://themewagon.com/">Themewagon</a>
+					<p class="arabic-text">جميع الحقوق محفوظة &copy; 2024 - <a href="#">ModaShop</a><br>
+						متجر الملابس العربية العصرية
 					</p>
 				</div>
 				<div class="col-lg-6 text-right col-md-12">
@@ -518,7 +561,7 @@
 							<li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
 							<li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
 							<li><a href="#" target="_blank"><i class="fab fa-linkedin"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-dribbble"></i></a></li>
+							<li><a href="#" target="_blank"><i class="fab fa-youtube"></i></a></li>
 						</ul>
 					</div>
 				</div>
