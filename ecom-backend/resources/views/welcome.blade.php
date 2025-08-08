@@ -16,6 +16,8 @@
 	<link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link href="https://fonts.googleapis.com/css2?family=Playwrite+AU+QLD:wght@100..400&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
 	<!-- Arabic fonts -->
 	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 	<!-- fontawesome -->
@@ -253,30 +255,30 @@
 				<div class="col-lg-4 col-md-6 text-center">
 					<div class="single-product-item">
 						<div class="product-image">
-							<a href="single-product.html"><img src="assets/img/products/product-img-1.jpg" alt="عباية كلاسيكية"></a>
+							<a href="single-product.html"><img src="assets/img/products/1.jpg" alt="عباية كلاسيكية"></a>
 						</div>
 						<h3 class="arabic-text">عباية كلاسيكية</h3>
-						<p class="product-price"><span>السعر</span> 85$ </p>
+						<p class="product-price"><span>السعر</span> 249درهم مغربي  </p>
 						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> أضف إلى السلة</a>
 					</div>
 				</div>
 				<div class="col-lg-4 col-md-6 text-center">
 					<div class="single-product-item">
 						<div class="product-image">
-							<a href="single-product.html"><img src="assets/img/products/product-img-2.jpg" alt="عباية عصرية"></a>
+							<a href="single-product.html"><img src="assets/img/products/2.jpg" alt="عباية عصرية"></a>
 						</div>
 						<h3 class="arabic-text">عباية عصرية</h3>
-						<p class="product-price"><span>السعر</span> 70$ </p>
+						<p class="product-price"><span>السعر</span>349درهم مغربي  </p>
 						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> أضف إلى السلة</a>
 					</div>
 				</div>
 				<div class="col-lg-4 col-md-6 offset-md-3 offset-lg-0 text-center">
 					<div class="single-product-item">
 						<div class="product-image">
-							<a href="single-product.html"><img src="assets/img/products/product-img-3.jpg" alt="عباية أنيقة"></a>
+							<a href="single-product.html"><img src="assets/img/products/3.jpg" alt="عباية أنيقة"></a>
 						</div>
 						<h3 class="arabic-text">عباية أنيقة</h3>
-						<p class="product-price"><span>السعر</span> 35$ </p>
+						<p class="product-price"><span>السعر</span> 349درهم مغربي </p>
 						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> أضف إلى السلة</a>
 					</div>
 				</div>
@@ -295,20 +297,37 @@
                     	<div class="price-box">
                         	<div class="inner-price">
                                 <span class="price">
-                                    <strong>30%</strong> <br> خصم
+                                    <strong>30%</strong> <br>
+                                    خصم
                                 </span>
                             </div>
                         </div>
-                    	<img src="assets/img/a.jpg" alt="عرض خاص">
+                    	<img src="assets/img/8.jpg" alt="عرض خاص">
                     </div>
                 </div>
                 <!--Content Column-->
                 <div class="content-column col-lg-6">
-					<h3><span class="orange-text">عرض</span> الشهر</h3>
+					<h3><span class="orange-text" >عرض الشهر</span> </h3>
                     <h4 class="arabic-text">عباية مميزة</h4>
                     <div class="text arabic-text">اكتشف مجموعتنا المميزة من العبايات الأنيقة والعصرية. جودة عالية وأسعار منافسة مع خصم خاص هذا الشهر</div>
                     <!--Countdown Timer-->
-                    <div class="time-counter"><div class="time-countdown clearfix" data-countdown="2020/2/01"><div class="counter-column"><div class="inner"><span class="count">00</span>أيام</div></div> <div class="counter-column"><div class="inner"><span class="count">00</span>ساعات</div></div>  <div class="counter-column"><div class="inner"><span class="count">00</span>دقائق</div></div>  <div class="counter-column"><div class="inner"><span class="count">00</span>ثواني</div></div></div></div></div>
+                    <div class="time-counter">
+                        <div class="time-countdown clearfix" data-countdown="2025-10-01">
+                            <div class="counter-column">
+                                <div class="inner"><span class="count">00</span>أيام</div>
+                            </div>
+                            <div class="counter-column">
+                                <div class="inner">
+                                    <span class="count">00</span>ساعات</div>
+                                </div>
+                                <div class="counter-column">
+                                    <div class="inner"><span class="count">00</span>دقائق</div>
+                                </div>
+                                 <div class="counter-column">
+                                    <div class="inner"><span class="count">00</span>ثواني</div>
+                                </div>
+                        </div>
+                    </div>
                 	<a href="cart.html" class="cart-btn mt-3"><i class="fas fa-shopping-cart"></i> أضف إلى السلة</a>
                 </div>
             </div>

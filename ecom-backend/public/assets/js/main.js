@@ -79,8 +79,12 @@
         if($('.time-countdown').length){
             $('.time-countdown').each(function() {
             var $this = $(this), finalDate = $(this).data('countdown');
+            console.log('Countdown date:', finalDate);
+            console.log('Current date:', new Date());
+            console.log('Parsed countdown date:', new Date(finalDate));
             $this.countdown(finalDate, function(event) {
-                var $this = $(this).html(event.strftime('' + '<div class="counter-column"><div class="inner"><span class="count">%D</span>Days</div></div> ' + '<div class="counter-column"><div class="inner"><span class="count">%H</span>Hours</div></div>  ' + '<div class="counter-column"><div class="inner"><span class="count">%M</span>Mins</div></div>  ' + '<div class="counter-column"><div class="inner"><span class="count">%S</span>Secs</div></div>'));
+                console.log('Countdown update:', event.strftime('%D days, %H hours, %M minutes, %S seconds'));
+                var $this = $(this).html(event.strftime('' + '<div class="counter-column"><div class="inner"><span class="count">%D</span>أيام</div></div> ' + '<div class="counter-column"><div class="inner"><span class="count">%H</span>ساعات</div></div>  ' + '<div class="counter-column"><div class="inner"><span class="count">%M</span>دقائق</div></div>  ' + '<div class="counter-column"><div class="inner"><span class="count">%S</span>ثواني</div></div>'));
             });
          });
         }
