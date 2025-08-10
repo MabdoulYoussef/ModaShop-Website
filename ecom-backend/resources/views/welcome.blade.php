@@ -10,7 +10,7 @@
 	<title>ModaShop - متجر الملابس العربية</title>
 
 	<!-- favicon -->
-	<link rel="shortcut icon" type="image/png" href="assets/img/favicon.png">
+	<link rel="shortcut icon" type="image/png" href="assets/img/logo.png">
 	<!-- google font -->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
@@ -207,7 +207,7 @@
 						</div>
 						<div class="content">
 							<h3 class="arabic-text">شحن مجاني</h3>
-							<p class="arabic-text">للطلبات أكثر من 75$</p>
+							<p class="arabic-text">لجميع الطلبات</p>
 						</div>
 					</div>
 				</div>
@@ -228,8 +228,8 @@
 							<i class="fas fa-sync"></i>
 						</div>
 						<div class="content">
-							<h3 class="arabic-text">استرداد الأموال</h3>
-							<p class="arabic-text">احصل على استرداد خلال 3 أيام!</p>
+							<h3 class="arabic-text">إرجاع المنتج</h3>
+                            <p class="arabic-text">يمكنك إرجاعه خلال يوم واحد إذا لم يعجبك!</p>
 						</div>
 					</div>
 				</div>
@@ -343,7 +343,7 @@
 					<div class="testimonial-sliders">
 						<div class="single-testimonial-slider">
 							<div class="client-avater">
-								<img src="assets/img/avaters/avatar1.png" alt="عميلة سعيدة">
+								<img src="assets/img/avaters/hijab.jpg" alt="عميلة سعيدة">
 							</div>
 							<div class="client-meta">
 								<h3 class="arabic-text">سارة حكيم <span>عميلة دائمة</span></h3>
@@ -357,7 +357,7 @@
 						</div>
 						<div class="single-testimonial-slider">
 							<div class="client-avater">
-								<img src="assets/img/avaters/avatar2.png" alt="عميلة راضية">
+								<img src="assets/img/avaters/hijab2.jpg" alt="عميلة راضية">
 							</div>
 							<div class="client-meta">
 								<h3 class="arabic-text">فاطمة أحمد <span>عميلة جديدة</span></h3>
@@ -371,7 +371,7 @@
 						</div>
 						<div class="single-testimonial-slider">
 							<div class="client-avater">
-								<img src="assets/img/avaters/avatar3.png" alt="عميلة مخلصة">
+								<img src="assets/img/avaters/hijab3.jpg" alt="عميلة مخلصة">
 							</div>
 							<div class="client-meta">
 								<h3 class="arabic-text">مريم علي <span>عميلة منذ 3 سنوات</span></h3>
@@ -396,12 +396,12 @@
 			<div class="row">
 				<div class="col-lg-6 col-md-12">
 					<div class="abt-bg">
-						<a href="https://www.youtube.com/watch?v=DBLlFWYcIGQ" class="video-play-btn popup-youtube"><i class="fas fa-play"></i></a>
+						<a href="https://www.youtube.com/watch?v=DBLlFWYcIGQ" ></a>
 					</div>
 				</div>
 				<div class="col-lg-6 col-md-12">
 					<div class="abt-text">
-						<p class="top-sub arabic-text">منذ عام 2020</p>
+                        <p class="top-sub arabic-text">منذ عام 2019</p>
 						<h2 class="arabic-text">نحن <span class="orange-text">ModaShop</span></h2>
 						<p class="arabic-text">متجر متخصص في الملابس العربية العصرية والأنيقة. نقدم أفضل الجودات والأسعار المناسبة لعملائنا الكرام.</p>
 						<p class="arabic-text">نحن نؤمن بأن كل امرأة تستحق أن تبدو جميلة وأنيقة. لذلك نحرص على تقديم أحدث التصاميم وأفضل الخامات.</p>
@@ -413,81 +413,9 @@
 	</div>
 	<!-- end advertisement section -->
 
-	<!-- shop banner -->
-	<section class="shop-banner">
-    	<div class="container">
-        	<h3 class="arabic-text">عرض ديسمبر مستمر! <br> مع <span class="orange-text">خصم كبير...</span></h3>
-            <div class="sale-percent"><span>عرض! <br> حتى</span>50% <span>خصم</span></div>
-            <a href="shop.html" class="cart-btn btn-lg">تسوق الآن</a>
-        </div>
-    </section>
-	<!-- end shop banner -->
 
-	<!-- latest news -->
-	<div class="latest-news pt-150 pb-150">
-		<div class="container">
 
-			<div class="row">
-				<div class="col-lg-8 offset-lg-2 text-center">
-					<div class="section-title">
-						<h3><span class="orange-text">أخبارنا</span> المميزة</h3>
-						<p class="arabic-text">تابع أحدث الأخبار والعروض الخاصة من متجر ModaShop</p>
-					</div>
-				</div>
-			</div>
 
-			<div class="row">
-				<div class="col-lg-4 col-md-6">
-					<div class="single-latest-news">
-						<a href="single-news.html"><div class="latest-news-bg news-bg-1"></div></a>
-						<div class="news-text-box">
-							<h3 class="arabic-text"><a href="single-news.html">مجموعة العبايات الجديدة للخريف 2024</a></h3>
-							<p class="blog-meta">
-								<span class="author"><i class="fas fa-user"></i> الإدارة</span>
-								<span class="date"><i class="fas fa-calendar"></i> 27 ديسمبر, 2024</span>
-							</p>
-							<p class="excerpt arabic-text">اكتشف مجموعتنا الجديدة من العبايات العصرية والأنيقة المناسبة لفصل الخريف</p>
-							<a href="single-news.html" class="read-more-btn">اقرأ المزيد <i class="fas fa-angle-right"></i></a>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6">
-					<div class="single-latest-news">
-						<a href="single-news.html"><div class="latest-news-bg news-bg-2"></div></a>
-						<div class="news-text-box">
-							<h3 class="arabic-text"><a href="single-news.html">عرض خاص على جميع المنتجات</a></h3>
-							<p class="blog-meta">
-								<span class="author"><i class="fas fa-user"></i> الإدارة</span>
-								<span class="date"><i class="fas fa-calendar"></i> 27 ديسمبر, 2024</span>
-							</p>
-							<p class="excerpt arabic-text">خصم يصل إلى 50% على جميع المنتجات لفترة محدودة</p>
-							<a href="single-news.html" class="read-more-btn">اقرأ المزيد <i class="fas fa-angle-right"></i></a>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 offset-md-3 offset-lg-0">
-					<div class="single-latest-news">
-						<a href="single-news.html"><div class="latest-news-bg news-bg-3"></div></a>
-						<div class="news-text-box">
-							<h3 class="arabic-text"><a href="single-news.html">نصائح لاختيار العباية المناسبة</a></h3>
-							<p class="blog-meta">
-								<span class="author"><i class="fas fa-user"></i> الإدارة</span>
-								<span class="date"><i class="fas fa-calendar"></i> 27 ديسمبر, 2024</span>
-							</p>
-							<p class="excerpt arabic-text">دليلك الشامل لاختيار العباية المثالية التي تناسبك</p>
-							<a href="single-news.html" class="read-more-btn">اقرأ المزيد <i class="fas fa-angle-right"></i></a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-lg-12 text-center">
-					<a href="news.html" class="boxed-btn">المزيد من الأخبار</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end latest news -->
 
 	<!-- logo carousel -->
 	<div class="logo-carousel-section">

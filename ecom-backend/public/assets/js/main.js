@@ -3,27 +3,39 @@
 
     $(document).ready(function($){
 
-        // testimonial sliders
+$(document).ready(function() {
+    console.log('Testimonials found:', $(".testimonial-sliders").length);
+    if ($(".testimonial-sliders").length > 0) {
         $(".testimonial-sliders").owlCarousel({
             items: 1,
             loop: true,
             autoplay: true,
-            responsive:{
-                0:{
-                    items:1,
-                    nav:false
+            autoplayTimeout: 5000, // 5 seconds per slide
+            autoplayHoverPause: true, // pause on hover
+            smartSpeed: 800, // transition speed
+            dots: true, // show pagination dots
+            nav: false, // no next/prev arrows
+            rtl: true, // important for RTL layout
+            responsive: {
+                0: {
+                    items: 1,
+                    nav: false
                 },
-                600:{
-                    items:1,
-                    nav:false
+                600: {
+                    items: 1,
+                    nav: false
                 },
-                1000:{
-                    items:1,
-                    nav:false,
-                    loop:true
+                1000: {
+                    items: 1,
+                    nav: false,
+                    loop: true
                 }
             }
         });
+    } else {
+        console.log('No testimonials found!');
+    }
+});
 
         // homepage slider
     $(".homepage-slider").owlCarousel({
