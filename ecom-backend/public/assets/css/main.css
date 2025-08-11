@@ -1429,19 +1429,20 @@ html, body {
 }
 
 .hero-area div {
-  height: 100%;
+  height: auto;
 }
 
 .hero-area div.hero-text-tablecell {
-  height: 100%;
+  height: auto;
   width: 100%;
 }
 
 .hero-area div.hero-text-tablecell {
   display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  height: auto;
+  min-height: 400px;
 }
 
 .hero-area div.hero-text-tablecell div {
@@ -1496,11 +1497,11 @@ input[type="submit"] {
 }
 
 .homepage-slider {
-  height: 100%;
+  height: auto;
 }
 
 .homepage-slider div {
-  height: 100%;
+  height: auto;
 }
 
 .homepage-slider div.hero-text-tablecell {
@@ -2717,4 +2718,119 @@ a.cart-btn.mt-3:hover {
     background-color: #dec698;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Main Content Area Styling */
+.main-content-area {
+    padding: 80px 0;
+    min-height: 60vh;
+    background-color: #fff;
+    position: relative;
+    z-index: 10;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.main-content-area .container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.main-content-area .row {
+    margin: 0;
+}
+
+.main-content-area .col-lg-12 {
+    padding: 0 15px;
+}
+
+/* Responsive adjustments for main content */
+@media only screen and (max-width: 767.96px) {
+    .main-content-area {
+        padding: 40px 0;
+    }
+}
+
+@media only screen and (max-width: 575.96px) {
+    .main-content-area {
+        padding: 30px 0;
+    }
+}
+
+/* Welcome Content Styling */
+.welcome-content {
+    text-align: center;
+}
+
+.welcome-content h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: #ad8f53;
+}
+
+.welcome-content p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    color: #666;
+}
+
+.welcome-buttons {
+    margin-bottom: 50px;
+}
+
+.welcome-buttons .bordered-btn {
+    margin-right: 15px;
+}
+
+.feature-box {
+    padding: 30px 20px;
+    margin-bottom: 30px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.feature-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(173, 143, 83, 0.2);
+}
+
+.feature-box h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #ad8f53;
+}
+
+.feature-box p {
+    color: #666;
+    line-height: 1.6;
+}
+
+/* Responsive adjustments for welcome content */
+@media only screen and (max-width: 767.96px) {
+    .welcome-content h1 {
+        font-size: 2.5rem;
+    }
+
+    .welcome-content p {
+        font-size: 1.1rem;
+    }
+
+    .welcome-buttons .bordered-btn {
+        margin-right: 0;
+        margin-bottom: 15px;
+        display: block;
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 575.96px) {
+    .welcome-content h1 {
+        font-size: 2rem;
+    }
+
+    .feature-box {
+        padding: 20px 15px;
+    }
 }
