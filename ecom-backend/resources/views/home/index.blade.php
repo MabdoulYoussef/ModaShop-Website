@@ -1,6 +1,6 @@
-@extends('Layouts.master')
+@extends( 'Layouts.master')
 
-@section('content')
+@section( 'content')
 	<!-- hero area -->
 	<div class="hero-area hero-bg">
 		<div class="container">
@@ -11,8 +11,8 @@
 						<p class="subtitle arabic-text">ملابس ذات جودة عالية</p>
 						<h1>MODA2SHOP</h1>
 						<div class="hero-btns">
-							<a href="shop.html" class="boxed-btn">المجموعة</a>
-							<a href="contact.html" class="bordered-btn">اتصل بنا</a>
+							<a href="{{ route('shop') }}" class="boxed-btn">المجموعة</a>
+							<a href="{{ route('contact') }}" class="bordered-btn">اتصل بنا</a>
 						</div>
 					</div>
 				</div>
@@ -82,41 +82,103 @@
 				</div>
 			</div>
 
+			@if(isset($featuredProducts) && $featuredProducts->count() > 0)
+			<div class="row">
+				@foreach($featuredProducts as $product)
+				<div class="col-lg-4 col-md-6 text-center">
+					<div class="single-product-item">
+						<div class="product-image">
+							<a href="{{ route('products.show', $product->id) }}">
+								<img src="{{ $product->image ? asset('storage/' . $product->image) : asset('assets/img/placeholder.jpg') }}"
+									 alt="{{ $product->name }}">
+							</a>
+						</div>
+						<h3 class="arabic-text">{{ $product->name }}</h3>
+						<p class="product-price"><span>السعر</span> {{ number_format($product->price, 2) }} درهم مغربي</p>
+						<a href="{{ route('cart.add') }}" class="cart-btn"
+						   onclick="event.preventDefault(); document.getElementById('add-to-cart-{{ $product->id }}').submit();">
+							<i class="fas fa-shopping-cart"></i> أضف إلى السلة
+						</a>
+						<form id="add-to-cart-{{ $product->id }}" action="{{ route('cart.add') }}" method="POST" style="display: none;">
+							@csrf
+							<input type="hidden" name="product_id" value="{{ $product->id }}">
+							<input type="hidden" name="quantity" value="1">
+						</form>
+					</div>
+				</div>
+				@endforeach
+			</div>
+			@else
 			<div class="row">
 				<div class="col-lg-4 col-md-6 text-center">
 					<div class="single-product-item">
 						<div class="product-image">
-							<a href="single-product.html"><img src="assets/img/products/1.jpg" alt="عباية كلاسيكية"></a>
+							<a href="#"><img src="assets/img/products/1.jpg" alt="عباية كلاسيكية"></a>
 						</div>
 						<h3 class="arabic-text">عباية كلاسيكية</h3>
 						<p class="product-price"><span>السعر</span> 249درهم مغربي</p>
-						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> أضف إلى السلة</a>
+						<a href="#" class="cart-btn"><i class="fas fa-shopping-cart"></i> أضف إلى السلة</a>
 					</div>
 				</div>
 				<div class="col-lg-4 col-md-6 text-center">
 					<div class="single-product-item">
 						<div class="product-image">
-							<a href="single-product.html"><img src="assets/img/products/2.jpg" alt="عباية عصرية"></a>
+							<a href="#"><img src="assets/img/products/2.jpg" alt="عباية عصرية"></a>
 						</div>
 						<h3 class="arabic-text">عباية عصرية</h3>
 						<p class="product-price"><span>السعر</span>349درهم مغربي</p>
-						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> أضف إلى السلة</a>
+						<a href="#" class="cart-btn"><i class="fas fa-shopping-cart"></i> أضف إلى السلة</a>
 					</div>
 				</div>
 				<div class="col-lg-4 col-md-6 offset-md-3 offset-lg-0 text-center">
 					<div class="single-product-item">
 						<div class="product-image">
-							<a href="single-product.html"><img src="assets/img/products/3.jpg" alt="عباية أنيقة"></a>
+							<a href="#"><img src="assets/img/products/3.jpg" alt="عباية أنيقة"></a>
 						</div>
 						<h3 class="arabic-text">عباية أنيقة</h3>
 						<p class="product-price"><span>السعر</span> 349درهم مغربي</p>
-						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> أضف إلى السلة</a>
+						<a href="#" class="cart-btn"><i class="fas fa-shopping-cart"></i> أضف إلى السلة</a>
 					</div>
 				</div>
 			</div>
+			@endif
 		</div>
 	</div>
 	<!-- end product section -->
+
+	@if(isset($categories) && $categories->count() > 0)
+	<!-- categories section -->
+	<div class="categories-section mt-150 mb-150">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="section-title">
+						<h3><span class="orange-text">تسوق حسب</span> الفئة</h3>
+						<p class="arabic-text">اكتشف مجموعتنا المتنوعة من الفئات</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				@foreach($categories as $category)
+				<div class="col-lg-3 col-md-6 text-center mb-4">
+					<div class="category-item">
+						<div class="category-icon">
+							<i class="fas fa-tshirt"></i>
+						</div>
+						<h4 class="arabic-text">{{ $category->name }}</h4>
+						<p class="arabic-text">{{ $category->products_count }} منتج</p>
+						<a href="{{ route('categories.show', $category->id) }}" class="category-btn">
+							<i class="fas fa-arrow-left"></i> تصفح
+						</a>
+					</div>
+				</div>
+				@endforeach
+			</div>
+		</div>
+	</div>
+	<!-- end categories section -->
+	@endif
 
 	<!-- cart banner section -->
 	<section class="cart-banner pt-100 pb-100">
@@ -172,48 +234,67 @@
 			<div class="row">
 				<div class="col-lg-10 offset-lg-1 text-center">
 					<div class="testimonial-sliders">
-						<div class="single-testimonial-slider">
-							<div class="client-avater">
-								<img src="assets/img/avaters/hijab.jpg" alt="عميلة سعيدة">
-							</div>
-							<div class="client-meta">
-								<h3 class="arabic-text">سارة حكيم <span>عميلة دائمة</span></h3>
-								<p class="testimonial-body arabic-text">
-									"أشكر متجر ModaShop على الجودة العالية والخدمة المميزة. العبايات جميلة جداً والأسعار مناسبة"
-								</p>
-								<div class="last-icon">
-									<i class="fas fa-quote-right"></i>
+						@if(isset($testimonials) && $testimonials->count() > 0)
+							@foreach($testimonials as $review)
+							<div class="single-testimonial-slider">
+								<div class="client-avater">
+									<img src="assets/img/avaters/hijab.jpg" alt="{{ $review->user->name }}">
+								</div>
+								<div class="client-meta">
+									<h3 class="arabic-text">{{ $review->user->name }} <span>عميلة سعيدة</span></h3>
+									<p class="testimonial-body arabic-text">
+										"{{ $review->comment }}"
+									</p>
+									<div class="last-icon">
+										<i class="fas fa-quote-right"></i>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="single-testimonial-slider">
-							<div class="client-avater">
-								<img src="assets/img/avaters/hijab2.jpg" alt="عميلة راضية">
-							</div>
-							<div class="client-meta">
-								<h3 class="arabic-text">فاطمة أحمد <span>عميلة جديدة</span></h3>
-								<p class="testimonial-body arabic-text">
-									"تجربتي مع ModaShop كانت رائعة. الشحن سريع والمنتجات مطابقة للصور تماماً"
-								</p>
-								<div class="last-icon">
-									<i class="fas fa-quote-right"></i>
+							@endforeach
+						@else
+							<div class="single-testimonial-slider">
+								<div class="client-avater">
+									<img src="assets/img/avaters/hijab.jpg" alt="عميلة سعيدة">
+								</div>
+								<div class="client-meta">
+									<h3 class="arabic-text">سارة حكيم <span>عميلة دائمة</span></h3>
+									<p class="testimonial-body arabic-text">
+										"أشكر متجر ModaShop على الجودة العالية والخدمة المميزة. العبايات جميلة جداً والأسعار مناسبة"
+									</p>
+									<div class="last-icon">
+										<i class="fas fa-quote-right"></i>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="single-testimonial-slider">
-							<div class="client-avater">
-								<img src="assets/img/avaters/hijab3.jpg" alt="عميلة مخلصة">
-							</div>
-							<div class="client-meta">
-								<h3 class="arabic-text">مريم علي <span>عميلة منذ 3 سنوات</span></h3>
-								<p class="testimonial-body arabic-text">
-									"أشتري من ModaShop منذ سنوات وأشعر بالثقة دائماً. الجودة لا تتغير والأسعار معقولة"
-								</p>
-								<div class="last-icon">
-									<i class="fas fa-quote-right"></i>
+							<div class="single-testimonial-slider">
+								<div class="client-avater">
+									<img src="assets/img/avaters/hijab2.jpg" alt="عميلة راضية">
+								</div>
+								<div class="client-meta">
+									<h3 class="arabic-text">فاطمة أحمد <span>عميلة جديدة</span></h3>
+									<p class="testimonial-body arabic-text">
+										"تجربتي مع ModaShop كانت رائعة. الشحن سريع والمنتجات مطابقة للصور تماماً"
+									</p>
+									<div class="last-icon">
+										<i class="fas fa-quote-right"></i>
+									</div>
 								</div>
 							</div>
-						</div>
+							<div class="single-testimonial-slider">
+								<div class="client-avater">
+									<img src="assets/img/avaters/hijab3.jpg" alt="عميلة مخلصة">
+								</div>
+								<div class="client-meta">
+									<h3 class="arabic-text">مريم علي <span>عميلة منذ 3 سنوات</span></h3>
+									<p class="testimonial-body arabic-text">
+										"أشتري من ModaShop منذ سنوات وأشعر بالثقة دائماً. الجودة لا تتغير والأسعار معقولة"
+									</p>
+									<div class="last-icon">
+										<i class="fas fa-quote-right"></i>
+									</div>
+								</div>
+							</div>
+						@endif
 					</div>
 				</div>
 			</div>
@@ -236,7 +317,7 @@
 						<h2 class="arabic-text">نحن <span class="orange-text">ModaShop</span></h2>
 						<p class="arabic-text">متجر متخصص في الملابس العربية العصرية والأنيقة. نقدم أفضل الجودات والأسعار المناسبة لعملائنا الكرام.</p>
 						<p class="arabic-text">نحن نؤمن بأن كل امرأة تستحق أن تبدو جميلة وأنيقة. لذلك نحرص على تقديم أحدث التصاميم وأفضل الخامات.</p>
-						<a href="about.html" class="boxed-btn mt-4">اعرف المزيد</a>
+						<a href="{{ route('about') }}" class="boxed-btn mt-4">اعرف المزيد</a>
 					</div>
 				</div>
 			</div>

@@ -34,7 +34,7 @@ class HomeController extends Controller
                              ->take(3)
                              ->get();
 
-                return view('welcome', compact(
+                return view('home.index', compact(
             'featuredProducts',
             'categories',
             'latestProducts',
@@ -45,13 +45,13 @@ class HomeController extends Controller
     // About page
     public function about()
     {
-        return view('welcome'); // Temporarily use welcome view
+        return view('home.index'); // Temporarily use home.index view
     }
 
     // Contact page
     public function contact()
     {
-        return view('welcome'); // Temporarily use welcome view
+        return view('home.index'); // Temporarily use home.index view
     }
 
     // Shop page (main products listing)
@@ -64,18 +64,18 @@ class HomeController extends Controller
 
         $categories = Category::withCount('products')->get();
 
-        return view('welcome', compact('products', 'categories')); // Temporarily use welcome view
+        return view('home.index', compact('products', 'categories')); // Temporarily use home.index view
     }
 
     // Privacy policy page
     public function privacy()
     {
-        return view('welcome'); // Temporarily use welcome view
+        return view('home.index'); // Temporarily use home.index view
     }
 
     // Terms of service page
     public function terms()
     {
-        return view('welcome'); // Temporarily use welcome view
+        return view('home.index'); // Temporarily use home.index view
     }
 }

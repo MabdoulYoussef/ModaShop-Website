@@ -32,9 +32,9 @@ class AdminController extends Controller
         ];
 
         $recent_orders = Order::with('user')
-                             ->latest()
-                             ->take(5)
-                             ->get();
+                            ->latest()
+                            ->take(5)
+                            ->get();
 
         $low_stock_products = Product::where('stock', '<', 10)
                                     ->with('category')
@@ -79,7 +79,7 @@ class AdminController extends Controller
     public function updateOrderStatus(Request $request, $id)
     {
         $order = Order::findOrFail($id);
-        
+
         $validated = $request->validate([
             'status' => 'required|in:pending,processing,shipped,delivered,cancelled',
         ]);
@@ -126,7 +126,7 @@ class AdminController extends Controller
     public function updateUserRole(Request $request, $id)
     {
         $user = User::findOrFail($id);
-        
+
         $validated = $request->validate([
             'role' => 'required|in:user,admin',
         ]);
@@ -187,7 +187,7 @@ class AdminController extends Controller
     public function updateReviewStatus(Request $request, $id)
     {
         $review = Review::findOrFail($id);
-        
+
         $validated = $request->validate([
             'is_approved' => 'required|boolean',
         ]);
@@ -195,7 +195,7 @@ class AdminController extends Controller
         $review->update(['is_approved' => $validated['is_approved']]);
 
         $message = $validated['is_approved'] ? 'approved' : 'rejected';
-        
+
         return redirect()->route('admin.reviews.index')
                         ->with('success', "Review {$message} successfully");
     }
@@ -204,7 +204,7 @@ class AdminController extends Controller
     public function sales(Request $request)
     {
         $period = $request->get('period', 'month');
-        
+
         switch ($period) {
             case 'week':
                 $startDate = now()->startOfWeek();
@@ -240,7 +240,7 @@ class AdminController extends Controller
     public function lowStock(Request $request)
     {
         $threshold = $request->get('threshold', 10);
-        
+
         $products = Product::where('stock', '<', $threshold)
                           ->with('category')
                           ->orderBy('stock')

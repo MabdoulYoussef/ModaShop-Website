@@ -2834,3 +2834,71 @@ a.cart-btn.mt-3:hover {
         padding: 20px 15px;
     }
 }
+
+/* Category section styles */
+.categories-section {
+    background: #f8f9fa;
+}
+
+.category-item {
+    background: #fff;
+    padding: 30px 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    text-align: center;
+}
+
+.category-item:hover {
+    transform: translateY(-5px);
+}
+
+.category-icon {
+    font-size: 3rem;
+    color: #f28123;
+    margin-bottom: 20px;
+}
+
+.category-item h4 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.category-item p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.category-btn {
+    display: inline-block;
+    padding: 10px 25px;
+    background: #f28123;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 25px;
+    transition: background 0.3s ease;
+}
+
+.category-btn:hover {
+    background: #e67e22;
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Product card improvements */
+.single-product-item {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.single-product-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.product-image img {
+    transition: transform 0.3s ease;
+}
+
+.single-product-item:hover .product-image img {
+    transform: scale(1.05);
+}
