@@ -8,25 +8,33 @@
 				<!-- Text -->
 				<div class="col-lg-6">
 					<div class="hero-text-tablecell">
-						<p class="subtitle arabic-text">ملابس ذات جودة عالية</p>
-						<h1>MODA2SHOP</h1>
-						<div class="hero-btns">
-							<a href="{{ route('shop') }}" class="boxed-btn">المجموعة</a>
-							<a href="{{ route('contact') }}" class="bordered-btn">اتصل بنا</a>
+						<p class="subtitle arabic-text" style="font-family: 'Tajawal', 'Cairo', sans-serif; font-weight:700;" data-aos="fade-up" data-aos-delay="200">
+							ملابس ذات جودة عالية
+						</p>
+						<p class="arabic-text"
+   style="font-family: 'Tajawal', 'Cairo', sans-serif; font-weight:600; font-size:2rem; color:#96783d; margin-bottom: 1.5rem;"
+   data-aos="fade-up" data-aos-delay="300">
+	أزياء راقية تواكب أحدث الصيحات
+</p>
+						<div style="height: 2.5rem;"></div> <!-- vertical spacing -->
+						<div class="hero-btns" data-aos="fade-up" data-aos-delay="400">
+							<a href="{{ route('shop') }}" class="boxed-btn btn">المجموعة</a>
+							<a href="{{ route('contact') }}" class="bordered-btn btn">اتصل بنا</a>
 						</div>
 					</div>
 				</div>
 
 				<!-- Image -->
 				<div class="col-lg-6 text-center">
-					<div class="hero-img">
-						<img src="assets/img/Capture.PNG" alt="عرض المنتجات" class="img-fluid">
+					<div class="hero-img" style="margin-bottom: 2rem;" data-aos="fade-up" data-aos-delay="200">
+						<img src="assets/img/BANNER3m.png" alt="عرض المنتجات" class="img-fluid">
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<!-- end hero area -->
+
 
 	<!-- features list section -->
 	<div class="list-section pt-80 pb-80">

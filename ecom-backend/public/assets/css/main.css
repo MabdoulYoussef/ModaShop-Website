@@ -424,7 +424,7 @@ p:last-child {
 a.boxed-btn {
   font-family: 'Poppins', sans-serif;
   display: inline-block;
-  background-color: #6d5118;
+  background-color: #aa8a4a;
   color: #fff;
   padding: 10px 20px;
 }
@@ -542,7 +542,7 @@ ul.navbar-nav li.nav-item a.nav-link, ul.navbar-nav li.nav-item.active a.nav-lin
   position: absolute;
   z-index: 999;
   width: 100%;
-  padding: 25px 0;
+  padding: 0;
 }
 
 .top-header-area.white ul.navbar-nav li.nav-item a.nav-link, .top-header-area.white ul.navbar-nav li.nav-item.active a.nav-link {
@@ -624,8 +624,9 @@ nav.main-menu > ul li:last-child {
 }
 
 .site-logo {
-  float: left;
-  max-width: 150px;
+  float: right;
+  width: 100px;
+
 }
 
 ul.sub-menu li:last-child {
@@ -739,9 +740,8 @@ nav.main-menu li a {
 }
 
 .sticky-wrapper.is-sticky .top-header-area {
-  background-color: #d0b885
-;
-  padding: 15px 0;
+  background-color: #dcc9a0;
+  padding: 5px 0;
 }
 
 .top-header-area {
@@ -881,7 +881,7 @@ a.mobile-show {
 }
 
 .footer-area {
-  background-color: #ad8f53
+  background-color: #d4b880
 ;
   color: #fff;
   padding: 150px 0;
@@ -953,8 +953,7 @@ h2.widget-title:after {
 }
 
 .copyright {
-  background-color: #ad8f53
-;
+  background-color: #d4b880;
   border-top: 1px solid #232a35;
 }
 
@@ -1354,7 +1353,7 @@ a.mobile-show.search-bar-icon {
   transition: 0.3s;
 }
 
-a.mobile-show.search-bar-icon:hover {
+a.mobile-show.search.bar-icon:hover {
   color: #ad8f53;
 }
 
@@ -1403,12 +1402,13 @@ html, body {
   height: 100%;
   content: "";
   background-color: #ad8f53;
+  background-image: url(../img/brushed1.png);
   z-index: -1;
   opacity: 0.6;
 }
 
 .hero-text-tablecell p.subtitle {
-  color: #6d5118;
+  color: #96783d;
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 7px;
@@ -2034,9 +2034,6 @@ p.testimonial-body {
 
 /* -----------------------------------------------------------------------------
 
-
-/* -----------------------------------------------------------------------------
-
 # About Page Styles
 
 ----------------------------------------------------------------------------- */
@@ -2653,17 +2650,16 @@ table.order-details tbody td {
 }
 
 .hero-img img {
-    max-width: 100%;
+    max-width: none;
     height: auto;
     display: block;
-    width: 410px;
-    margin-top: 120px;
-    margin-right: 200px;
+    width: 775px;
+    margin-top: 100px;
+    margin-right: 80px;
 
 }
-.hero-img {
-    flex: 1;
-}
+
+
 .text.arabic-text{
     text-align: right;
     font-family: "Playwrite AU QLD", cursive;
@@ -2716,6 +2712,8 @@ border-radius: 50px;
 
 a.cart-btn.mt-3:hover {
     background-color: #dec698;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
@@ -2895,10 +2893,41 @@ a.cart-btn.mt-3:hover {
     box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
 
-.product-image img {
-    transition: transform 0.3s ease;
+/* Typography: Use Tajawal and Cairo for Arabic */
+body, .arabic-text, .hero-text-tablecell p, .hero-text-tablecell h1 {
+  font-family: 'Tajawal', 'Cairo', 'Noto Sans Arabic', 'Open Sans', sans-serif;
 }
 
-.single-product-item:hover .product-image img {
-    transform: scale(1.05);
+/* Button hover effect */
+.btn, .boxed-btn, .bordered-btn {
+  transition: all 0.3s ease;
+}
+.btn:hover, .boxed-btn:hover, .bordered-btn:hover {
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+}
+
+/* Spacing between headline and buttons */
+.hero-btns {
+  margin-top: 2rem;
+}
+
+/* Instagram images responsive layout */
+@media (max-width: 767px) {
+  .insta-images-row {
+    flex-direction: row !important;
+    overflow-x: auto;
+    gap: 10px;
+  }
+  .insta-images-row > div {
+    min-width: 100px;
+    margin-left: 0 !important;
+  }
+}
+
+/* Margin between Instagram images and right-side text */
+@media (min-width: 992px) {
+  .insta-right-text {
+    margin-right: 20px;
+  }
 }

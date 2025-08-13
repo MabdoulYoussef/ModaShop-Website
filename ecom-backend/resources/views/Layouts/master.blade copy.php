@@ -14,7 +14,6 @@
 	<!-- google font -->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link href="https://fonts.googleapis.com/css2?family=Playwrite+AU+QLD:wght@100..400&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -67,22 +66,6 @@
 				font-size: 1.2rem;
 			}
 		}
-
-		/* Center main menu in header */
-		.main-menu {
-			display: flex;
-			justify-content: center;
-		}
-		.main-menu ul {
-			display: flex;
-			justify-content: center;
-			width: 100%;
-			padding: 0;
-			margin: 0;
-		}
-		.main-menu ul li {
-			float: none;
-		}
 	</style>
 
 </head>
@@ -99,68 +82,63 @@
 	<!-- header -->
 	<div class="top-header-area" id="sticker">
 		<div class="container">
-			<div class="row align-items-center">
-				<div class="col-lg-2 col-4 text-center">
-					<!-- logo -->
-					<div class="site-logo">
-						<a href="index.html">
-							<img src="assets/img/logo2.png" alt="ModaShop">
-						</a>
-					</div>
-				</div>
-				<div class="col-lg-8 col-4">
-					<!-- menu start -->
-					<nav class="main-menu">
-						<ul>
-							<!-- ...existing menu items... -->
-							<li class="current-list-item"><a href="#">الرئيسية</a>
-								<ul class="sub-menu">
-									<li><a href="index.html">الصفحة الرئيسية</a></li>
-									<li><a href="index_2.html">الصفحة المتحركة</a></li>
-								</ul>
-							</li>
-							<li><a href="about.html">من نحن</a></li>
-							<li><a href="#">الصفحات</a>
-								<ul class="sub-menu">
-									<li><a href="404.html">صفحة 404</a></li>
-									<li><a href="about.html">من نحن</a></li>
-									<li><a href="cart.html">سلة التسوق</a></li>
-									<li><a href="checkout.html">إتمام الطلب</a></li>
-									<li><a href="contact.html">اتصل بنا</a></li>
-									<li><a href="news.html">الأخبار</a></li>
-									<li><a href="shop.html">المتجر</a></li>
-								</ul>
-							</li>
-							<li><a href="news.html">الأخبار</a>
-								<ul class="sub-menu">
-									<li><a href="news.html">الأخبار</a></li>
-									<li><a href="single-news.html">خبر واحد</a></li>
-								</ul>
-							</li>
-							<li><a href="contact.html">اتصل بنا</a></li>
-							<li><a href="shop.html">المتجر</a>
-								<ul class="sub-menu">
-									<li><a href="shop.html">المتجر</a></li>
-									<li><a href="checkout.html">إتمام الطلب</a></li>
-									<li><a href="single-product.html">منتج واحد</a></li>
-									<li><a href="cart.html">سلة التسوق</a></li>
-								</ul>
-							</li>
-						</ul>
-					</nav>
-					<!-- menu end -->
-				</div>
-				<div class="col-lg-2 col-4 text-center">
-					<!-- header icons -->
-					<div class="header-icons">
-						<a class="shopping-cart" href="cart.html"><i class="fas fa-shopping-cart"></i></a>
-						<a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+			<div class="row">
+				<div class="col-lg-12 col-sm-12 text-center">
+					<div class="main-menu-wrap">
+						<!-- logo -->
+
+						<!-- logo -->
+
+						<!-- menu start -->
+						<nav class="main-menu">
+							<ul>
+								<li class="current-list-item"><a href="#">الرئيسية</a>
+									<ul class="sub-menu">
+										<li><a href="index.html">الصفحة الرئيسية</a></li>
+										<li><a href="index_2.html">الصفحة المتحركة</a></li>
+									</ul>
+								</li>
+								<li><a href="about.html">من نحن</a></li>
+								<li><a href="#">الصفحات</a>
+									<ul class="sub-menu">
+										<li><a href="404.html">صفحة 404</a></li>
+										<li><a href="about.html">من نحن</a></li>
+										<li><a href="cart.html">سلة التسوق</a></li>
+										<li><a href="checkout.html">إتمام الطلب</a></li>
+										<li><a href="contact.html">اتصل بنا</a></li>
+										<li><a href="news.html">الأخبار</a></li>
+										<li><a href="shop.html">المتجر</a></li>
+									</ul>
+								</li>
+								<li><a href="news.html">الأخبار</a>
+									<ul class="sub-menu">
+										<li><a href="news.html">الأخبار</a></li>
+										<li><a href="single-news.html">خبر واحد</a></li>
+									</ul>
+								</li>
+								<li><a href="contact.html">اتصل بنا</a></li>
+								<li><a href="shop.html">المتجر</a>
+									<ul class="sub-menu">
+										<li><a href="shop.html">المتجر</a></li>
+										<li><a href="checkout.html">إتمام الطلب</a></li>
+										<li><a href="single-product.html">منتج واحد</a></li>
+										<li><a href="cart.html">سلة التسوق</a></li>
+									</ul>
+								</li>
+								<li>
+									<div class="header-icons">
+										<a class="shopping-cart" href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+										<a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+									</div>
+								</li>
+							</ul>
+						</nav>
+						<a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+						<div class="mobile-menu"></div>
+						<!-- menu end -->
 					</div>
 				</div>
 			</div>
-			<!-- ...existing code for mobile menu, etc... -->
-			<a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
-			<div class="mobile-menu"></div>
 		</div>
 	</div>
 	<!-- end header -->

@@ -45,13 +45,13 @@ class HomeController extends Controller
     // About page
     public function about()
     {
-        return view('home.index'); // Temporarily use home.index view
+        return view('home.about'); // Temporarily use home.about view
     }
 
     // Contact page
     public function contact()
     {
-        return view('home.index'); // Temporarily use home.index view
+        return view('home.contact'); // Temporarily use home.contact view
     }
 
     // Shop page (main products listing)
@@ -64,7 +64,7 @@ class HomeController extends Controller
 
         $categories = Category::withCount('products')->get();
 
-        return view('home.index', compact('products', 'categories')); // Temporarily use home.index view
+        return view('home.products', compact('products', 'categories')); // Temporarily use home.index view
     }
 
     // Privacy policy page
