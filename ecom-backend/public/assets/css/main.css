@@ -422,19 +422,30 @@ p:last-child {
 }
 
 a.boxed-btn {
-  font-family: 'Poppins', sans-serif;
   display: inline-block;
   background-color: #aa8a4a;
   color: #fff;
   padding: 10px 20px;
+  width: 130px;
+  font-family: 'Tajawal', 'Cairo', 'Noto Sans Arabic', 'Open Sans', sans-serif;
+  font-size: 1.15rem; /* slightly bigger */
+    font-weight: 600;  /* bold/strong */
+    letter-spacing: 0.3px; /* optional for spacing */
 }
+
 
 a.bordered-btn {
   font-family: 'Poppins', sans-serif;
   display: inline-block;
-  color: #fff;
+  color: #a08040;
+
   border: 2px solid #ad8f53;
-  padding: 7px 20px;
+  padding: 10px 20px;
+  width: 130px;
+  font-family: 'Tajawal', 'Cairo', 'Noto Sans Arabic', 'Open Sans', sans-serif;
+    font-size: 1.15rem; /* slightly bigger */
+    font-weight: 600;  /* bold/strong */
+    letter-spacing: 0.3px; /* optional for spacing */
 }
 
 a.read-more-btn {
@@ -1452,7 +1463,7 @@ html, body {
 
 .hero-btns {
  display: flex;
-    gap: 20px; /* space between buttons */
+    gap: 35px; /* space between buttons */
     justify-content:  flex-end; /* center them horizontally */
     margin-right: 5px;
 }
@@ -2900,11 +2911,11 @@ body, .arabic-text, .hero-text-tablecell p, .hero-text-tablecell h1 {
 
 /* Button hover effect */
 .btn, .boxed-btn, .bordered-btn {
-  transition: all 0.3s ease;
+  transition: all 0.5s ease;
 }
 .btn:hover, .boxed-btn:hover, .bordered-btn:hover {
   transform: scale(1.05);
-  transition: all 0.3s ease;
+  transition: all 0.5s ease;
 }
 
 /* Spacing between headline and buttons */

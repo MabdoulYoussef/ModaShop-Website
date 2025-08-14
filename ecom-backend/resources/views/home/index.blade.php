@@ -19,7 +19,7 @@
 						<div style="height: 2.5rem;"></div> <!-- vertical spacing -->
 						<div class="hero-btns" data-aos="fade-up" data-aos-delay="400">
 							<a href="{{ route('shop') }}" class="boxed-btn btn">المجموعة</a>
-							<a href="{{ route('contact') }}" class="bordered-btn btn">اتصل بنا</a>
+							<a href="/contact" class="bordered-btn btn">اتصل بنا</a>
 						</div>
 					</div>
 				</div>
