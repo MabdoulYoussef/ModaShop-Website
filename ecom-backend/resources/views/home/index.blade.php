@@ -11,11 +11,7 @@
 						<p class="subtitle arabic-text" style="font-family: 'Tajawal', 'Cairo', sans-serif; font-weight:700;" data-aos="fade-up" data-aos-delay="200">
 							ملابس ذات جودة عالية
 						</p>
-						<p class="arabic-text"
-   style="font-family: 'Tajawal', 'Cairo', sans-serif; font-weight:600; font-size:2rem; color:#96783d; margin-bottom: 1.5rem;"
-   data-aos="fade-up" data-aos-delay="300">
-	أزياء راقية تواكب أحدث الصيحات
-</p>
+						<p class="arabic-text" style="font-family: 'Tajawal', 'Cairo', sans-serif; font-weight:600; font-size:2rem; color:#96783d; margin-bottom: 1.5rem;" data-aos="fade-up" data-aos-delay="300">أزياء راقية تواكب أحدث الصيحات</p>
 						<div style="height: 2.5rem;"></div> <!-- vertical spacing -->
 						<div class="hero-btns" data-aos="fade-up" data-aos-delay="400">
 							<a href="{{ route('shop') }}" class="boxed-btn btn">المجموعة</a>
@@ -34,6 +30,7 @@
 		</div>
 	</div>
 	<!-- end hero area -->
+
 
 
 	<!-- features list section -->

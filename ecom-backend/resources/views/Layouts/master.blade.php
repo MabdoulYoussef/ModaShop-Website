@@ -110,45 +110,17 @@
 				</div>
 				<div class="col-lg-8 col-4">
 					<!-- menu start -->
-					<nav class="main-menu">
-						<ul>
-							<!-- ...existing menu items... -->
-							<li class="current-list-item"><a href="#">الرئيسية</a>
-								<ul class="sub-menu">
-									<li><a href="index.html">الصفحة الرئيسية</a></li>
-									<li><a href="index_2.html">الصفحة المتحركة</a></li>
-								</ul>
-							</li>
-							<li><a href="about.html">من نحن</a></li>
-							<li><a href="#">الصفحات</a>
-								<ul class="sub-menu">
-									<li><a href="404.html">صفحة 404</a></li>
-									<li><a href="about.html">من نحن</a></li>
-									<li><a href="cart.html">سلة التسوق</a></li>
-									<li><a href="checkout.html">إتمام الطلب</a></li>
-									<li><a href="contact.html">اتصل بنا</a></li>
-									<li><a href="news.html">الأخبار</a></li>
-									<li><a href="shop.html">المتجر</a></li>
-								</ul>
-							</li>
-							<li><a href="news.html">الأخبار</a>
-								<ul class="sub-menu">
-									<li><a href="news.html">الأخبار</a></li>
-									<li><a href="single-news.html">خبر واحد</a></li>
-								</ul>
-							</li>
-							<li><a href="contact.html">اتصل بنا</a></li>
-							<li><a href="shop.html">المتجر</a>
-								<ul class="sub-menu">
-									<li><a href="shop.html">المتجر</a></li>
-									<li><a href="checkout.html">إتمام الطلب</a></li>
-									<li><a href="single-product.html">منتج واحد</a></li>
-									<li><a href="cart.html">سلة التسوق</a></li>
-								</ul>
-							</li>
-						</ul>
-					</nav>
-					<!-- menu end -->
+				<nav class="main-menu">
+<ul>
+    <li><a href="{{ route('home') }}">الرئيسية</a></li>
+    <li><a href="{{ route('about') }}">من نحن</a></li>
+    <li><a href="{{ route('products.index') }}">منتجاتنا</a></li>
+    <li><a href="{{ route('categories.index') }}">فئات</a></li>
+    <li><a href="{{ route('contact') }}">اتصل بنا</a></li>
+</ul>
+
+</nav>
+				<!-- menu end -->
 				</div>
 				<div class="col-lg-2 col-4 text-center">
 					<!-- header icons -->
