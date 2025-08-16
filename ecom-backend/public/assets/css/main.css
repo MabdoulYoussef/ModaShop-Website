@@ -2982,3 +2982,28 @@ body, .arabic-text, .hero-text-tablecell p, .hero-text-tablecell h1 {
     margin-right: 20px;
   }
 }
+
+.aboutus-p {
+  direction: rtl; /* النص يبدأ من اليمين */
+  text-align: right; /* محاذاة النص لليمين */
+  font-family:  "Cairo", "Tajawal", sans-serif; /* خطوط عربية أنيقة */
+  font-size: 1.1rem; /* حجم متوسط */
+  line-height: 1.5; /* تباعد الأسطر مريح */
+  color: #806329; /* لون نص غامق */
+font-weight: 550; /* الوزن يكون أوضح */
+
+  max-width: 800px; /* عرض مناسب */
+  margin: 0 auto; /* وسط الصفحة */
+  padding: 10px;
+}
+.img-fluid{
+    max-width: 85%;
+    width: auto;
+    height: auto;
+    border-radius: 40px; /* زوايا دائرية للصورة */
+    margin-right: 50px;
+    margin-top: 40px;
+
+
+}
+
