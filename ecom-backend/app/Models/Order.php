@@ -11,6 +11,11 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
+        'customer_id',
+        'customer_firstname',
+        'customer_lastname',
+        'customer_phone',
+        'customer_city',
         'total_price',
         'status',
         'shipping_address',
@@ -45,6 +50,11 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
@@ -59,6 +69,11 @@ class Order extends Model
     public function scopeByUser($query, $userId)
     {
         return $query->where('user_id', $userId);
+    }
+
+    public function scopeByCustomer($query, $customerId)
+    {
+        return $query->where('customer_id', $customerId);
     }
 
     // Helper methods
@@ -77,5 +92,40 @@ class Order extends Model
     public function isPaid()
     {
         return $this->payment_status === self::PAYMENT_PAID;
+    }
+
+    // Helper methods for customer info
+    public function getCustomerNameAttribute()
+    {
+        if ($this->customer) {
+            return $this->customer->full_name;
+        }
+        return $this->customer_firstname . ' ' . $this->customer_lastname;
+    }
+
+    public function getCustomerPhoneAttribute()
+    {
+        if ($this->customer) {
+            return $this->customer->phone;
+        }
+        return $this->customer_phone;
+    }
+
+    public function getCustomerCityAttribute()
+    {
+        if ($this->customer) {
+            return $this->customer->city;
+        }
+        return $this->customer_city;
+    }
+
+    public function isGuestOrder()
+    {
+        return $this->user_id === null;
+    }
+
+    public function isAuthenticatedOrder()
+    {
+        return $this->user_id !== null;
     }
 }
