@@ -10,14 +10,14 @@ class Cart extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'session_id',
+        'session_token',
+        'customer_id',
     ];
 
     // Relationships
-    public function user()
+    public function customer()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Customer::class);
     }
 
     public function cartItems()

@@ -10,22 +10,13 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
         'customer_id',
-        'customer_firstname',
-        'customer_lastname',
-        'customer_phone',
-        'customer_city',
         'total_price',
         'status',
         'shipping_address',
         'shipping_city',
-        'shipping_state',
-        'shipping_zip',
-        'shipping_country',
         'payment_method',
         'payment_status',
-        'notes',
     ];
 
     protected $casts = [
@@ -45,11 +36,6 @@ class Order extends Model
     const PAYMENT_FAILED = 'failed';
 
     // Relationships
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
     public function customer()
     {
         return $this->belongsTo(Customer::class);
@@ -64,11 +50,6 @@ class Order extends Model
     public function scopeByStatus($query, $status)
     {
         return $query->where('status', $status);
-    }
-
-    public function scopeByUser($query, $userId)
-    {
-        return $query->where('user_id', $userId);
     }
 
     public function scopeByCustomer($query, $customerId)
@@ -97,35 +78,16 @@ class Order extends Model
     // Helper methods for customer info
     public function getCustomerNameAttribute()
     {
-        if ($this->customer) {
-            return $this->customer->full_name;
-        }
-        return $this->customer_firstname . ' ' . $this->customer_lastname;
+        return $this->customer ? $this->customer->full_name : 'Guest Customer';
     }
 
     public function getCustomerPhoneAttribute()
     {
-        if ($this->customer) {
-            return $this->customer->phone;
-        }
-        return $this->customer_phone;
+        return $this->customer ? $this->customer->phone : 'N/A';
     }
 
     public function getCustomerCityAttribute()
     {
-        if ($this->customer) {
-            return $this->customer->city;
-        }
-        return $this->customer_city;
-    }
-
-    public function isGuestOrder()
-    {
-        return $this->user_id === null;
-    }
-
-    public function isAuthenticatedOrder()
-    {
-        return $this->user_id !== null;
+        return $this->customer ? $this->customer->city : 'N/A';
     }
 }
