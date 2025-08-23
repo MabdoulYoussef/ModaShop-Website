@@ -14,24 +14,27 @@ class CategoryController extends Controller
         $categories = Category::withCount('products')
                              ->orderBy('name')
                              ->get();
-        
+
         return view('categories.index', compact('categories'));
     }
 
     // Show a single category with products
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $category = Category::with(['products' => function($query) {
-                                $query->where('stock', '>', 0);
-                            }])
-                            ->withCount('products')
-                            ->find($id);
-        
+        $category = Category::find($id);
+
         if (!$category) {
             abort(404, 'Category not found');
         }
-        
-        return view('categories.show', compact('category'));
+
+        // Get products in this category with pagination
+        $products = Product::where('category_id', $id)
+                          ->where('stock', '>', 0)
+                          ->with('category')
+                          ->orderBy('created_at', 'desc')
+                          ->paginate(12);
+
+        return view('categories.show', compact('category', 'products'));
     }
 
     // Show category by slug
@@ -43,11 +46,11 @@ class CategoryController extends Controller
                            }])
                            ->withCount('products')
                            ->first();
-        
+
         if (!$category) {
             abort(404, 'Category not found');
         }
-        
+
         return view('categories.show', compact('category'));
     }
 
@@ -72,7 +75,7 @@ class CategoryController extends Controller
         }
 
         $category = Category::create($validated);
-        
+
         return redirect()->route('categories.show', $category->id)
                         ->with('success', 'Category created successfully');
     }
@@ -81,7 +84,7 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $category = Category::find($id);
-        
+
         if (!$category) {
             abort(404, 'Category not found');
         }
@@ -93,7 +96,7 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $category = Category::find($id);
-        
+
         if (!$category) {
             abort(404, 'Category not found');
         }
@@ -110,7 +113,7 @@ class CategoryController extends Controller
         }
 
         $category->update($validated);
-        
+
         return redirect()->route('categories.show', $category->id)
                         ->with('success', 'Category updated successfully');
     }
@@ -119,7 +122,7 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         $category = Category::find($id);
-        
+
         if (!$category) {
             abort(404, 'Category not found');
         }
@@ -131,7 +134,7 @@ class CategoryController extends Controller
         }
 
         $category->delete();
-        
+
         return redirect()->route('categories.index')
                         ->with('success', 'Category deleted successfully');
     }

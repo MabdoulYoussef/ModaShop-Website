@@ -4,49 +4,57 @@ namespace App\Http\Controllers;
 
 use App\Models\Review;
 use App\Models\Product;
+use App\Models\Customer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class ReviewController extends Controller
 {
-    // Show create review form
+    /**
+     * Show create review form
+     *
+     * This function displays the review form for any customer
+     * No authentication required - customers can leave reviews
+     */
     public function create($productId)
     {
-        $user = Auth::user();
-
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'Please login to write a review');
-        }
-
         $product = Product::findOrFail($productId);
-
-        // Check if user already reviewed this product
-        $existingReview = $user->reviews()->where('product_id', $productId)->first();
-
-        if ($existingReview) {
-            return redirect()->route('products.show', $productId)
-                            ->with('error', 'You have already reviewed this product');
-        }
-
         return view('reviews.create', compact('product'));
     }
 
-    // Store a new review
+    /**
+     * Store a new review
+     *
+     * This function:
+     * 1. Validates review data and customer information
+     * 2. Creates or finds customer by phone number
+     * 3. Creates review linked to customer
+     * 4. Requires admin approval before display
+     *
+     * No authentication required - customers can leave reviews
+     */
     public function store(Request $request, $productId)
     {
-        $user = Auth::user();
-
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'Please login to write a review');
-        }
-
         $validated = $request->validate([
+            'firstname' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+            'city' => 'required|string|max:255',
             'rating' => 'required|integer|min:1|max:5',
             'comment' => 'required|string|min:10|max:1000',
         ]);
 
-        // Check if user already reviewed this product
-        $existingReview = $user->reviews()->where('product_id', $productId)->first();
+        $product = Product::findOrFail($productId);
+
+        // Create or find customer by phone number
+        $customer = Customer::findOrCreateByPhone(
+            $validated['phone'],
+            $validated['firstname'],
+            $validated['lastname'],
+            $validated['city']
+        );
+
+        // Check if customer already reviewed this product
+        $existingReview = $customer->reviews()->where('product_id', $productId)->first();
 
         if ($existingReview) {
             return redirect()->route('products.show', $productId)
@@ -54,7 +62,7 @@ class ReviewController extends Controller
         }
 
         $review = Review::create([
-            'user_id' => $user->id,
+            'customer_id' => $customer->id,
             'product_id' => $productId,
             'rating' => $validated['rating'],
             'comment' => $validated['comment'],
@@ -65,92 +73,80 @@ class ReviewController extends Controller
                         ->with('success', 'Review submitted successfully! It will be visible after approval.');
     }
 
-    // Show edit review form
+    /**
+     * Show edit review form
+     *
+     * This function allows customers to edit their reviews
+     * by providing their phone number for verification
+     */
     public function edit($id)
     {
-        $user = Auth::user();
-
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'Please login to edit review');
-        }
-
-        $review = $user->reviews()->with('product')->findOrFail($id);
-
+        $review = Review::with('product')->findOrFail($id);
         return view('reviews.edit', compact('review'));
     }
 
-    // Update a review
+    /**
+     * Update a review
+     *
+     * This function:
+     * 1. Validates customer phone number
+     * 2. Finds customer and their review
+     * 3. Updates review if customer matches
+     *
+     * No authentication required - uses phone verification
+     */
     public function update(Request $request, $id)
     {
-        $user = Auth::user();
-
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'Please login to edit review');
-        }
-
-        $review = $user->reviews()->findOrFail($id);
-
         $validated = $request->validate([
+            'phone' => 'required|string|max:20',
             'rating' => 'required|integer|min:1|max:5',
             'comment' => 'required|string|min:10|max:1000',
         ]);
 
+        $review = Review::with('customer')->findOrFail($id);
+
+        // Verify customer owns this review
+        if ($review->customer->phone !== $validated['phone']) {
+            return back()->with('error', 'Phone number does not match this review');
+        }
+
         $review->update([
             'rating' => $validated['rating'],
             'comment' => $validated['comment'],
-            'is_approved' => false, // Reset approval status on update
+            'is_approved' => false, // Reset approval status for edited review
         ]);
 
         return redirect()->route('products.show', $review->product_id)
                         ->with('success', 'Review updated successfully! It will be visible after approval.');
     }
 
-    // Delete a review
-    public function destroy($id)
+    /**
+     * Delete a review
+     *
+     * This function:
+     * 1. Validates customer phone number
+     * 2. Finds customer and their review
+     * 3. Deletes review if customer matches
+     *
+     * No authentication required - uses phone verification
+     */
+    public function destroy(Request $request, $id)
     {
-        $user = Auth::user();
+        $validated = $request->validate([
+            'phone' => 'required|string|max:20',
+        ]);
 
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'Please login to delete review');
+        $review = Review::with('customer')->findOrFail($id);
+
+        // Verify customer owns this review
+        if ($review->customer->phone !== $validated['phone']) {
+            return back()->with('error', 'Phone number does not match this review');
         }
 
-        $review = $user->reviews()->findOrFail($id);
         $productId = $review->product_id;
-
         $review->delete();
 
         return redirect()->route('products.show', $productId)
                         ->with('success', 'Review deleted successfully');
-    }
-
-    // Show user's reviews
-    public function myReviews()
-    {
-        $user = Auth::user();
-
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'Please login to view your reviews');
-        }
-
-        $reviews = $user->reviews()
-                        ->with('product')
-                        ->latest()
-                        ->paginate(10);
-
-        return view('reviews.my-reviews', compact('reviews'));
-    }
-
-    // Show all reviews for a product
-    public function productReviews($productId)
-    {
-        $product = Product::findOrFail($productId);
-
-        $reviews = $product->reviews()
-                           ->where('is_approved', true)
-                           ->with('user:id,name')
-                           ->latest()
-                           ->paginate(10);
-
-        return view('reviews.product-reviews', compact('product', 'reviews'));
     }
 }

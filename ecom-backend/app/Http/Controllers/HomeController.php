@@ -29,7 +29,7 @@ class HomeController extends Controller
                                 ->get();
 
         $testimonials = Review::where('is_approved', true)
-                             ->with('user:id,name')
+                             ->with('customer:id,firstname,lastname')
                              ->inRandomOrder()
                              ->take(3)
                              ->get();

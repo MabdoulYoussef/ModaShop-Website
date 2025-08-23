@@ -2,44 +2,45 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cart;
-use App\Models\CartItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
-    // Get the authenticated user's cart
+    /**
+     * Display the cart for all customers (session-based only)
+     *
+     * This function loads the cart from session for all customers
+     * No authentication required - open to all customers
+     */
     public function index()
     {
-        $user = Auth::user();
+        $sessionCart = session('cart', []);
+        $cartData = null;
+        $total = 0;
 
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'Please login to view your cart');
+        if (!empty($sessionCart)) {
+            // Convert session cart to view-friendly format
+            $cartData = $this->convertSessionCartToView($sessionCart);
+            $total = $this->calculateSessionCartTotal($sessionCart);
         }
-
-        $cart = $user->cart()->with('cartItems.product')->first();
-
-        if (!$cart) {
-            $cart = Cart::create(['user_id' => $user->id]);
-        }
-
-        $cartData = $cart->load('cartItems.product');
-        $total = $this->calculateCartTotal($cart->cartItems);
 
         return view('cart.index', compact('cartData', 'total'));
     }
 
-    // Add item to cart
+    /**
+     * Add item to cart (session-based only)
+     *
+     * This function:
+     * 1. Validates the request (product exists, quantity is valid)
+     * 2. Checks stock availability
+     * 3. Adds to session cart
+     *
+     * No login required - open to all customers
+     */
     public function addItem(Request $request)
     {
-        $user = Auth::user();
-
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'Please login to add items to cart');
-        }
-
+        // Validate the request
         $validated = $request->validate([
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1|max:99',
@@ -51,88 +52,146 @@ class CartController extends Controller
             return back()->with('error', 'Insufficient stock. Available: ' . $product->stock);
         }
 
-        $cart = $user->cart()->firstOrCreate(['user_id' => $user->id]);
+        // Add to session cart
+        $sessionCart = session('cart', []);
+        $productId = $validated['product_id'];
+        $quantity = $validated['quantity'];
 
-        $existingItem = $cart->cartItems()
-                            ->where('product_id', $validated['product_id'])
-                            ->first();
-
-        if ($existingItem) {
-            $newQuantity = $existingItem->quantity + $validated['quantity'];
+        if (isset($sessionCart[$productId])) {
+            // Update existing item in session
+            $newQuantity = $sessionCart[$productId]['quantity'] + $quantity;
 
             if ($newQuantity > $product->stock) {
                 return back()->with('error', 'Total quantity exceeds available stock');
             }
 
-            $existingItem->update(['quantity' => $newQuantity]);
+            $sessionCart[$productId]['quantity'] = $newQuantity;
             $message = 'Cart item quantity updated';
         } else {
-            $cart->cartItems()->create($validated);
+            // Add new item to session
+            $sessionCart[$productId] = [
+                'product_id' => $productId,
+                'quantity' => $quantity,
+                'product' => [
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'price' => $product->price,
+                    'image' => $product->image,
+                    'size' => $product->size,
+                    'description' => $product->description
+                ]
+            ];
             $message = 'Item added to cart';
         }
+
+        // Save updated session cart
+        session(['cart' => $sessionCart]);
 
         return redirect()->route('cart.index')->with('success', $message);
     }
 
-    // Update cart item quantity
+    /**
+     * Update cart item quantity (session-based only)
+     *
+     * This function:
+     * 1. Validates the new quantity
+     * 2. Checks stock availability
+     * 3. Updates session cart item
+     *
+     * No login required - open to all customers
+     */
     public function updateItem(Request $request, $itemId)
     {
-        $user = Auth::user();
-
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'Please login to update cart');
-        }
-
         $validated = $request->validate([
             'quantity' => 'required|integer|min:1|max:99',
         ]);
 
-        $cartItem = $user->cart->cartItems()->findOrFail($itemId);
+        $sessionCart = session('cart', []);
+
+        if (!isset($sessionCart[$itemId])) {
+            return back()->with('error', 'Item not found in cart');
+        }
 
         // Check stock
-        if ($validated['quantity'] > $cartItem->product->stock) {
+        $product = Product::find($itemId);
+        if ($validated['quantity'] > $product->stock) {
             return back()->with('error', 'Quantity exceeds available stock');
         }
 
-        $cartItem->update($validated);
+        $sessionCart[$itemId]['quantity'] = $validated['quantity'];
+        session(['cart' => $sessionCart]);
 
         return redirect()->route('cart.index')->with('success', 'Cart updated successfully');
     }
 
-    // Remove item from cart
+    /**
+     * Remove item from cart (session-based only)
+     *
+     * This function removes item from session cart
+     * No login required - open to all customers
+     */
     public function removeItem($itemId)
     {
-        $user = Auth::user();
+        $sessionCart = session('cart', []);
 
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'Please login to remove items');
+        if (isset($sessionCart[$itemId])) {
+            unset($sessionCart[$itemId]);
+            session(['cart' => $sessionCart]);
         }
-
-        $cartItem = $user->cart->cartItems()->findOrFail($itemId);
-        $cartItem->delete();
 
         return redirect()->route('cart.index')->with('success', 'Item removed from cart');
     }
 
-    // Clear the cart
+    /**
+     * Clear the entire cart (session-based only)
+     *
+     * This function clears all items from session cart
+     * No login required - open to all customers
+     */
     public function clear()
     {
-        $user = Auth::user();
-
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'Please login to clear cart');
-        }
-
-        $user->cart->cartItems()->delete();
+        session()->forget('cart');
 
         return redirect()->route('cart.index')->with('success', 'Cart cleared successfully');
     }
 
-    // Calculate cart total
-    private function calculateCartTotal($cartItems): float
+    /**
+     * Calculate total for session cart items
+     *
+     * This helper function calculates the total price for cart items
+     * stored in session
+     */
+    private function calculateSessionCartTotal($sessionCart): float
     {
-        return $cartItems->sum(function($item) {
-            return $item->quantity * $item->product->price;
-        });
+        $total = 0;
+        foreach ($sessionCart as $item) {
+            $total += $item['quantity'] * $item['product']['price'];
+        }
+        return $total;
+    }
+
+    /**
+     * Convert session cart to view-friendly format
+     *
+     * This helper function converts the session cart array
+     * to a format that matches the database cart structure
+     * so the view can handle it consistently
+     */
+    private function convertSessionCartToView($sessionCart)
+    {
+        $cartItems = collect();
+
+        foreach ($sessionCart as $productId => $item) {
+            $cartItems->push((object) [
+                'id' => $productId,
+                'product_id' => $item['product_id'],
+                'quantity' => $item['quantity'],
+                'product' => (object) $item['product']
+            ]);
+        }
+
+        return (object) [
+            'cartItems' => $cartItems
+        ];
     }
 }

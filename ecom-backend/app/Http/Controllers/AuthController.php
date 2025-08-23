@@ -2,23 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Auth\Events\PasswordReset;
-use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
-    // Show login form
+    /**
+     * Show admin login form
+     *
+     * This function displays the login form for administrators only
+     * No customer authentication - customers don't need to login
+     */
     public function showLogin()
     {
         return view('auth.login');
     }
 
-    // Handle login
+    /**
+     * Handle admin login
+     *
+     * This function:
+     * 1. Validates admin credentials (email, password)
+     * 2. Uses admin guard for authentication
+     * 3. Redirects to admin dashboard on success
+     *
+     * Only for administrators - customers don't login
+     */
     public function login(Request $request)
     {
         $validated = $request->validate([
@@ -27,10 +38,11 @@ class AuthController extends Controller
             'remember' => 'boolean',
         ]);
 
-        if (Auth::attempt($validated, $request->boolean('remember'))) {
+        // Use admin guard for authentication
+        if (Auth::guard('admin')->attempt($validated, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
-            return redirect()->intended('/')->with('success', 'Welcome back!');
+            return redirect()->intended('/admin/dashboard')->with('success', 'Welcome back, Admin!');
         }
 
         return back()->withErrors([
@@ -38,40 +50,19 @@ class AuthController extends Controller
         ])->withInput($request->only('email'));
     }
 
-    // Show registration form
-    public function showRegister()
-    {
-        return view('auth.register');
-    }
-
-    // Handle registration
-    public function register(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string|max:500',
-        ]);
-
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'phone' => $validated['phone'] ?? null,
-            'address' => $validated['address'] ?? null,
-        ]);
-
-        Auth::login($user);
-
-        return redirect('/')->with('success', 'Account created successfully!');
-    }
-
-    // Handle logout
+    /**
+     * Handle admin logout
+     *
+     * This function:
+     * 1. Logs out the admin user
+     * 2. Invalidates the session
+     * 3. Redirects to home page
+     *
+     * Only for administrators
+     */
     public function logout(Request $request)
     {
-        Auth::logout();
+        Auth::guard('admin')->logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
@@ -79,93 +70,76 @@ class AuthController extends Controller
         return redirect('/')->with('success', 'You have been logged out successfully.');
     }
 
-    // Show forgot password form
-    public function showForgotPassword()
-    {
-        return view('auth.forgot-password');
-    }
-
-    // Handle forgot password
-    public function forgotPassword(Request $request)
-    {
-        $validated = $request->validate([
-            'email' => 'required|email',
-        ]);
-
-        $status = Password::sendResetLink($validated);
-
-        return $status === Password::RESET_LINK_SENT
-                    ? back()->with(['status' => __($status)])
-                    : back()->withErrors(['email' => __($status)]);
-    }
-
-    // Show reset password form
-    public function showResetPassword(Request $request, $token)
-    {
-        return view('auth.reset-password', ['token' => $token, 'email' => $request->email]);
-    }
-
-    // Handle password reset
-    public function resetPassword(Request $request)
-    {
-        $validated = $request->validate([
-            'token' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|min:8|confirmed',
-        ]);
-
-        $status = Password::reset($validated, function ($user, $password) {
-            $user->forceFill([
-                'password' => Hash::make($password)
-            ])->setRememberToken(Str::random(60));
-
-            $user->save();
-
-            event(new PasswordReset($user));
-        });
-
-        return $status === Password::PASSWORD_RESET
-                    ? redirect()->route('login')->with('status', __($status))
-                    : back()->withErrors(['email' => [__($status)]]);
-    }
-
-    // Show user profile
+    /**
+     * Show admin profile
+     *
+     * This function displays the admin profile page
+     * Only accessible to authenticated admins
+     */
     public function profile()
     {
-        $user = Auth::user();
-        return view('auth.profile', compact('user'));
+        $admin = Auth::guard('admin')->user();
+        return view('auth.profile', compact('admin'));
     }
 
-    // Show edit profile form
+    /**
+     * Show edit admin profile form
+     *
+     * This function displays the form to edit admin profile
+     * Only accessible to authenticated admins
+     */
     public function editProfile()
     {
-        $user = Auth::user();
-        return view('auth.edit-profile', compact('user'));
+        $admin = Auth::guard('admin')->user();
+        return view('auth.edit-profile', compact('admin'));
     }
 
-    // Update profile
+    /**
+     * Update admin profile
+     *
+     * This function:
+     * 1. Validates the profile update data
+     * 2. Updates the admin profile in database
+     * 3. Redirects with success message
+     *
+     * Only accessible to authenticated admins
+     */
     public function updateProfile(Request $request)
     {
-        $user = Auth::user();
+        $admin = Auth::guard('admin')->user();
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string|max:500',
+            'email' => 'required|email|unique:admins,email,' . $admin->id,
         ]);
 
-        $user->update($validated);
+        $admin->update($validated);
 
-        return redirect()->route('profile')->with('success', 'Profile updated successfully!');
+        return redirect()->route('admin.profile')->with('success', 'Profile updated successfully!');
     }
 
-    // Show change password form
+    /**
+     * Show change password form
+     *
+     * This function displays the form to change admin password
+     * Only accessible to authenticated admins
+     */
     public function showChangePassword()
     {
         return view('auth.change-password');
     }
 
-    // Change password
+    /**
+     * Change admin password
+     *
+     * This function:
+     * 1. Validates current password and new password
+     * 2. Checks if current password is correct
+     * 3. Updates password in database
+     * 4. Redirects with success message
+     *
+     * Only accessible to authenticated admins
+     */
     public function changePassword(Request $request)
     {
         $validated = $request->validate([
@@ -173,14 +147,14 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        $user = Auth::user();
+        $admin = Auth::guard('admin')->user();
 
-        if (!Hash::check($validated['current_password'], $user->password)) {
+        if (!Hash::check($validated['current_password'], $admin->password)) {
             return back()->withErrors(['current_password' => 'Current password is incorrect.']);
         }
 
-        $user->update(['password' => Hash::make($validated['password'])]);
+        $admin->update(['password' => Hash::make($validated['password'])]);
 
-        return redirect()->route('profile')->with('success', 'Password changed successfully!');
+        return redirect()->route('admin.profile')->with('success', 'Password changed successfully!');
     }
 }

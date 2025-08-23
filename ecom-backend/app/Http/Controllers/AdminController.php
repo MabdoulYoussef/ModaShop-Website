@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use App\Models\User;
+use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Review;
 use App\Models\Category;
@@ -15,23 +15,22 @@ class AdminController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
-        $this->middleware('admin');
+        $this->middleware('auth:admin');
     }
 
     // Admin dashboard
     public function dashboard()
     {
         $stats = [
-            'total_users' => User::count(),
+            'total_customers' => Customer::count(),
             'total_products' => Product::count(),
             'total_orders' => Order::count(),
-            'total_revenue' => Order::where('status', 'completed')->sum('total_amount'),
+            'total_revenue' => Order::where('status', 'completed')->sum('total_price'),
             'pending_orders' => Order::where('status', 'pending')->count(),
             'low_stock_products' => Product::where('stock', '<', 10)->count(),
         ];
 
-        $recent_orders = Order::with('user')
+        $recent_orders = Order::with('customer')
                             ->latest()
                             ->take(5)
                             ->get();
@@ -47,7 +46,7 @@ class AdminController extends Controller
     // List all orders
     public function orders(Request $request)
     {
-        $query = Order::with(['user', 'orderItems.product']);
+        $query = Order::with(['customer', 'orderItems.product']);
 
         // Filter by status
         if ($request->has('status') && $request->status !== '') {
@@ -71,7 +70,7 @@ class AdminController extends Controller
     // Show single order
     public function showOrder($id)
     {
-        $order = Order::with(['user', 'orderItems.product'])->findOrFail($id);
+        $order = Order::with(['customer', 'orderItems.product'])->findOrFail($id);
         return view('admin.orders.show', compact('order'));
     }
 
@@ -90,51 +89,31 @@ class AdminController extends Controller
                         ->with('success', 'Order status updated successfully');
     }
 
-    // List all users
-    public function users(Request $request)
+    // List all customers
+    public function customers(Request $request)
     {
-        $query = User::withCount('orders');
+        $query = Customer::withCount('orders');
 
-        // Filter by role
-        if ($request->has('role') && $request->role !== '') {
-            $query->where('role', $request->role);
-        }
-
-        // Search by name or email
+        // Search by name or phone
         if ($request->has('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%");
+                $q->where('firstname', 'like', "%{$search}%")
+                  ->orWhere('lastname', 'like', "%{$search}%")
+                  ->orWhere('phone', 'like', "%{$search}%");
             });
         }
 
-        $users = $query->latest()->paginate(20);
-        $roles = ['user', 'admin'];
+        $customers = $query->latest()->paginate(20);
 
-        return view('admin.users.index', compact('users', 'roles'));
+        return view('admin.customers.index', compact('customers'));
     }
 
-    // Show user details
-    public function showUser($id)
+    // Show customer details
+    public function showCustomer($id)
     {
-        $user = User::with(['orders.orderItems.product', 'reviews.product'])->findOrFail($id);
-        return view('admin.users.show', compact('user'));
-    }
-
-    // Update user role
-    public function updateUserRole(Request $request, $id)
-    {
-        $user = User::findOrFail($id);
-
-        $validated = $request->validate([
-            'role' => 'required|in:user,admin',
-        ]);
-
-        $user->update(['role' => $validated['role']]);
-
-        return redirect()->route('admin.users.show', $user->id)
-                        ->with('success', 'User role updated successfully');
+        $customer = Customer::with(['orders.orderItems.product'])->findOrFail($id);
+        return view('admin.customers.show', compact('customer'));
     }
 
     // List all products
@@ -171,7 +150,7 @@ class AdminController extends Controller
     // List all reviews
     public function reviews(Request $request)
     {
-        $query = Review::with(['user', 'product']);
+        $query = Review::with(['customer', 'product']);
 
         // Filter by approval status
         if ($request->has('approved') && $request->approved !== '') {
