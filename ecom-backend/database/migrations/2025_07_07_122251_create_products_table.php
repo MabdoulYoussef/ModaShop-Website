@@ -22,7 +22,7 @@ public function up()
         $table->integer('stock')->default(0);
         $table->timestamps();
 
-        $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
+        // Foreign key will be added after categories table is created
     });
 }
     /**

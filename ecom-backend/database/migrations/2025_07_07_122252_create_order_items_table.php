@@ -13,8 +13,8 @@ public function up()
 {
     Schema::create('order_items', function (Blueprint $table) {
         $table->id();
-        $table->foreignId('order_id')->constrained()->onDelete('cascade');
-        $table->foreignId('product_id')->constrained()->onDelete('cascade');
+        $table->unsignedBigInteger('order_id');
+        $table->unsignedBigInteger('product_id');
         $table->integer('quantity');
         $table->decimal('price', 10, 2); // price at the time of order
         $table->timestamps();
