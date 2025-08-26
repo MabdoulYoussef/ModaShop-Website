@@ -1,23 +1,154 @@
-@extends( 'Layouts.master')
+@extends('layouts.master')
 
-@section( 'content')
+@section('content')
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center mb-5 arabic-text">فئات المنتجات</h1>
+        </div>
+    </div>
 
+    @if($categories->count() > 0)
+        <div class="row">
+            @foreach($categories as $category)
+                <div class="col-lg-3 col-md-6 text-center mb-4">
+                    <div class="single-product-item" onclick="window.location.href='{{ route('categories.show', $category->id) }}'">
+                        <div class="product-image">
+                            <a href="{{ route('categories.show', $category->id) }}">
+                                @switch($category->name)
+                                    @case('ملابس رجالية')
+                                        <i class="fas fa-tshirt category-icon-large"></i>
+                                        @break
+                                    @case('ملابس نسائية')
+                                        <i class="fas fa-female category-icon-large"></i>
+                                        @break
+                                    @case('أحذية')
+                                        <i class="fas fa-shoe-prints category-icon-large"></i>
+                                        @break
+                                    @case('حقائب')
+                                        <i class="fas fa-shopping-bag category-icon-large"></i>
+                                        @break
+                                    @case('إكسسوارات')
+                                        <i class="fas fa-gem category-icon-large"></i>
+                                        @break
+                                    @default
+                                        <i class="fas fa-tags category-icon-large"></i>
+                                @endswitch
+                            </a>
+                        </div>
+                        <h3 class="arabic-text">{{ $category->name }}</h3>
+                        <p class="product-price">
+                            <span>عدد المنتجات</span>
+                            {{ $category->products_count ?? 0 }} منتج
+                        </p>
+                        <a href="{{ route('categories.show', $category->id) }}" class="cart-btn">
+                            <i class="fas fa-eye"></i> عرض المنتجات
+                        </a>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @else
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="alert-empty-cart">
+                    <i class="fas fa-folder-open"></i>
+                    <h4>لا توجد فئات متاحة حالياً</h4>
+                    <p>يرجى العودة لاحقاً</p>
+                    <a href="{{ route('products.index') }}" class="btn">عرض جميع المنتجات</a>
+                </div>
+            </div>
+        </div>
+    @endif
 
-	<div class="hero-area hero-bg">
-		<div class="container">
-			<div class="row align-items-center">
-				<!-- Text -->
-				<div class="col-lg-6">
-					<div class="hero-text-tablecell">
+    <!-- Back to Products -->
+    <div class="row mt-5">
+        <div class="col-12 text-center">
+            <a href="{{ route('products.index') }}" class="bordered-btn">
+                <i class="fas fa-arrow-left"></i> عرض جميع المنتجات
+            </a>
+        </div>
+    </div>
+</div>
 
-    @yield('content')
+<style>
+.category-icon-large {
+    font-size: 8rem;
+    color: #ad8f53;
+    display: block;
+    margin: 20px 0;
+    transition: all 0.3s ease;
+}
 
-					</div>
-				</div>
+.single-product-item:hover .category-icon-large {
+    color: #8b6f3f;
+    transform: scale(1.1);
+}
 
-				<!-- Image -->
+.single-product-item {
+    cursor: pointer;
+}
 
-			</div>
-		</div>
-	</div>
+.single-product-item .product-image {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.single-product-item:hover .product-image {
+    background: linear-gradient(135deg, #ad8f53, #8b6f3f);
+}
+
+.single-product-item:hover .product-image .category-icon-large {
+    color: white;
+}
+
+.single-product-item h3 {
+    font-size: 1.4rem;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.single-product-item:hover h3 {
+    color: #b48b57;
+}
+
+.single-product-item .product-price {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.single-product-item .product-price span {
+    color: #ad8f53;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.single-product-item .cart-btn {
+    width: 100%;
+    text-align: center;
+}
+
+/* Responsive adjustments */
+@media only screen and (max-width: 767.96px) {
+    .category-icon-large {
+        font-size: 6rem;
+    }
+
+    .single-product-item h3 {
+        font-size: 1.2rem;
+    }
+}
+
+@media only screen and (max-width: 575.96px) {
+    .category-icon-large {
+        font-size: 5rem;
+    }
+}
+</style>
 @endsection

@@ -40,67 +40,57 @@ Route::get('/categories', [CategoryController::class, 'index'])->name('categorie
 Route::get('/categories/{id}', [CategoryController::class, 'show'])->name('categories.show');
 Route::get('/categories/slug/{slug}', [CategoryController::class, 'showBySlug'])->name('categories.showBySlug');
 
-// Authentication routes
+// Cart routes (no authentication required - session-based)
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add', [CartController::class, 'addItem'])->name('cart.add');
+Route::put('/cart/{itemId}', [CartController::class, 'updateItem'])->name('cart.update');
+Route::delete('/cart/{itemId}', [CartController::class, 'removeItem'])->name('cart.remove');
+Route::delete('/cart', [CartController::class, 'clear'])->name('cart.clear');
+
+// Guest checkout routes (no authentication required)
+Route::get('/checkout', [OrderController::class, 'checkout'])->name('orders.checkout');
+Route::post('/checkout', [OrderController::class, 'store'])->name('orders.store');
+
+// Order routes (public - customers can view orders by phone)
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
+
+// Review routes (no authentication required - customers provide info)
+Route::get('/products/{productId}/reviews/create', [ReviewController::class, 'create'])->name('reviews.create');
+Route::post('/products/{productId}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+Route::get('/reviews/{id}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
+Route::put('/reviews/{id}', [ReviewController::class, 'update'])->name('reviews.update');
+Route::delete('/reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+
+// Admin authentication routes
 Route::middleware('guest')->group(function () {
-    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-    Route::post('/login', [AuthController::class, 'login']);
-    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-    Route::post('/register', [AuthController::class, 'register']);
-    Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.request');
-    Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->name('password.email');
-    Route::get('/reset-password/{token}', [AuthController::class, 'showResetPassword'])->name('password.reset');
-    Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+    Route::get('/admin/login', [AuthController::class, 'showLogin'])->name('admin.login');
+    Route::post('/admin/login', [AuthController::class, 'login'])->name('admin.login.post');
 });
 
-// Protected routes
-Route::middleware('auth')->group(function () {
-    // Logout
+// Admin routes (protected by admin authentication)
+Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function () {
+    // Admin dashboard
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+
+    // Admin logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    // User profile
+    // Admin profile
     Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
     Route::get('/profile/edit', [AuthController::class, 'editProfile'])->name('profile.edit');
     Route::put('/profile', [AuthController::class, 'updateProfile'])->name('profile.update');
     Route::get('/profile/change-password', [AuthController::class, 'showChangePassword'])->name('profile.change-password');
     Route::put('/profile/change-password', [AuthController::class, 'changePassword'])->name('profile.change-password.update');
 
-    // Cart routes
-    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-    Route::post('/cart/add', [CartController::class, 'addItem'])->name('cart.add');
-    Route::put('/cart/{itemId}', [CartController::class, 'updateItem'])->name('cart.update');
-    Route::delete('/cart/{itemId}', [CartController::class, 'removeItem'])->name('cart.remove');
-    Route::delete('/cart', [CartController::class, 'clear'])->name('cart.clear');
-
-    // Order routes
-    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
-    Route::get('/checkout', [OrderController::class, 'checkout'])->name('orders.checkout');
-    Route::post('/checkout', [OrderController::class, 'store'])->name('orders.store');
-    Route::post('/orders/{id}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
-
-    // Review routes
-    Route::get('/reviews/my', [ReviewController::class, 'myReviews'])->name('reviews.my');
-    Route::get('/products/{productId}/reviews', [ReviewController::class, 'productReviews'])->name('reviews.product');
-    Route::get('/products/{productId}/reviews/create', [ReviewController::class, 'create'])->name('reviews.create');
-    Route::post('/products/{productId}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
-    Route::get('/reviews/{id}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
-    Route::put('/reviews/{id}', [ReviewController::class, 'update'])->name('reviews.update');
-    Route::delete('/reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
-});
-
-// Admin routes
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-
     // Orders management
     Route::get('/orders', [AdminController::class, 'orders'])->name('orders.index');
     Route::get('/orders/{id}', [AdminController::class, 'showOrder'])->name('orders.show');
     Route::put('/orders/{id}/status', [AdminController::class, 'updateOrderStatus'])->name('orders.update-status');
 
-    // Users management
-    Route::get('/users', [AdminController::class, 'users'])->name('users.index');
-    Route::get('/users/{id}', [AdminController::class, 'showUser'])->name('users.show');
-    Route::put('/users/{id}/role', [AdminController::class, 'updateUserRole'])->name('users.update-role');
+    // Customers management (instead of users)
+    Route::get('/customers', [AdminController::class, 'customers'])->name('customers.index');
+    Route::get('/customers/{id}', [AdminController::class, 'showCustomer'])->name('customers.show');
 
     // Products management
     Route::get('/products', [AdminController::class, 'products'])->name('products.index');
