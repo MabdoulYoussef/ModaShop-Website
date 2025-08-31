@@ -2488,193 +2488,6 @@ ul.product-share li {
   display: inline-block;
 }
 
-ul.product-share li a {
-  display: block;
-  color: #ad8f53
-;
-  margin-right: 10px;
-}
-
-.single-product-content {
-  margin-left: 30px;
-}
-
-table.cart-table {
-  border: 1px solid #f9f9f9;
-  width: 100%;
-}
-
-thead {
-  border-bottom: 1px solid #eee;
-}
-
-tr.table-head-row th {
-  border-right: 1px solid #efefef;
-  padding: 15px;
-  font-weight: 500;
-  text-align: center;
-}
-
-tr.table-head-row th:last-child {
-  border-right: none;
-}
-
-.cart-table-wrap tbody tr td {
-  text-align: center;
-}
-
-td.product-image img {
-  max-width: 50px;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  margin-bottom: 0;
-}
-
-.cart-table-wrap tbody tr td {
-  border: 1px solid #efefef;
-  padding: 20px 0;
-  color: #ad8f53
-;
-}
-
-thead.cart-table-head tr {
-  background-color: #efefef;
-}
-
-td.product-quantity input {
-  margin-bottom: 0;
-}
-
-td.product-remove a {
-  color: #ad8f53
-;
-}
-
-.total-section table.total-table {
-  border: 1px solid #efefef;
-  width: 100%;
-}
-
-tr.table-total-row {
-  background-color: #efefef;
-}
-
-tr.table-total-row th {
-  font-weight: 500;
-  font-size: 15px;
-  padding: 15px;
-}
-
-table.total-table tbody tr.total-data td {
-  border: 1px solid #efefef;
-  padding: 19px 15px;
-}
-
-tr.total-data td strong {
-  margin-right: 32px;
-}
-
-.cart-buttons {
-  margin-top: 30px;
-}
-
-.cart-buttons a:first-child {
-  margin-right: 20px;
-}
-
-.coupon-section {
-  margin-top: 50px;
-}
-
-.coupon-section h3 {
-  font-size: 20px;
-  font-weight: 500;
-}
-
-.coupon-form-wrap form p input[type=text] {
-  border: 1px solid #ddd;
-  color: #ad8f53
-;
-  padding: 15px;
-  width: 100%;
-  border-radius: 5px;
-  font-size: 15px;
-}
-
-.card.single-accordion {
-  margin-bottom: 15px;
-  border-bottom: 1px solid #EFEFEF !important;
-}
-
-.card.single-accordion .card-header {
-  background-color: #fff;
-  border: none;
-  padding: 0;
-}
-
-.card.single-accordion:last-child {
-  margin-bottom: 0;
-}
-
-.card.single-accordion .card-header h5 button {
-  color: #ad8f53
-;
-  font-size: 15px;
-  display: block;
-  width: 100%;
-  text-align: left;
-  padding: 20px;
-  text-decoration: none;
-  border: none;
-  background-color: #EFEFEF;
-  position: relative;
-  padding-left: 50px;
-  font-weight: 600;
-}
-
-.card.single-accordion {
-  border: 1px solid #F9F9F9;
-}
-
-.billing-address-form {
-  padding: 20px;
-}
-
-.billing-address-form form p input {
-  border: 1px solid #ddd;
-  padding: 15px;
-  width: 100%;
-  border-radius: 3px;
-}
-
-.billing-address-form form p textarea {
-  width: 100%;
-  border-radius: 3px;
-  border: 1px solid #ddd;
-  padding: 15px;
-  height: 120px;
-  resize: none;
-}
-
-.shipping-address-form p, .card-details p {
-  margin: 0;
-}
-
-.card.single-accordion .card-header h5 button:before {
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  content: "\f058";
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
-  line-height: 22px;
-  margin-top: -11px;
-  color: #ad8f53;
-}
-
-.billing-address-form form p:last-child {
-  margin-bottom: 0;
-}
 
 table.order-details {
   border: 1px solid #efefef;
@@ -3059,5 +2872,180 @@ font-weight: 550; /* الوزن يكون أوضح */
     box-shadow: 0 4px 15px rgba(255, 154, 86, 0.3);
     animation: slideInDown 0.5s ease-out;
     margin: 20px 0;
+}
+
+
+
+
+
+
+
+
+
+
+/* to add del */
+
+
+ul.product-share li {
+  display: inline-block;
+}
+
+
+table.order-details {
+  border: 1px solid #efefef;
+}
+
+table.order-details thead tr th {
+  background-color: #efefef;
+  padding: 18px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+table.order-details tbody td {
+  border: 1px solid #efefef;
+  padding: 15px;
+}
+
+.order-details-wrap > a {
+  margin-top: 30px;
+}
+
+.card.single-accordion {
+  border: 1px solid #eeeeee;
+}
+
+.single-product-item {
+  -webkit-box-shadow: 0 0 20px #e4e4e4;
+  box-shadow: 0 0 20px #e4e4e4;
+  padding-bottom: 50px;
+  border-radius: 25px;
+}
+
+/* -----------------------------------------------------------------------------
+
+# 404 Page Styles
+
+----------------------------------------------------------------------------- */
+.error-text i {
+  font-size: 90px;
+  margin-bottom: 30px;
+}
+
+.error-text h1 {
+  font-size: 40px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.error-text p {
+  font-size: 15px;
+  margin-bottom: 30px;
+}
+
+.full-height-section {
+  height: 100%;
+  display: table;
+  width: 100%;
+}
+
+.full-height-tablecell {
+  display: table-cell;
+  vertical-align: middle;
+  width: 100%;
+}
+
+.hero-img img {
+    max-width: none;
+    height: auto;
+    display: block;
+    width: 775px;
+    margin-top: 100px;
+    margin-right: 80px;
+
+}
+
+
+.text.arabic-text{
+    text-align: right;
+    font-family: "Playwrite AU QLD", cursive;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-weight: 700;
+    color: #ad8f53;
+    font-size: 17px;
+    font-family: "Cairo", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings:
+    "slnt" 0;
+}
+
+
+.single-product-item:hover .product-image img {
+  transform: scale(1.08);
+  filter: brightness(1.08);
+}
+.product-image::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(180, 139, 87, 0.15);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.single-product-item:hover .product-image::after {
+  opacity: 1;
+}
+.single-product-item:hover h3 {
+  color: #b48b57;
+}
+a.cart-btn.mt-3 {
+    background-color: #ad8f53;  /* brown color */
+    color: white;
+    padding: 13px 25px;
+border-radius: 50px;
+    text-decoration: none;
+    display: inline-block;
+    font-weight: bold;
+    transition: all 0.3s ease;
+        font-size: 18px;     /* bigger text */
+        margin-right: 22px;
+
+}
+
+a.cart-btn.mt-3:hover {
+    background-color: #dec698;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Main Content Area Styling */
+.main-content-area {
+    padding: 80px 0;
+    min-height: 60vh;
+    background-color: #fff;
+    position: relative;
+    z-index: 10;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.main-content-area .container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.main-content-area .row {
+    margin: 0;
+}
+
+.main-content-area .col-lg-12 {
+    padding: 0 15px;
 }
 
