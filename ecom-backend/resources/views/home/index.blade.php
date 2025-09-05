@@ -151,39 +151,6 @@
 	</div>
 	<!-- end product section -->
 
-	@if(isset($categories) && $categories->count() > 0)
-	<!-- categories section -->
-	<div class="categories-section mt-150 mb-150">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-8 offset-lg-2 text-center">
-					<div class="section-title">
-						<h3><span class="orange-text">تسوق حسب</span> الفئة</h3>
-						<p class="arabic-text">اكتشف مجموعتنا المتنوعة من الفئات</p>
-					</div>
-				</div>
-			</div>
-
-			<div class="row">
-				@foreach($categories as $category)
-				<div class="col-lg-3 col-md-6 text-center mb-4">
-					<div class="category-item">
-						<div class="category-icon">
-							<i class="fas fa-tshirt"></i>
-						</div>
-						<h4 class="arabic-text">{{ $category->name }}</h4>
-						<p class="arabic-text">{{ $category->products_count }} منتج</p>
-						<a href="{{ route('categories.show', $category->id) }}" class="category-btn">
-							<i class="fas fa-arrow-left"></i> تصفح
-						</a>
-					</div>
-				</div>
-				@endforeach
-			</div>
-		</div>
-	</div>
-	<!-- end categories section -->
-	@endif
 
 	<!-- cart banner section -->
 	<section class="cart-banner pt-100 pb-100">
