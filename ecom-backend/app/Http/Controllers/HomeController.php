@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Review;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -51,7 +52,28 @@ class HomeController extends Controller
     // Contact page
     public function contact()
     {
-        return view('home.contact'); // Temporarily use home.contact view
+        return view('home.contact');
+    }
+
+    // Handle contact form submission
+    public function contactSubmit(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'nullable|string|max:20',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string|max:1000',
+        ]);
+
+        // Here you can add email sending logic
+        // For now, we'll just store it in session and show success message
+
+        // TODO: Add email notification to admin
+        // Mail::to('support@modashop.com')->send(new ContactFormMail($validated));
+
+        return redirect()->route('contact')
+                        ->with('success', 'شكراً لك! تم إرسال رسالتك بنجاح. سنتواصل معك قريباً.');
     }
 
     // Shop page (main products listing)
@@ -64,18 +86,18 @@ class HomeController extends Controller
 
         $categories = Category::withCount('products')->get();
 
-        return view('home.products', compact('products', 'categories')); // Temporarily use home.index view
+        return view('products.index', compact('products', 'categories'));
     }
 
     // Privacy policy page
     public function privacy()
     {
-        return view('home.index'); // Temporarily use home.index view
+        return view('home.privacy');
     }
 
     // Terms of service page
     public function terms()
     {
-        return view('home.index'); // Temporarily use home.index view
+        return view('home.terms');
     }
 }

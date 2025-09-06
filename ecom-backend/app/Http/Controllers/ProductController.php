@@ -97,16 +97,24 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
-            'image' => 'nullable|string',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'category_id' => 'nullable|exists:categories,id',
             'size' => 'nullable|string|max:50',
             'stock' => 'required|integer|min:0',
         ]);
 
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('storage/products'), $imageName);
+            $validated['image'] = 'products/' . $imageName;
+        }
+
         $product = Product::create($validated);
 
-        return redirect()->route('products.show', $product->id)
-                        ->with('success', 'Product created successfully');
+        return redirect()->route('admin.products.index')
+                        ->with('success', 'تم إنشاء المنتج بنجاح');
     }
 
     // Show edit product form
@@ -135,16 +143,29 @@ class ProductController extends Controller
             'name' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'sometimes|required|numeric|min:0',
-            'image' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'category_id' => 'nullable|exists:categories,id',
             'size' => 'nullable|string|max:50',
             'stock' => 'sometimes|required|integer|min:0',
         ]);
 
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($product->image && file_exists(public_path('storage/' . $product->image))) {
+                unlink(public_path('storage/' . $product->image));
+            }
+
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('storage/products'), $imageName);
+            $validated['image'] = 'products/' . $imageName;
+        }
+
         $product->update($validated);
 
-        return redirect()->route('products.show', $product->id)
-                        ->with('success', 'Product updated successfully');
+        return redirect()->route('admin.products.index')
+                        ->with('success', 'تم تحديث المنتج بنجاح');
     }
 
     // Delete a product
