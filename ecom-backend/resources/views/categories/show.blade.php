@@ -1,7 +1,12 @@
-@extends('layouts.master')
+@extends('layouts.shop')
 
 @section('content')
-<div class="container">
+<!-- Breadcrumb -->
+<div class="breadcrumb-nav">
+    <a href="{{ route('home') }}">الرئيسية</a> /
+    <a href="{{ route('categories.index') }}">فئات المنتجات</a> /
+    <span>{{ $category->name }}</span>
+</div>
     <!-- Category Header -->
     <div class="row mb-5">
         <div class="col-12">

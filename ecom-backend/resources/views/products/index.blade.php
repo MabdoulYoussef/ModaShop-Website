@@ -1,27 +1,31 @@
-@extends('layouts.master')
+@extends('layouts.shop')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            <h1 class="text-center mb-5 arabic-text">منتجاتنا</h1>
-        </div>
-    </div>
+<!-- Page Title -->
+<div class="page-title">
+    <h1 class="arabic-text">منتجاتنا</h1>
+    <p class="arabic-text">اكتشف مجموعتنا المتنوعة من الملابس العربية العصرية</p>
+</div>
+
+<!-- Breadcrumb -->
+<div class="breadcrumb-nav">
+    <a href="{{ route('home') }}">الرئيسية</a> /
+    <a href="{{ route('products.index') }}">منتجاتنا</a>
+</div>
 
     @if($products->count() > 0)
         <div class="row">
             @foreach($products as $product)
-                <div class="col-lg-4 col-md-6 text-center">
-                    <div class="single-product-item" onclick="window.location.href='{{ route('products.show', $product->id) }}'">
-                        <div class="product-image">
+                <div class="col-lg-4 col-md-6 text-center mb-4">
+                    <div class="shop-card" onclick="window.location.href='{{ route('products.show', $product->id) }}'">
+                        <div class="product-image mb-3">
                             <a href="{{ route('products.show', $product->id) }}">
-                                <img src="{{ asset('assets/img/products/' . $product->image) }}"
-                                     alt="{{ $product->name }}">
+                                <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('assets/img/placeholder.jpg') }}"
+                                     alt="{{ $product->name }}" class="img-fluid" style="border-radius: 10px;">
                             </a>
                         </div>
                         <h3 class="arabic-text">{{ $product->name }}</h3>
-                        <p class="product-price">
-                            <span>السعر</span>
+                        <p class="price">
                             {{ number_format($product->price, 0) }} درهم مغربي
                         </p>
                         @if($product->stock > 0)
@@ -29,12 +33,12 @@
                                 @csrf
                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                                 <input type="hidden" name="quantity" value="1">
-                                <button type="submit" class="cart-btn">
+                                <button type="submit" class="shop-btn">
                                     <i class="fas fa-shopping-cart"></i> أضف إلى السلة
                                 </button>
                             </form>
                         @else
-                            <span class="cart-btn" style="background-color: #ccc; cursor: not-allowed;">
+                            <span class="shop-btn" style="background-color: #ccc; cursor: not-allowed;">
                                 <i class="fas fa-times"></i> غير متوفر
                             </span>
                         @endif

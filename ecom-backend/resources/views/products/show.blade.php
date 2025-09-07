@@ -1,7 +1,12 @@
-@extends('layouts.master')
+@extends('layouts.shop')
 
 @section('content')
-<div class="container mt-5">
+<!-- Breadcrumb -->
+<div class="breadcrumb-nav">
+    <a href="{{ route('home') }}">الرئيسية</a> /
+    <a href="{{ route('products.index') }}">منتجاتنا</a> /
+    <span>{{ $product->name }}</span>
+</div>
     <div class="row">
         <div class="col-lg-6">
             <!-- Product Image -->

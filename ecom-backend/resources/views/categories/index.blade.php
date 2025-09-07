@@ -1,47 +1,51 @@
-@extends('layouts.master')
+@extends('layouts.shop')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            <h1 class="text-center mb-5 arabic-text">فئات المنتجات</h1>
-        </div>
-    </div>
+<!-- Page Title -->
+<div class="page-title">
+    <h1 class="arabic-text">فئات المنتجات</h1>
+    <p class="arabic-text">تصفح منتجاتنا حسب الفئات المختلفة</p>
+</div>
+
+<!-- Breadcrumb -->
+<div class="breadcrumb-nav">
+    <a href="{{ route('home') }}">الرئيسية</a> /
+    <a href="{{ route('categories.index') }}">فئات المنتجات</a>
+</div>
 
     @if($categories->count() > 0)
         <div class="row">
             @foreach($categories as $category)
                 <div class="col-lg-3 col-md-6 text-center mb-4">
-                    <div class="single-product-item" onclick="window.location.href='{{ route('categories.show', $category->id) }}'">
-                        <div class="product-image">
+                    <div class="shop-card" onclick="window.location.href='{{ route('categories.show', $category->id) }}'">
+                        <div class="product-image mb-3">
                             <a href="{{ route('categories.show', $category->id) }}">
                                 @switch($category->name)
                                     @case('ملابس رجالية')
-                                        <i class="fas fa-tshirt category-icon-large"></i>
+                                        <i class="fas fa-tshirt" style="font-size: 4rem; color: #ad8f53;"></i>
                                         @break
                                     @case('ملابس نسائية')
-                                        <i class="fas fa-female category-icon-large"></i>
+                                        <i class="fas fa-female" style="font-size: 4rem; color: #ad8f53;"></i>
                                         @break
                                     @case('أحذية')
-                                        <i class="fas fa-shoe-prints category-icon-large"></i>
+                                        <i class="fas fa-shoe-prints" style="font-size: 4rem; color: #ad8f53;"></i>
                                         @break
                                     @case('حقائب')
-                                        <i class="fas fa-shopping-bag category-icon-large"></i>
+                                        <i class="fas fa-shopping-bag" style="font-size: 4rem; color: #ad8f53;"></i>
                                         @break
                                     @case('إكسسوارات')
-                                        <i class="fas fa-gem category-icon-large"></i>
+                                        <i class="fas fa-gem" style="font-size: 4rem; color: #ad8f53;"></i>
                                         @break
                                     @default
-                                        <i class="fas fa-tags category-icon-large"></i>
+                                        <i class="fas fa-tags" style="font-size: 4rem; color: #ad8f53;"></i>
                                 @endswitch
                             </a>
                         </div>
                         <h3 class="arabic-text">{{ $category->name }}</h3>
-                        <p class="product-price">
-                            <span>عدد المنتجات</span>
+                        <p class="price">
                             {{ $category->products_count ?? 0 }} منتج
                         </p>
-                        <a href="{{ route('categories.show', $category->id) }}" class="cart-btn">
+                        <a href="{{ route('categories.show', $category->id) }}" class="shop-btn">
                             <i class="fas fa-eye"></i> عرض المنتجات
                         </a>
                     </div>

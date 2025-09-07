@@ -1,7 +1,25 @@
 @extends('layouts.master')
 
 @section('content')
-<div class="container">
+<style>
+    .main-menu ul li a {
+        color: #ad8f53 !important;
+        font-weight: 600;
+    }
+
+    .main-menu ul li a:hover {
+        color: #8b6f3f !important;
+    }
+
+    .header-icons a {
+        color: #ad8f53 !important;
+    }
+
+    .header-icons a:hover {
+        color: #8b6f3f !important;
+    }
+</style>
+<div class="container" style="margin-top: 70px;">
     <div class="row">
         <div class="col-12">
             <h2 class="text-center mb-4 arabic-text">سلة التسوق</h2>

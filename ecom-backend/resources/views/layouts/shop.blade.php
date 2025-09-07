@@ -55,7 +55,7 @@
 
 		/* Header Styles - Golden background */
 		.top-header-area {
-			background: #ad8f53;
+			background: #ceb57f;
 			box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 		}
 
@@ -66,6 +66,30 @@
 
 		.main-menu ul li a:hover {
 			color: #f0f0f0 !important;
+		}
+
+		/* Center navigation menu */
+		.main-menu {
+			text-align: center;
+		}
+
+		.main-menu ul {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+
+		.main-menu ul li {
+			margin: 0 15px;
+		}
+
+		.main-menu ul li a {
+			text-decoration: none;
+			padding: 10px 15px;
+			display: block;
 		}
 
 		/* Main Content Area */
@@ -81,7 +105,7 @@
 
 		/* Page Title */
 		.page-title {
-			background: #ad8f53;
+			background: #ceb57f;
 			color: white;
 			padding: 20px 30px;
 			border-radius: 10px;
@@ -117,7 +141,7 @@
 		}
 
 		.shop-card h3 {
-			color: #ad8f53;
+			color: #ceb57f;
 			font-weight: 700;
 			margin-bottom: 15px;
 		}
@@ -130,7 +154,7 @@
 
 		/* Buttons */
 		.shop-btn {
-			background: #ad8f53;
+			background: #ceb57f;
 			color: white;
 			border: none;
 			padding: 12px 25px;
@@ -156,7 +180,7 @@
 		}
 
 		.breadcrumb-nav a {
-			color: #ad8f53;
+			color: #ceb57f;
 			text-decoration: none;
 			font-weight: 600;
 		}
@@ -212,8 +236,8 @@
 				</div>
 				<div class="col-lg-8 col-4">
 					<!-- menu start -->
-					<nav class="main-menu">
-						<ul>
+					<nav class="main-menu text-center">
+						<ul class="d-flex justify-content-center">
 							<li><a href="{{ route('home') }}">الرئيسية</a></li>
 							<li><a href="{{ route('about') }}">من نحن</a></li>
 							<li><a href="{{ route('products.index') }}">منتجاتنا</a></li>
@@ -268,16 +292,16 @@
 		<div class="shop-footer">
 			<div class="row">
 				<div class="col-12">
-					<p class="arabic-text">جميع الحقوق محفوظة &copy; 2024 - <a href="{{ route('home') }}" style="color: #ad8f53;">Moda2Shop</a><br>
+					<p class="arabic-text">جميع الحقوق محفوظة &copy; 2024 - <a href="{{ route('home') }}" style="color: #ceb57f;">Moda2Shop</a><br>
 						متجر الملابس العربية العصرية
 					</p>
 					<div class="social-icons">
 						<ul>
-							<li><a href="#" target="_blank" style="color: #ad8f53;"><i class="fab fa-facebook-f"></i></a></li>
-							<li><a href="#" target="_blank" style="color: #ad8f53;"><i class="fab fa-twitter"></i></a></li>
-							<li><a href="#" target="_blank" style="color: #ad8f53;"><i class="fab fa-instagram"></i></a></li>
-							<li><a href="#" target="_blank" style="color: #ad8f53;"><i class="fab fa-linkedin"></i></a></li>
-							<li><a href="#" target="_blank" style="color: #ad8f53;"><i class="fab fa-youtube"></i></a></li>
+							<li><a href="#" target="_blank" style="color: #ceb57f;"><i class="fab fa-facebook-f"></i></a></li>
+							<li><a href="#" target="_blank" style="color: #ceb57f;"><i class="fab fa-twitter"></i></a></li>
+							<li><a href="#" target="_blank" style="color: #ceb57f;"><i class="fab fa-instagram"></i></a></li>
+							<li><a href="#" target="_blank" style="color: #ceb57f;"><i class="fab fa-linkedin"></i></a></li>
+							<li><a href="#" target="_blank" style="color: #ceb57f;"><i class="fab fa-youtube"></i></a></li>
 						</ul>
 					</div>
 				</div>
