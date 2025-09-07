@@ -4,10 +4,10 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="ModaShop - متجر ملابس عربية عالية الجودة">
+	<meta name="description" content="Moda2Shop - متجر ملابس عربية عالية الجودة">
 
 	<!-- title -->
-	<title>ModaShop - متجر الملابس العربية</title>
+	<title>Moda2Shop - متجر الملابس العربية</title>
 
 	<!-- favicon -->
 	<link rel="shortcut icon" type="image/png" href="{{ asset('assets/img/logo.png') }}">
@@ -38,12 +38,14 @@
 	<!-- responsive -->
 	<link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}">
 
-	<!-- Basic RTL Support -->
+	<!-- Shop Layout Specific Styles -->
 	<style>
 		body {
 			font-family: 'Noto Sans Arabic', 'Open Sans', sans-serif;
 			direction: rtl;
 			text-align: right;
+			background: white;
+			color: #333;
 		}
 
 		.arabic-text {
@@ -51,40 +53,140 @@
 			direction: rtl;
 		}
 
-		.hero-text-tablecell .subtitle {
-			white-space: nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
+		/* Header Styles - Golden background */
+		.top-header-area {
+			background: #ad8f53;
+			box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 		}
 
-		/* Mobile responsive */
-		@media (max-width: 768px) {
-			.hero-text-tablecell h1 {
-				font-size: 2.5rem;
-			}
-
-			.hero-text-tablecell .subtitle {
-				font-size: 1.2rem;
-			}
+		.main-menu ul li a {
+			color: white !important;
+			font-weight: 600;
 		}
 
-		/* Center main menu in header */
-		.main-menu {
-			display: flex;
-			justify-content: center;
+		.main-menu ul li a:hover {
+			color: #f0f0f0 !important;
 		}
-		.main-menu ul {
-			display: flex;
-			justify-content: center;
-			width: 100%;
-			padding: 0;
+
+		/* Main Content Area */
+		.shop-content {
+			background: white;
+			color: #333;
+			margin: 20px auto;
+			padding: 40px;
+			padding-top: 60px;
+			border-radius: 10px;
+			min-height: 80vh;
+		}
+
+		/* Page Title */
+		.page-title {
+			background: #ad8f53;
+			color: white;
+			padding: 20px 30px;
+			border-radius: 10px;
+			margin-bottom: 30px;
+			text-align: center;
+		}
+
+		.page-title h1 {
+			font-size: 2.5rem;
+			font-weight: 700;
 			margin: 0;
 		}
-		.main-menu ul li {
-			float: none;
+
+		.page-title p {
+			font-size: 1.1rem;
+			margin: 10px 0 0 0;
+		}
+
+		/* Product/Category Cards */
+		.shop-card {
+			background: white;
+			border-radius: 10px;
+			padding: 20px;
+			margin-bottom: 30px;
+			box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+			transition: all 0.3s ease;
+			border: 1px solid #eee;
+		}
+
+		.shop-card:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+		}
+
+		.shop-card h3 {
+			color: #ad8f53;
+			font-weight: 700;
+			margin-bottom: 15px;
+		}
+
+		.shop-card .price {
+			color: #8b6f3f;
+			font-weight: 600;
+			font-size: 1.2rem;
+		}
+
+		/* Buttons */
+		.shop-btn {
+			background: #ad8f53;
+			color: white;
+			border: none;
+			padding: 12px 25px;
+			border-radius: 5px;
+			font-weight: 600;
+			transition: all 0.3s ease;
+			text-decoration: none;
+			display: inline-block;
+		}
+
+		.shop-btn:hover {
+			background: #8b6f3f;
+			color: white;
+		}
+
+		/* Breadcrumb */
+		.breadcrumb-nav {
+			background: white;
+			color: #333;
+			padding: 15px 25px;
+			border-radius: 5px;
+			margin-bottom: 20px;
+		}
+
+		.breadcrumb-nav a {
+			color: #ad8f53;
+			text-decoration: none;
+			font-weight: 600;
+		}
+
+		.breadcrumb-nav a:hover {
+			color: #8b6f3f;
+		}
+
+		/* Footer */
+		.shop-footer {
+			background: white;
+			color: #333;
+			margin-top: 40px;
+			padding: 30px;
+			text-align: center;
+			border-radius: 10px;
+		}
+
+		/* Mobile Responsive */
+		@media (max-width: 768px) {
+			.shop-content {
+				margin: 10px;
+				padding: 20px;
+			}
+
+			.page-title h1 {
+				font-size: 2rem;
+			}
 		}
 	</style>
-
 </head>
 <body>
 
@@ -103,34 +205,32 @@
 				<div class="col-lg-2 col-4 text-center">
 					<!-- logo -->
 					<div class="site-logo">
-						<a href="index.html">
-							<img src="assets/img/logo2.png" alt="ModaShop">
+						<a href="{{ route('home') }}">
+							<img src="{{ asset('assets/img/logo2.png') }}" alt="Moda2Shop">
 						</a>
 					</div>
 				</div>
 				<div class="col-lg-8 col-4">
 					<!-- menu start -->
-				<nav class="main-menu">
-<ul>
-    <li><a href="{{ route('home') }}">الرئيسية</a></li>
-    <li><a href="{{ route('about') }}">من نحن</a></li>
-    <li><a href="{{ route('products.index') }}">منتجاتنا</a></li>
-    <li><a href="{{ route('categories.index') }}">فئات</a></li>
-    <li><a href="{{ route('contact') }}">اتصل بنا</a></li>
-</ul>
-
-</nav>
-				<!-- menu end -->
+					<nav class="main-menu">
+						<ul>
+							<li><a href="{{ route('home') }}">الرئيسية</a></li>
+							<li><a href="{{ route('about') }}">من نحن</a></li>
+							<li><a href="{{ route('products.index') }}">منتجاتنا</a></li>
+							<li><a href="{{ route('categories.index') }}">فئات</a></li>
+							<li><a href="{{ route('contact') }}">اتصل بنا</a></li>
+						</ul>
+					</nav>
+					<!-- menu end -->
 				</div>
 				<div class="col-lg-2 col-4 text-center">
 					<!-- header icons -->
 					<div class="header-icons">
-						<a class="shopping-cart" href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+						<a class="shopping-cart" href="{{ route('cart.index') }}"><i class="fas fa-shopping-cart"></i></a>
 						<a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
 					</div>
 				</div>
 			</div>
-			<!-- ...existing code for mobile menu, etc... -->
 			<a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
 			<div class="mobile-menu"></div>
 		</div>
@@ -156,87 +256,34 @@
 	</div>
 	<!-- end search area -->
 
-
-
-
-
-    @yield('content')
-
-
-
-
-
-<!-- footer -->
-	<div class="footer-area">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-3 col-md-6">
-					<div class="footer-box about-widget">
-						<h2 class="widget-title arabic-text">من نحن</h2>
-						<p class="arabic-text">متجر ModaShop متخصص في الملابس العربية العصرية والأنيقة. نقدم أفضل الجودات والأسعار المناسبة لعملائنا الكرام.</p>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<div class="footer-box get-in-touch">
-						<h2 class="widget-title arabic-text">تواصل معنا</h2>
-						<ul>
-							<li class="arabic-text">شارع الملك فهد، الرياض، المملكة العربية السعودية</li>
-							<li>support@modashop.com</li>
-							<li>+966 50 123 4567</li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<div class="footer-box pages">
-						<h2 class="widget-title arabic-text">الصفحات</h2>
-						<ul>
-							<li><a href="index.html" class="arabic-text">الرئيسية</a></li>
-							<li><a href="about.html" class="arabic-text">من نحن</a></li>
-							<li><a href="services.html" class="arabic-text">المتجر</a></li>
-							<li><a href="news.html" class="arabic-text">الأخبار</a></li>
-							<li><a href="contact.html" class="arabic-text">اتصل بنا</a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<div class="footer-box subscribe">
-						<h2 class="widget-title arabic-text">اشترك معنا</h2>
-						<p class="arabic-text">اشترك في قائمتنا البريدية للحصول على أحدث التحديثات والعروض.</p>
-						<form action="index.html">
-							<input type="email" placeholder="البريد الإلكتروني">
-							<button type="submit"><i class="fas fa-paper-plane"></i></button>
-						</form>
-					</div>
-				</div>
-			</div>
+	<!-- Main Content -->
+	<div class="container">
+		<div class="shop-content">
+			@yield('content')
 		</div>
 	</div>
-	<!-- end footer -->
 
-	<!-- copyright -->
-	<div class="copyright">
-		<div class="container">
+	<!-- Footer -->
+	<div class="container">
+		<div class="shop-footer">
 			<div class="row">
-				<div class="col-lg-6 col-md-12">
-					<p class="arabic-text">جميع الحقوق محفوظة &copy; 2024 - <a href="#">ModaShop</a><br>
+				<div class="col-12">
+					<p class="arabic-text">جميع الحقوق محفوظة &copy; 2024 - <a href="{{ route('home') }}" style="color: #ad8f53;">Moda2Shop</a><br>
 						متجر الملابس العربية العصرية
 					</p>
-				</div>
-				<div class="col-lg-6 text-right col-md-12">
 					<div class="social-icons">
 						<ul>
-							<li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-linkedin"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-youtube"></i></a></li>
+							<li><a href="#" target="_blank" style="color: #ad8f53;"><i class="fab fa-facebook-f"></i></a></li>
+							<li><a href="#" target="_blank" style="color: #ad8f53;"><i class="fab fa-twitter"></i></a></li>
+							<li><a href="#" target="_blank" style="color: #ad8f53;"><i class="fab fa-instagram"></i></a></li>
+							<li><a href="#" target="_blank" style="color: #ad8f53;"><i class="fab fa-linkedin"></i></a></li>
+							<li><a href="#" target="_blank" style="color: #ad8f53;"><i class="fab fa-youtube"></i></a></li>
 						</ul>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- end copyright -->
 
 	<!-- jquery -->
 	<script src="{{ asset('assets/js/jquery-1.11.3.min.js') }}"></script>
@@ -261,4 +308,3 @@
 
 </body>
 </html>
-
