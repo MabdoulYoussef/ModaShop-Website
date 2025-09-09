@@ -71,6 +71,7 @@ return [
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
+            'remember_token' => 'remember_token',
         ],
     ],
 

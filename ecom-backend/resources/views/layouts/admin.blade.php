@@ -162,12 +162,16 @@
 			font-size: 2rem;
 			font-weight: 700;
 			margin: 0;
+            color: white;
+
 		}
 
 		.admin-content .page-header p {
 			font-size: 1rem;
 			margin: 5px 0 0 0;
 			opacity: 0.9;
+            color: white;
+
 		}
 
 		/* Cards */

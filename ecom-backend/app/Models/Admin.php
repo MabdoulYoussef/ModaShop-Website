@@ -11,6 +11,8 @@ class Admin extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $table = 'admins';
+
     protected $fillable = [
         'name',
         'email',
@@ -26,6 +28,12 @@ class Admin extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    // Override the getRememberTokenName method to use 'remember_token' instead of 'remember'
+    public function getRememberTokenName()
+    {
+        return 'remember_token';
+    }
 
     // Helper methods
     public function isAdmin()

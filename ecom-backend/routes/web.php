@@ -52,9 +52,14 @@ Route::delete('/cart', [CartController::class, 'clear'])->name('cart.clear');
 Route::get('/checkout', [OrderController::class, 'checkout'])->name('orders.checkout');
 Route::post('/checkout', [OrderController::class, 'store'])->name('orders.store');
 
+// Payment routes
+Route::get('/payment/credit-card', [OrderController::class, 'creditCardPayment'])->name('payment.credit-card');
+Route::post('/payment/credit-card', [OrderController::class, 'processCreditCard'])->name('payment.process-credit-card');
+
 // Order routes (public - customers can view orders by phone)
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
+Route::get('/orders/{id}/success', [OrderController::class, 'success'])->name('orders.success');
 
 // Review routes (no authentication required - customers provide info)
 Route::get('/products/{productId}/reviews/create', [ReviewController::class, 'create'])->name('reviews.create');

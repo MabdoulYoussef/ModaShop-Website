@@ -24,6 +24,47 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        // Create sample customers
+        $customers = [
+            [
+                'firstname' => 'أحمد',
+                'lastname' => 'محمد',
+                'phone' => '0612345678',
+                'city' => 'الدار البيضاء',
+            ],
+            [
+                'firstname' => 'فاطمة',
+                'lastname' => 'الزهراء',
+                'phone' => '0623456789',
+                'city' => 'الرباط',
+            ],
+            [
+                'firstname' => 'عبد الله',
+                'lastname' => 'الحسني',
+                'phone' => '0634567890',
+                'city' => 'مراكش',
+            ],
+            [
+                'firstname' => 'مريم',
+                'lastname' => 'العلوي',
+                'phone' => '0645678901',
+                'city' => 'فاس',
+            ],
+            [
+                'firstname' => 'يوسف',
+                'lastname' => 'البركاني',
+                'phone' => '0656789012',
+                'city' => 'طنجة',
+            ],
+        ];
+
+        foreach ($customers as $customerData) {
+            Customer::firstOrCreate(
+                ['phone' => $customerData['phone']],
+                $customerData
+            );
+        }
+
         // Create sample categories if not exist
         $categories = [
             'ملابس رجالية',
