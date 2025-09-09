@@ -330,6 +330,57 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Enhanced Remember Me Styling */
+        .remember-me-container {
+            margin: 20px 0;
+            padding: 15px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .remember-me-container:hover {
+            border-color: #ad8f53;
+            background: linear-gradient(135deg, #fff8e1 0%, #f3e5ab 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(173, 143, 83, 0.2);
+        }
+
+        .remember-checkbox {
+            width: 20px;
+            height: 20px;
+            margin-left: 10px;
+            accent-color: #ad8f53;
+            cursor: pointer;
+        }
+
+        .remember-checkbox:checked {
+            background-color: #ad8f53;
+            border-color: #ad8f53;
+        }
+
+        .remember-label {
+            font-weight: 600;
+            color: #2c3e50;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-right: 27px;
+            font-size: 1rem;
+        }
+
+        .remember-label i {
+            color: #ad8f53;
+            font-size: 1.1rem;
+        }
+
+        .remember-me-container:hover .remember-label i {
+            color: #8b6f3f;
+            transform: scale(1.1);
+        }
     </style>
 </head>
 <body>
@@ -409,13 +460,13 @@
                     @enderror
                 </div>
 
-                <div class="form-check">
+                <div class="form-check remember-me-container">
                     <input type="checkbox"
-                           class="form-check-input"
+                           class="form-check-input remember-checkbox"
                            id="remember"
                            name="remember"
                            value="1">
-                    <label class="form-check-label" for="remember">
+                    <label class="form-check-label remember-label" for="remember">
                         تذكرني في هذا الجهاز
                     </label>
                 </div>

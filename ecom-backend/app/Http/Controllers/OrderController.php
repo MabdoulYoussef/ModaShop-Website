@@ -56,7 +56,6 @@ class OrderController extends Controller
             'phone' => 'required|string|max:20',
             'city' => 'required|string|max:255',
             'shipping_address' => 'required|string|max:500',
-            'shipping_city' => 'required|string|max:100',
             'payment_method' => 'required|string|max:100',
         ]);
 
@@ -76,6 +75,26 @@ class OrderController extends Controller
 
         $total = $this->calculateSessionCartTotal($sessionCart);
 
+        // If credit card payment, redirect to payment page
+        if ($validated['payment_method'] === 'بطاقة ائتمان') {
+            // Store customer info in session for payment page
+            session([
+                'checkout_data' => [
+                    'firstname' => $validated['firstname'],
+                    'lastname' => $validated['lastname'],
+                    'phone' => $validated['phone'],
+                    'city' => $validated['city'],
+                    'shipping_address' => $validated['shipping_address'],
+                    'shipping_city' => $validated['city'], // Use customer's city for shipping
+                    'payment_method' => $validated['payment_method'],
+                    'total' => $total
+                ]
+            ]);
+
+            return redirect()->route('payment.credit-card');
+        }
+
+        // For cash on delivery, process order directly
         try {
             DB::beginTransaction();
 
@@ -92,7 +111,7 @@ class OrderController extends Controller
                 'customer_id' => $customer->id,
                 'status' => 'pending',
                 'shipping_address' => $validated['shipping_address'],
-                'shipping_city' => $validated['shipping_city'],
+                'shipping_city' => $validated['city'], // Use customer's city for shipping
                 'payment_method' => $validated['payment_method'],
                 'payment_status' => 'pending',
                 'total_price' => $total,
@@ -118,13 +137,24 @@ class OrderController extends Controller
 
             DB::commit();
 
-            return redirect()->route('orders.show', $order->id)
-                            ->with('success', 'Order placed successfully!');
+            return redirect()->route('orders.success', $order->id);
 
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'An error occurred while placing your order. Please try again.');
         }
+    }
+
+    /**
+     * Show order success page
+     *
+     * This function displays the order success page after order completion
+     * No authentication required - customers can view their order success
+     */
+    public function success($id)
+    {
+        $order = Order::with(['customer', 'orderItems.product'])->findOrFail($id);
+        return view('orders.success', compact('order'));
     }
 
     /**
@@ -158,6 +188,115 @@ class OrderController extends Controller
         }
 
         return view('orders.index', compact('orders'));
+    }
+
+    /**
+     * Show credit card payment form
+     *
+     * This function shows the credit card payment form
+     * No authentication required - open to all customers
+     */
+    public function creditCardPayment()
+    {
+        $sessionCart = session('cart', []);
+
+        if (empty($sessionCart)) {
+            return redirect()->route('cart.index')->with('error', 'Your cart is empty');
+        }
+
+        $total = $this->calculateSessionCartTotal($sessionCart);
+
+        return view('orders.credit-card-payment', compact('total'));
+    }
+
+    /**
+     * Process credit card payment
+     *
+     * This function processes the credit card payment
+     * No authentication required - open to all customers
+     */
+    public function processCreditCard(Request $request)
+    {
+        // Validate credit card information
+        $validated = $request->validate([
+            'card_number' => 'required|string|min:16|max:19',
+            'expiry_month' => 'required|integer|min:1|max:12',
+            'expiry_year' => 'required|integer|min:' . date('Y'),
+            'cvv' => 'required|string|min:3|max:4',
+            'cardholder_name' => 'required|string|max:255',
+        ]);
+
+        // Get checkout data from session
+        $checkoutData = session('checkout_data');
+        if (!$checkoutData) {
+            return redirect()->route('orders.checkout')->with('error', 'Checkout session expired. Please try again.');
+        }
+
+        // Get session cart
+        $sessionCart = session('cart', []);
+        if (empty($sessionCart)) {
+            return redirect()->route('cart.index')->with('error', 'Your cart is empty');
+        }
+
+        // Check stock for all items
+        foreach ($sessionCart as $item) {
+            $product = Product::find($item['product_id']);
+            if (!$product || $product->stock < $item['quantity']) {
+                return redirect()->route('orders.checkout')->with('error', 'Insufficient stock for ' . ($product ? $product->name : 'product'));
+            }
+        }
+
+        // Here you would integrate with a payment gateway
+        // For now, we'll simulate successful payment and create the order
+
+        try {
+            DB::beginTransaction();
+
+            // Create or find customer by phone number
+            $customer = Customer::findOrCreateByPhone(
+                $checkoutData['phone'],
+                $checkoutData['firstname'],
+                $checkoutData['lastname'],
+                $checkoutData['city']
+            );
+
+            // Create order
+            $order = Order::create([
+                'customer_id' => $customer->id,
+                'status' => 'pending',
+                'shipping_address' => $checkoutData['shipping_address'],
+                'shipping_city' => $checkoutData['shipping_city'],
+                'payment_method' => $checkoutData['payment_method'],
+                'payment_status' => 'paid', // Mark as paid for credit card
+                'total_price' => $checkoutData['total'],
+            ]);
+
+            // Create order items and reduce stock
+            foreach ($sessionCart as $item) {
+                $product = Product::find($item['product_id']);
+
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $item['product_id'],
+                    'quantity' => $item['quantity'],
+                    'price' => $product->price,
+                ]);
+
+                // Reduce stock
+                $product->decrement('stock', $item['quantity']);
+            }
+
+            // Clear session cart and checkout data
+            session()->forget(['cart', 'checkout_data']);
+
+            DB::commit();
+
+            return redirect()->route('orders.success', $order->id);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('orders.checkout')->with('error', 'An error occurred while processing your payment. Please try again.');
+        }
     }
 
     /**
