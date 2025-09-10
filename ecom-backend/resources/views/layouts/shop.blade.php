@@ -199,6 +199,30 @@
 			border-radius: 10px;
 		}
 
+		/* Admin Login Icon */
+		.admin-login {
+			color: white;
+			font-size: 1.2rem;
+			margin: 0 10px;
+			transition: all 0.3s ease;
+			text-decoration: none;
+			display: inline-block;
+			padding: 8px;
+			border-radius: 50%;
+			background: rgba(255,255,255,0.1);
+		}
+
+		.admin-login:hover {
+			color: #f0f0f0;
+			background: rgba(255,255,255,0.2);
+			transform: scale(1.1);
+			text-decoration: none;
+		}
+
+		.admin-login i {
+			display: block;
+		}
+
 		/* Mobile Responsive */
 		@media (max-width: 768px) {
 			.shop-content {
@@ -208,6 +232,11 @@
 
 			.page-title h1 {
 				font-size: 2rem;
+			}
+
+			.admin-login {
+				margin: 0 5px;
+				padding: 6px;
 			}
 		}
 	</style>
@@ -252,6 +281,7 @@
 					<div class="header-icons">
 						<a class="shopping-cart" href="{{ route('cart.index') }}"><i class="fas fa-shopping-cart"></i></a>
 						<a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+						<a class="admin-login" href="{{ route('admin.login') }}" title="تسجيل دخول المدير"><i class="fas fa-user-shield"></i></a>
 					</div>
 				</div>
 			</div>
