@@ -107,6 +107,7 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
     Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
 
     // Categories management
+    Route::get('/categories', [AdminController::class, 'categories'])->name('categories.index');
     Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
     Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
     Route::get('/categories/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');

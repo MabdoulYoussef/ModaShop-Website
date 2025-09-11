@@ -624,12 +624,19 @@
             }
         });
 
-        // Set initial selection if there's an old value
+        // Set initial selection if there's an old value, otherwise default to Cash on Delivery
         const oldValue = paymentInput.value;
         if (oldValue) {
             const selectedOption = document.querySelector(`[data-value="${oldValue}"]`);
             if (selectedOption) {
                 selectedOption.classList.add('selected');
+            }
+        } else {
+            // Default to Cash on Delivery
+            const cashOnDeliveryOption = document.querySelector('[data-value="الدفع عند الاستلام"]');
+            if (cashOnDeliveryOption) {
+                cashOnDeliveryOption.classList.add('selected');
+                paymentInput.value = 'الدفع عند الاستلام';
             }
         }
 
