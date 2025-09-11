@@ -121,6 +121,15 @@ class AdminController extends Controller
     {
         $query = Product::with('category');
 
+        // Search functionality
+        if ($request->has('search')) {
+            $search = $request->get('search');
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
         // Filter by category
         if ($request->has('category_id') && $request->category_id !== '') {
             $query->where('category_id', $request->category_id);
@@ -141,10 +150,22 @@ class AdminController extends Controller
             }
         }
 
-        $products = $query->latest()->paginate(20);
+        // Sort by
+        $sortBy = $request->get('sort_by', 'created_at');
+        $sortOrder = $request->get('sort_order', 'desc');
+        $query->orderBy($sortBy, $sortOrder);
+
+        $products = $query->paginate(20);
         $categories = Category::all();
 
         return view('admin.products.index', compact('products', 'categories'));
+    }
+
+    // List all categories
+    public function categories()
+    {
+        $categories = Category::withCount('products')->get();
+        return view('admin.categories.index', compact('categories'));
     }
 
     // List all reviews

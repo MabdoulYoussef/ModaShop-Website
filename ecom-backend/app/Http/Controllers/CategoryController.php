@@ -57,7 +57,7 @@ class CategoryController extends Controller
     // Show create category form (admin)
     public function create()
     {
-        return view('categories.create');
+        return view('admin.categories.create');
     }
 
     // Store a new category
@@ -76,8 +76,8 @@ class CategoryController extends Controller
 
         $category = Category::create($validated);
 
-        return redirect()->route('categories.show', $category->id)
-                        ->with('success', 'Category created successfully');
+        return redirect()->route('admin.categories.index')
+                        ->with('success', 'تم إنشاء الفئة بنجاح');
     }
 
     // Show edit category form
@@ -89,7 +89,7 @@ class CategoryController extends Controller
             abort(404, 'Category not found');
         }
 
-        return view('categories.edit', compact('category'));
+        return view('admin.categories.edit', compact('category'));
     }
 
     // Update a category
@@ -114,8 +114,8 @@ class CategoryController extends Controller
 
         $category->update($validated);
 
-        return redirect()->route('categories.show', $category->id)
-                        ->with('success', 'Category updated successfully');
+        return redirect()->route('admin.categories.index')
+                        ->with('success', 'تم تحديث الفئة بنجاح');
     }
 
     // Delete a category
@@ -129,13 +129,13 @@ class CategoryController extends Controller
 
         // Check if category has products
         if ($category->products()->count() > 0) {
-            return redirect()->route('categories.index')
-                            ->with('error', 'Cannot delete category with existing products');
+            return redirect()->route('admin.categories.index')
+                            ->with('error', 'لا يمكن حذف فئة تحتوي على منتجات');
         }
 
         $category->delete();
 
-        return redirect()->route('categories.index')
-                        ->with('success', 'Category deleted successfully');
+        return redirect()->route('admin.categories.index')
+                        ->with('success', 'تم حذف الفئة بنجاح');
     }
 }

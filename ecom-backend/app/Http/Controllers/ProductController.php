@@ -87,7 +87,7 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('products.create', compact('categories'));
+        return view('admin.products.create', compact('categories'));
     }
 
     // Store a new product
@@ -127,7 +127,7 @@ class ProductController extends Controller
         }
 
         $categories = Category::all();
-        return view('products.edit', compact('product', 'categories'));
+        return view('admin.products.edit', compact('product', 'categories'));
     }
 
     // Update a product
@@ -179,8 +179,8 @@ class ProductController extends Controller
 
         $product->delete();
 
-        return redirect()->route('products.index')
-                        ->with('success', 'Product deleted successfully');
+        return redirect()->route('admin.products.index')
+                        ->with('success', 'تم حذف المنتج بنجاح');
     }
 
     // Search products

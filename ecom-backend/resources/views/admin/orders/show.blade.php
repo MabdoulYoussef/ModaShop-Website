@@ -6,6 +6,23 @@
 
 @section('content')
 
+<!-- Order Status Alert -->
+@if(session('success'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <i class="fas fa-check-circle me-2"></i>
+    {{ session('success') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+@endif
+
+@if(session('error'))
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <i class="fas fa-exclamation-circle me-2"></i>
+    {{ session('error') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+@endif
+
 <div class="row">
     <!-- Order Information -->
     <div class="col-lg-8">
@@ -68,6 +85,19 @@
                             <label>آخر تحديث:</label>
                             <span>{{ $order->updated_at->format('Y-m-d H:i') }}</span>
                         </div>
+                        <div class="info-item">
+                            <label>وقت الاستجابة:</label>
+                            <span class="response-time">
+                                @php
+                                    $responseTime = $order->updated_at->diffInMinutes($order->created_at);
+                                    if ($responseTime < 60) {
+                                        echo $responseTime . ' دقيقة';
+                                    } else {
+                                        echo floor($responseTime / 60) . ' ساعة ' . ($responseTime % 60) . ' دقيقة';
+                                    }
+                                @endphp
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -98,6 +128,16 @@
                         <div class="info-item">
                             <label>عنوان الشحن:</label>
                             <span class="shipping-address">{{ $order->shipping_address }}</span>
+                        </div>
+                        @if($order->customer->email)
+                        <div class="info-item">
+                            <label>البريد الإلكتروني:</label>
+                            <span class="email-address">{{ $order->customer->email }}</span>
+                        </div>
+                        @endif
+                        <div class="info-item">
+                            <label>عدد الطلبات السابقة:</label>
+                            <span class="order-count">{{ $order->customer->orders->count() - 1 }} طلب</span>
                         </div>
                     </div>
                 </div>
@@ -433,23 +473,151 @@
     color: #d4af37;
 }
 
+/* Timeline Styling */
+.timeline {
+    position: relative;
+    padding: 20px 0;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 30px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #e9ecef;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 30px;
+    padding-right: 60px;
+}
+
+.timeline-icon {
+    position: absolute;
+    right: 20px;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: #6c757d;
+    z-index: 2;
+}
+
+.timeline-item.active .timeline-icon {
+    background: #d4af37;
+    color: white;
+    animation: pulse 2s infinite;
+}
+
+.timeline-item.completed .timeline-icon {
+    background: #28a745;
+    color: white;
+}
+
+.timeline-item.cancelled .timeline-icon {
+    background: #dc3545;
+    color: white;
+}
+
+.timeline-content h6 {
+    margin: 0 0 5px 0;
+    font-weight: 600;
+    color: #333;
+}
+
+.timeline-content p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Enhanced Info Items */
+.response-time {
+    background: linear-gradient(135deg, #d4af37, #8b6f3f);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.email-address {
+    color: #007bff;
+    font-family: 'Courier New', monospace;
+    background: #f8f9fa;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.order-count {
+    background: #17a2b8;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* Alert Styling */
+.alert {
+    border: none;
+    border-radius: 10px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #d4edda, #c3e6cb);
+    color: #155724;
+    border-left: 4px solid #28a745;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+    color: #721c24;
+    border-left: 4px solid #dc3545;
+}
+
 /* Print Styles */
 @media print {
     .admin-card-header,
     .btn-admin,
-    .btn-admin-outline {
+    .btn-admin-outline,
+    .timeline,
+    .alert {
         display: none !important;
     }
 
     .admin-card {
         border: 1px solid #ddd !important;
         box-shadow: none !important;
+        page-break-inside: avoid;
     }
 
     .status-badge {
         border: 1px solid #333 !important;
         background: white !important;
         color: #333 !important;
+    }
+
+    .timeline-item {
+        padding-right: 0;
+        margin-bottom: 15px;
     }
 }
 
@@ -477,4 +645,85 @@
     }
 }
 </style>
+@endsection
+
+@section('scripts')
+<script>
+// Copy Order Information Function
+function copyOrderInfo() {
+    const orderInfo = `
+طلب رقم: #{{ $order->id }}
+العميل: {{ $order->customer->firstname }} {{ $order->customer->lastname }}
+الهاتف: {{ $order->customer->phone }}
+المدينة: {{ $order->customer->city }}
+العنوان: {{ $order->shipping_address }}
+طريقة الدفع: {{ $order->payment_method }}
+المبلغ الإجمالي: {{ number_format($order->total_price, 2) }} درهم
+حالة الطلب: {{ $order->status }}
+تاريخ الطلب: {{ $order->created_at->format('Y-m-d H:i') }}
+
+المنتجات:
+@foreach($order->orderItems as $item)
+- {{ $item->product->name }} ({{ $item->quantity }} × {{ number_format($item->price, 2) }} درهم)
+@endforeach
+    `.trim();
+
+    navigator.clipboard.writeText(orderInfo).then(function() {
+        // Show success message
+        const button = event.target.closest('button');
+        const originalText = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i> تم النسخ!';
+        button.style.background = '#28a745';
+        button.style.color = 'white';
+
+        setTimeout(function() {
+            button.innerHTML = originalText;
+            button.style.background = '';
+            button.style.color = '';
+        }, 2000);
+    }).catch(function(err) {
+        console.error('Could not copy text: ', err);
+        alert('حدث خطأ في النسخ');
+    });
+}
+
+// Auto-refresh order status every 30 seconds
+setInterval(function() {
+    // Only refresh if the order is not completed or cancelled
+    const currentStatus = '{{ $order->status }}';
+    if (!['delivered', 'cancelled'].includes(currentStatus)) {
+        location.reload();
+    }
+}, 30000);
+
+// Add smooth scrolling for timeline
+document.addEventListener('DOMContentLoaded', function() {
+    // Add animation to timeline items
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    timelineItems.forEach((item, index) => {
+        item.style.opacity = '0';
+        item.style.transform = 'translateX(20px)';
+
+        setTimeout(() => {
+            item.style.transition = 'all 0.5s ease';
+            item.style.opacity = '1';
+            item.style.transform = 'translateX(0)';
+        }, index * 200);
+    });
+
+    // Add hover effects to action buttons
+    const actionButtons = document.querySelectorAll('.btn-admin-outline');
+    actionButtons.forEach(button => {
+        button.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-2px)';
+            this.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
+        });
+
+        button.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = '';
+        });
+    });
+});
+</script>
 @endsection
