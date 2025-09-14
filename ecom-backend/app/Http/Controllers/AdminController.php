@@ -178,12 +178,53 @@ class AdminController extends Controller
             $query->where('is_approved', $request->boolean('approved'));
         }
 
+        // Filter by rating
+        if ($request->has('rating') && $request->rating !== '') {
+            $query->where('rating', $request->rating);
+        }
+
+        // Search in comments
+        if ($request->has('search') && $request->search !== '') {
+            $search = $request->get('search');
+            $query->where('comment', 'like', "%{$search}%");
+        }
+
         $reviews = $query->latest()->paginate(20);
 
         return view('admin.reviews.index', compact('reviews'));
     }
 
-    // Approve/reject review
+    // Approve review
+    public function approveReview($id)
+    {
+        $review = Review::findOrFail($id);
+        $review->update(['is_approved' => true]);
+
+        return redirect()->route('admin.reviews.index')
+                        ->with('success', 'تم الموافقة على التقييم بنجاح');
+    }
+
+    // Reject review
+    public function rejectReview($id)
+    {
+        $review = Review::findOrFail($id);
+        $review->update(['is_approved' => false]);
+
+        return redirect()->route('admin.reviews.index')
+                        ->with('success', 'تم رفض التقييم بنجاح');
+    }
+
+    // Delete review
+    public function destroyReview($id)
+    {
+        $review = Review::findOrFail($id);
+        $review->delete();
+
+        return redirect()->route('admin.reviews.index')
+                        ->with('success', 'تم حذف التقييم بنجاح');
+    }
+
+    // Approve/reject review (legacy method)
     public function updateReviewStatus(Request $request, $id)
     {
         $review = Review::findOrFail($id);
@@ -194,10 +235,10 @@ class AdminController extends Controller
 
         $review->update(['is_approved' => $validated['is_approved']]);
 
-        $message = $validated['is_approved'] ? 'approved' : 'rejected';
+        $message = $validated['is_approved'] ? 'تم الموافقة على التقييم بنجاح' : 'تم رفض التقييم بنجاح';
 
         return redirect()->route('admin.reviews.index')
-                        ->with('success', "Review {$message} successfully");
+                        ->with('success', $message);
     }
 
     // Sales statistics
