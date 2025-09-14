@@ -40,7 +40,7 @@
                             <small class="form-text text-muted">صورة المنتج الرئيسية (يفضل 800x800 بكسل)</small>
                         </div>
                     </div>
-
+                                
                     <!-- Product Details -->
                     <div class="col-md-8">
                         <div class="row">
