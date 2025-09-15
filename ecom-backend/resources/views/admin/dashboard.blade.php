@@ -49,6 +49,19 @@
         </div>
     </div>
 
+    <!-- Additional Statistics Row -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="stats-card">
+                <div class="stats-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="stats-number">{{ $stats['low_stock_products'] }}</div>
+                <div class="stats-label">منتجات مخزون منخفض</div>
+            </div>
+        </div>
+    </div>
+
     <!-- Additional Stats -->
     <div class="row mb-4">
         <div class="col-xl-3 col-md-6 mb-4">
@@ -61,15 +74,7 @@
             </div>
         </div>
 
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="stats-card">
-                <div class="stats-icon">
-                    <i class="fas fa-exclamation-triangle"></i>
-                </div>
-                <div class="stats-number">{{ $stats['low_stock_products'] }}</div>
-                <div class="stats-label">منخفضة المخزون</div>
-            </div>
-        </div>
+
     </div>
 
     <!-- Quick Actions -->
@@ -146,7 +151,7 @@
                                             @elseif($order->status == 'shipped')
                                                 <span class="badge-admin badge-shipped">تم الشحن</span>
                                             @elseif($order->status == 'delivered')
-                                                <span class="badge-admin badge-delivered">تم التوصيل</span>
+                                                <span class="badge-admin badge-delivered">تم التسليم</span>
                                             @elseif($order->status == 'cancelled')
                                                 <span class="badge-admin badge-cancelled">ملغي</span>
                                             @endif

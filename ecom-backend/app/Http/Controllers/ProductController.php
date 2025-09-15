@@ -56,7 +56,7 @@ class ProductController extends Controller
     // Show a single product
     public function show($id)
     {
-        $product = Product::with(['category', 'reviews.customer'])->find($id);
+        $product = Product::with(['category'])->find($id);
 
         if (!$product) {
             abort(404, 'Product not found');

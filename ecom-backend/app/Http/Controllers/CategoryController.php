@@ -65,13 +65,15 @@ class CategoryController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:categories,name',
-            'slug' => 'nullable|string|max:255|unique:categories,slug',
-            'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Auto-generate slug if not provided
-        if (!isset($validated['slug'])) {
-            $validated['slug'] = \Str::slug($validated['name']);
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('assets/img/categories'), $imageName);
+            $validated['image'] = 'categories/' . $imageName;
         }
 
         $category = Category::create($validated);
@@ -103,13 +105,20 @@ class CategoryController extends Controller
 
         $validated = $request->validate([
             'name' => 'sometimes|required|string|max:255|unique:categories,name,' . $id,
-            'slug' => 'nullable|string|max:255|unique:categories,slug,' . $id,
-            'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Auto-generate slug if name changed and slug not provided
-        if (isset($validated['name']) && !isset($validated['slug'])) {
-            $validated['slug'] = \Str::slug($validated['name']);
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($category->image && file_exists(public_path('assets/img/' . $category->image))) {
+                unlink(public_path('assets/img/' . $category->image));
+            }
+
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('assets/img/categories'), $imageName);
+            $validated['image'] = 'categories/' . $imageName;
         }
 
         $category->update($validated);

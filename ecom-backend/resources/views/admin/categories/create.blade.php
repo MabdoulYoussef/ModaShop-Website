@@ -14,49 +14,22 @@
                 <h5><i class="fas fa-plus"></i> إضافة فئة جديدة</h5>
             </div>
 
-            <form action="{{ route('admin.categories.store') }}" method="POST">
+            <form action="{{ route('admin.categories.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <div class="row">
-                    <!-- Category Icon Selection -->
+                    <!-- Category Image Upload -->
                     <div class="col-md-4 mb-4">
-                        <div class="category-icon-section">
-                            <label class="form-label">أيقونة الفئة</label>
-                            <div class="icon-grid">
-                                <div class="icon-option" data-icon="fas fa-tag">
-                                    <i class="fas fa-tag"></i>
-                                    <span>علامة</span>
-                                </div>
-                                <div class="icon-option" data-icon="fas fa-tshirt">
-                                    <i class="fas fa-tshirt"></i>
-                                    <span>ملابس</span>
-                                </div>
-                                <div class="icon-option" data-icon="fas fa-shoe-prints">
-                                    <i class="fas fa-shoe-prints"></i>
-                                    <span>أحذية</span>
-                                </div>
-                                <div class="icon-option" data-icon="fas fa-handbag">
-                                    <i class="fas fa-handbag"></i>
-                                    <span>حقائب</span>
-                                </div>
-                                <div class="icon-option" data-icon="fas fa-gem">
-                                    <i class="fas fa-gem"></i>
-                                    <span>مجوهرات</span>
-                                </div>
-                                <div class="icon-option" data-icon="fas fa-watch">
-                                    <i class="fas fa-watch"></i>
-                                    <span>ساعات</span>
-                                </div>
-                                <div class="icon-option" data-icon="fas fa-glasses">
-                                    <i class="fas fa-glasses"></i>
-                                    <span>نظارات</span>
-                                </div>
-                                <div class="icon-option" data-icon="fas fa-ring">
-                                    <i class="fas fa-ring"></i>
-                                    <span>خواتم</span>
+                        <div class="category-image-section">
+                            <label class="form-label">صورة الفئة</label>
+                            <div class="image-upload-area">
+                                <input type="file" name="image" id="categoryImage" accept="image/*"
+                                       onchange="previewImage(event)">
+                                <div id="imagePreview" class="image-preview">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p>اضغط لرفع صورة</p>
                                 </div>
                             </div>
-                            <input type="hidden" name="icon" id="selectedIcon" value="fas fa-tag">
                         </div>
                     </div>
 
@@ -204,51 +177,57 @@
 
 @section('scripts')
 <style>
-    .category-icon-section {
+    .category-image-section {
         background: #f8f9fa;
         padding: 20px;
         border-radius: 10px;
         border: 2px dashed #dee2e6;
     }
 
-    .icon-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 10px;
+    .image-upload-area {
+        position: relative;
         margin-top: 15px;
     }
 
-    .icon-option {
-        background: white;
-        border: 2px solid #dee2e6;
-        border-radius: 8px;
-        padding: 15px;
-        text-align: center;
+    .image-upload-area input[type="file"] {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
         cursor: pointer;
+    }
+
+    .image-preview {
+        width: 100%;
+        height: 200px;
+        border: 2px dashed #ddd;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: white;
         transition: all 0.3s ease;
+        cursor: pointer;
     }
 
-    .icon-option:hover {
+    .image-preview:hover {
         border-color: #ceb57f;
-        background: #fff;
-        transform: translateY(-2px);
+        background: #f8f9fa;
     }
 
-    .icon-option.selected {
-        border-color: #ceb57f;
-        background: linear-gradient(135deg, #ceb57f 0%, #8b6f3f 100%);
-        color: white;
+    .image-preview i {
+        font-size: 2rem;
+        color: #ad8f53;
+        margin-bottom: 10px;
     }
 
-    .icon-option i {
-        font-size: 1.5rem;
-        display: block;
-        margin-bottom: 5px;
-    }
-
-    .icon-option span {
-        font-size: 0.8rem;
-        font-weight: 600;
+    .image-preview p {
+        color: #666;
+        font-weight: 500;
+        margin: 0;
     }
 
     .form-label {
@@ -355,30 +334,26 @@
 </style>
 
 <script>
-// Icon selection
-document.addEventListener('DOMContentLoaded', function() {
-    const iconOptions = document.querySelectorAll('.icon-option');
-    const selectedIconInput = document.getElementById('selectedIcon');
-    const previewIcon = document.getElementById('previewIcon');
+// Image preview functionality
+function previewImage(event) {
+    const file = event.target.files[0];
+    const preview = document.getElementById('imagePreview');
 
-    iconOptions.forEach(option => {
-        option.addEventListener('click', function() {
-            // Remove selected class from all options
-            iconOptions.forEach(opt => opt.classList.remove('selected'));
-
-            // Add selected class to clicked option
-            this.classList.add('selected');
-
-            // Update hidden input and preview
-            const iconClass = this.dataset.icon;
-            selectedIconInput.value = iconClass;
-            previewIcon.className = iconClass;
-        });
-    });
-
-    // Set first icon as selected by default
-    iconOptions[0].classList.add('selected');
-});
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.innerHTML = `
+                <img src="${e.target.result}" alt="Preview" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+            `;
+        };
+        reader.readAsDataURL(file);
+    } else {
+        preview.innerHTML = `
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>اضغط لرفع صورة</p>
+        `;
+    }
+}
 
 // Auto-generate slug from name
 document.getElementById('name').addEventListener('input', function() {

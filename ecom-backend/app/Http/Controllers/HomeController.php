@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
-use App\Models\Review;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -29,17 +28,11 @@ class HomeController extends Controller
                                 ->with('category')
                                 ->get();
 
-        $testimonials = Review::where('is_approved', true)
-                             ->with('customer:id,firstname,lastname')
-                             ->inRandomOrder()
-                             ->take(3)
-                             ->get();
 
                 return view('home.index', compact(
             'featuredProducts',
             'categories',
-            'latestProducts',
-            'testimonials'
+            'latestProducts'
         ));
     }
 

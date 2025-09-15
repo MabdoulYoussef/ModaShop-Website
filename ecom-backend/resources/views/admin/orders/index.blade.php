@@ -235,7 +235,7 @@
                                             @elseif($status == 'shipped')
                                                 تم الشحن
                                             @elseif($status == 'delivered')
-                                                تم التوصيل
+                                                تم التسليم
                                             @elseif($status == 'cancelled')
                                                 ملغي
                                             @else
@@ -309,7 +309,7 @@
                                                 @elseif($order->status == 'shipped')
                                                     <span class="badge-admin badge-shipped">تم الشحن</span>
                                                 @elseif($order->status == 'delivered')
-                                                    <span class="badge-admin badge-delivered">تم التوصيل</span>
+                                                    <span class="badge-admin badge-delivered">تم التسليم</span>
                                                 @elseif($order->status == 'cancelled')
                                                     <span class="badge-admin badge-cancelled">ملغي</span>
                                                 @endif
