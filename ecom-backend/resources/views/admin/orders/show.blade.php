@@ -7,14 +7,6 @@
 @section('content')
 
 <!-- Order Status Alert -->
-@if(session('success'))
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    <i class="fas fa-check-circle me-2"></i>
-    {{ session('success') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-</div>
-@endif
-
 @if(session('error'))
 <div class="alert alert-danger alert-dismissible fade show" role="alert">
     <i class="fas fa-exclamation-circle me-2"></i>
@@ -231,10 +223,15 @@
                             </option>
                         </select>
                     </div>
-                    <button type="submit" class="btn-admin w-100">
+                    <button type="submit" class="btn-admin w-100 mb-3">
                         <i class="fas fa-save"></i> تحديث الحالة
                     </button>
                 </form>
+
+                <!-- Back to Orders Button -->
+                <a href="{{ route('admin.orders.index') }}" class="btn-admin-outline w-100">
+                    <i class="fas fa-arrow-right"></i> العودة للطلبات
+                </a>
             </div>
         </div>
 
@@ -607,6 +604,7 @@
         border: 1px solid #ddd !important;
         box-shadow: none !important;
         page-break-inside: avoid;
+        margin-bottom: 30px;
     }
 
     .status-badge {

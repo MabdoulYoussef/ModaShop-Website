@@ -357,6 +357,76 @@
 			background: #d1ecf1;
 			color: #0c5460;
 		}
+
+		/* Form Select Styling */
+		.form-select {
+			background: white;
+			border: 2px solid #e9ecef;
+			border-radius: 8px;
+			padding: 12px 16px;
+			font-size: 14px;
+			font-weight: 500;
+			color: #495057;
+			transition: all 0.3s ease;
+			box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+			appearance: none;
+			background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+			background-position: right 12px center;
+			background-repeat: no-repeat;
+			background-size: 16px;
+			padding-right: 40px;
+		}
+
+		.form-select:focus {
+			border-color: #ceb57f;
+			box-shadow: 0 0 0 3px rgba(206, 181, 127, 0.1);
+			outline: none;
+		}
+
+		.form-select:hover {
+			border-color: #ceb57f;
+		}
+
+		.form-select option {
+			padding: 8px 12px;
+			font-weight: 500;
+		}
+
+		.form-select option:checked {
+			background: #ceb57f;
+			color: white;
+		}
+
+		/* Form Control Admin (Alternative styling) */
+		.form-control-admin {
+			background: white;
+			border: 2px solid #e9ecef;
+			border-radius: 8px;
+			padding: 12px 16px;
+			font-size: 14px;
+			font-weight: 500;
+			color: #495057;
+			transition: all 0.3s ease;
+			box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+		}
+
+		.form-control-admin:focus {
+			border-color: #ceb57f;
+			box-shadow: 0 0 0 3px rgba(206, 181, 127, 0.1);
+			outline: none;
+		}
+
+		.form-control-admin:hover {
+			border-color: #ceb57f;
+		}
+
+		/* Form Label Styling */
+		.form-label {
+			font-weight: 600;
+			color: #495057;
+			margin-bottom: 8px;
+			font-size: 14px;
+		}
 	</style>
 </head>
 <body>
@@ -415,9 +485,6 @@
 						</a>
 						<a class="nav-link {{ request()->routeIs('admin.customers.*') ? 'active' : '' }}" href="{{ route('admin.customers.index') }}">
 							<i class="fas fa-users"></i> إدارة العملاء
-						</a>
-						<a class="nav-link {{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}" href="{{ route('admin.reviews.index') }}">
-							<i class="fas fa-star"></i> إدارة التقييمات
 						</a>
 						<a class="nav-link {{ request()->routeIs('admin.sales.*') ? 'active' : '' }}" href="{{ route('admin.sales.index') }}">
 							<i class="fas fa-chart-line"></i> التقارير والمبيعات

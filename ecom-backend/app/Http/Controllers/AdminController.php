@@ -48,16 +48,26 @@ class AdminController extends Controller
         $query = Order::with(['customer', 'orderItems.product']);
 
         // Filter by status
-        if ($request->has('status') && $request->status !== '') {
+        if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
         // Filter by date range
-        if ($request->has('date_from')) {
+        if ($request->filled('date_from')) {
             $query->whereDate('created_at', '>=', $request->date_from);
         }
-        if ($request->has('date_to')) {
+        if ($request->filled('date_to')) {
             $query->whereDate('created_at', '<=', $request->date_to);
+        }
+
+        // Search by customer name or phone
+        if ($request->filled('search')) {
+            $search = $request->get('search');
+            $query->whereHas('customer', function($q) use ($search) {
+                $q->where('firstname', 'like', "%{$search}%")
+                  ->orWhere('lastname', 'like', "%{$search}%")
+                  ->orWhere('phone', 'like', "%{$search}%");
+            });
         }
 
         $orders = $query->latest()->paginate(20);
@@ -85,7 +95,76 @@ class AdminController extends Controller
         $order->update(['status' => $validated['status']]);
 
         return redirect()->route('admin.orders.show', $order->id)
-                        ->with('success', 'Order status updated successfully');
+                        ->with('success', 'تم تحديث حالة الطلب بنجاح');
+    }
+
+    // Export orders
+    public function exportOrders(Request $request)
+    {
+        $query = Order::with(['customer', 'orderItems.product']);
+
+        // Apply same filters as orders method
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('date_from')) {
+            $query->whereDate('created_at', '>=', $request->date_from);
+        }
+        if ($request->filled('date_to')) {
+            $query->whereDate('created_at', '<=', $request->date_to);
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->get('search');
+            $query->whereHas('customer', function($q) use ($search) {
+                $q->where('firstname', 'like', "%{$search}%")
+                  ->orWhere('lastname', 'like', "%{$search}%")
+                  ->orWhere('phone', 'like', "%{$search}%");
+            });
+        }
+
+        $orders = $query->latest()->get();
+
+        // Generate CSV content
+        $csvData = [];
+        $csvData[] = ['تقرير الطلبات', '', '', '', '', '', ''];
+        $csvData[] = ['تاريخ التصدير', now()->format('Y-m-d H:i'), '', '', '', '', ''];
+        $csvData[] = ['إجمالي الطلبات', $orders->count(), '', '', '', '', ''];
+        $csvData[] = ['إجمالي الإيرادات', number_format($orders->sum('total_price'), 0) . ' درهم', '', '', '', '', ''];
+        $csvData[] = ['', '', '', '', '', '', ''];
+
+        $csvData[] = ['رقم الطلب', 'العميل', 'الهاتف', 'المبلغ', 'الحالة', 'طريقة الدفع', 'التاريخ'];
+
+        foreach ($orders as $order) {
+            $csvData[] = [
+                $order->id,
+                $order->customer ? $order->customer->firstname . ' ' . $order->customer->lastname : 'غير محدد',
+                $order->customer ? $order->customer->phone : 'غير محدد',
+                number_format($order->total_price, 0) . ' درهم',
+                $order->status,
+                $order->payment_method,
+                $order->created_at->format('Y-m-d H:i')
+            ];
+        }
+
+        // Convert to CSV string
+        $csvContent = '';
+        foreach ($csvData as $row) {
+            $csvContent .= implode(',', array_map(function($field) {
+                return '"' . str_replace('"', '""', $field) . '"';
+            }, $row)) . "\n";
+        }
+
+        // Set headers for download
+        $filename = 'orders_report_' . now()->format('Y-m-d_H-i') . '.csv';
+
+        return response($csvContent)
+            ->header('Content-Type', 'text/csv; charset=UTF-8')
+            ->header('Content-Disposition', 'attachment; filename="' . $filename . '"')
+            ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
+            ->header('Pragma', 'no-cache')
+            ->header('Expires', '0');
     }
 
     // List all customers

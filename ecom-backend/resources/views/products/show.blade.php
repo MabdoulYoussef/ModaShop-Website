@@ -60,84 +60,54 @@
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
 
                         <div class="row">
-                            <div class="col-md-4">
-                                <label for="quantity" class="form-label">الكمية:</label>
-                                <select name="quantity" id="quantity" class="form-select" required>
+                            @if($product->size)
+                                <div class="col-md-6">
+                                    <label for="size" class="quantity-label">المقاس:</label>
+                                    <select name="size" id="size" class="quantity-select" required>
+                                        <option value="">اختر المقاس</option>
+                                        @php
+                                            $availableSizes = explode(',', $product->size);
+                                        @endphp
+                                        @foreach($availableSizes as $size)
+                                            <option value="{{ trim($size) }}">{{ trim($size) }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @endif
+                            <div class="col-md-6">
+                                <label for="quantity" class="quantity-label">الكمية:</label>
+                                <select name="quantity" id="quantity" class="quantity-select" required>
                                     @for($i = 1; $i <= min(10, $product->stock); $i++)
                                         <option value="{{ $i }}">{{ $i }}</option>
                                     @endfor
                                 </select>
                             </div>
-                            <div class="col-md-8">
-                                <label class="form-label">&nbsp;</label>
-                                <button type="submit" class="cart-btn btn-lg w-100">
-                                    <i class="fas fa-shopping-cart me-2"></i>
-                                    أضف إلى السلة
-                                </button>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="d-flex justify-content-center">
+                                    <a href="{{ route('products.index') }}" class="cart-btn btn-lg">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>العودة للمنتجات</span>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </form>
-                @endif
-
-                <!-- Product Actions -->
-                <div class="product-actions">
-                    <a href="{{ route('products.index') }}" class="btn btn-outline-secondary me-2">
-                        <i class="fas fa-arrow-left me-2"></i>
-                        العودة للمنتجات
-                    </a>
-                    <a href="{{ route('cart.index') }}" class="btn btn-outline-primary">
-                        <i class="fas fa-shopping-cart me-2"></i>
-                        عرض السلة
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Reviews Section -->
-    <div class="row mt-5">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3>التقييمات</h3>
-                </div>
-                <div class="card-body">
-                    @if($product->reviews->count() > 0)
-                        @foreach($product->reviews->where('is_approved', true) as $review)
-                            <div class="review-item border-bottom pb-3 mb-3">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <div>
-                                        <h6 class="mb-1">{{ $review->customer->firstname }} {{ $review->customer->lastname }}</h6>
-                                        <div class="stars mb-2">
-                                            @for($i = 1; $i <= 5; $i++)
-                                                @if($i <= $review->rating)
-                                                    <i class="fas fa-star text-warning"></i>
-                                                @else
-                                                    <i class="far fa-star text-muted"></i>
-                                                @endif
-                                            @endfor
-                                        </div>
-                                        <p class="text-muted">{{ $review->comment }}</p>
-                                    </div>
-                                    <small class="text-muted">{{ $review->created_at->format('Y-m-d') }}</small>
-                                </div>
-                            </div>
-                        @endforeach
-                    @else
-                        <p class="text-muted">لا توجد تقييمات لهذا المنتج بعد.</p>
-                    @endif
-
-                    <!-- Add Review Button -->
-                    <div class="mt-3">
-                        <a href="{{ route('reviews.create', $product->id) }}" class="cart-btn">
-                            <i class="fas fa-star me-2"></i>
-                            أضف تقييمك
+                @else
+                    <!-- Product Actions for out of stock -->
+                    <div class="product-actions mt-4">
+                        <a href="{{ route('products.index') }}" class="btn-back-to-products">
+                            <i class="fas fa-arrow-right me-2"></i>
+                            العودة للمنتجات
                         </a>
                     </div>
-                </div>
+                @endif
             </div>
         </div>
     </div>
+
 </div>
 
 <style>
@@ -182,14 +152,16 @@
 
 .cart-btn {
     font-family: 'Poppins', sans-serif;
-    display: inline-block;
+
     background-color: #ad8f53;
     color: #fff;
-    padding: 10px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     text-decoration: none;
-    transition: all 0.3s ease;
+    transition: all 0.5s ease;
+    margin-left: 20px;
+    text-align: center;
+    padding: 1px;
 }
 
 .cart-btn:hover {
@@ -199,7 +171,9 @@
 }
 
 .cart-btn i {
-    margin-right: 5px;
+    font-size: 24px;
+    margin-bottom: 8px;
+    display: block;
 }
 
 .product-actions {
@@ -212,13 +186,99 @@
     font-weight: 500;
 }
 
-.review-item:last-child {
-    border-bottom: none !important;
+.btn-back-to-products {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+    color: white;
+    padding: 20px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.5s ease;
+    box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+    border: none;
+    cursor: pointer;
+    min-height: 120px;
+    text-align: center;
 }
 
-.stars {
-    font-size: 1.1rem;
+.btn-back-to-products:hover {
+    background: linear-gradient(135deg, #495057 0%, #343a40 100%);
+    color: white;
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
 }
+
+.btn-back-to-products:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(108, 117, 125, 0.3);
+}
+
+.btn-back-to-products i {
+    font-size: 24px;
+    margin-bottom: 8px;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.btn-back-to-products:hover i {
+    transform: translateX(-3px);
+}
+
+/* Quantity Label Styling */
+.quantity-label {
+    font-family: 'Tajawal', 'Cairo', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 8px;
+    display: block;
+    text-align: right;
+}
+
+/* Quantity Select Styling */
+.quantity-select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    background: white;
+    font-family: 'Tajawal', 'Cairo', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 12px center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    padding-right: 40px;
+}
+
+.quantity-select:focus {
+    outline: none;
+    border-color: #ad8f53;
+    box-shadow: 0 0 0 3px rgba(173, 143, 83, 0.1);
+}
+
+.quantity-select:hover {
+    border-color: #ad8f53;
+    box-shadow: 0 4px 12px rgba(173, 143, 83, 0.15);
+}
+
+.quantity-select option {
+    padding: 8px 12px;
+    font-weight: 600;
+    color: #333;
+}
+
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
@@ -228,6 +288,25 @@
 
     .single-product-content p.single-product-pricing {
         font-size: 24px;
+    }
+
+    .cart-btn {
+        margin-left: 0;
+        margin-bottom: 0;
+    }
+
+    .btn-back-to-products {
+        margin-left: 0;
+    }
+
+    .quantity-select {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .d-flex.gap-3 {
+        flex-direction: column;
+        gap: 1rem !important;
     }
 }
 </style>

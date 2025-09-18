@@ -114,6 +114,7 @@
         background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
         color: #0c5460;
         border: 2px solid #17a2b8;
+
     }
 
     .badge-cancelled {
@@ -164,16 +165,80 @@
     .form-control-admin {
         border: 2px solid #e9ecef;
         border-radius: 10px;
-        padding: 0.75rem 1rem;
+        padding: 0rem 1rem;
         font-size: 1rem;
         transition: all 0.3s ease;
         background: #f8f9fa;
+        width: 100%;
+        outline: none;
+        box-sizing: border-box;
     }
 
     .form-control-admin:focus {
         border-color: #ad8f53;
         box-shadow: 0 0 0 3px rgba(173, 143, 83, 0.1);
         background: white;
+        outline: none;
+    }
+
+    .form-control-admin:hover {
+        border-color: #ad8f53;
+    }
+
+    /* Fix form layout issues */
+    .row.g-3 > * {
+        padding-right: calc(var(--bs-gutter-x) * 0.5);
+        padding-left: calc(var(--bs-gutter-x) * 0.5);
+    }
+
+    /* Ensure proper button alignment */
+    .d-flex.align-items-end {
+        align-items: flex-end !important;
+    }
+
+    /* Fix any line issues in form */
+    .admin-card-body form {
+        margin: 0;
+        padding: 0;
+    }
+
+    .admin-card-body .row {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    /* Fix label alignment */
+    .form-label {
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #333;
+        display: block;
+    }
+
+    /* Ensure consistent form element heights */
+    .form-control-admin,
+    select.form-control-admin {
+        height: 45px;
+        line-height: 1.5;
+    }
+
+    /* Fix button spacing */
+    .btn-admin,
+    .btn-admin-outline {
+        white-space: nowrap;
+        min-width: auto;
+    }
+
+    /* Remove any unwanted borders or lines */
+    .admin-card-body {
+        border: none;
+    }
+
+    /* Fix any grid issues */
+    .col-md-2,
+    .col-md-4 {
+        padding-left: 8px;
+        padding-right: 8px;
     }
 
     .btn-back-admin {
@@ -221,8 +286,13 @@
                 </div>
                 <div class="admin-card-body">
                     <form method="GET" action="{{ route('admin.orders.index') }}">
-                        <div class="row">
-                            <div class="col-md-3 mb-3">
+                        <div class="row g-4">
+                            <div class="col-md-3">
+                                <label for="search" class="form-label">البحث</label>
+                                <input type="text" name="search" id="search" class="form-control-admin"
+                                       placeholder="اسم العميل أو الهاتف..." value="{{ request('search') }}">
+                            </div>
+                            <div class="col-md-2">
                                 <label for="status" class="form-label">حالة الطلب</label>
                                 <select name="status" id="status" class="form-control-admin">
                                     <option value="">جميع الحالات</option>
@@ -245,21 +315,24 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-2">
                                 <label for="date_from" class="form-label">من تاريخ</label>
                                 <input type="date" name="date_from" id="date_from" class="form-control-admin" value="{{ request('date_from') }}">
                             </div>
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-2">
                                 <label for="date_to" class="form-label">إلى تاريخ</label>
                                 <input type="date" name="date_to" id="date_to" class="form-control-admin" value="{{ request('date_to') }}">
                             </div>
-                            <div class="col-md-3 mb-3 d-flex align-items-end">
+                            <div class="col-md-3 d-flex align-items-end">
                                 <button type="submit" class="btn-admin me-2">
                                     <i class="fas fa-search"></i> تصفية
                                 </button>
-                                <a href="{{ route('admin.orders.index') }}" class="btn-admin-outline">
+                                <a href="{{ route('admin.orders.index') }}" class="btn-admin-outline me-2">
                                     <i class="fas fa-times"></i> مسح
                                 </a>
+                                <button type="button" class="btn-admin-outline" onclick="exportOrders()">
+                                    <i class="fas fa-download"></i> تصدير
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -349,4 +422,67 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+// Export orders function
+function exportOrders() {
+    const search = document.getElementById('search').value;
+    const status = document.getElementById('status').value;
+    const dateFrom = document.getElementById('date_from').value;
+    const dateTo = document.getElementById('date_to').value;
+
+    let url = '{{ route("admin.orders.export") }}?';
+    const params = [];
+
+    if (search) params.push('search=' + encodeURIComponent(search));
+    if (status) params.push('status=' + encodeURIComponent(status));
+    if (dateFrom) params.push('date_from=' + encodeURIComponent(dateFrom));
+    if (dateTo) params.push('date_to=' + encodeURIComponent(dateTo));
+
+    if (params.length > 0) {
+        url += params.join('&');
+    }
+
+    window.open(url, '_blank');
+}
+
+// Remove auto-submit - only submit when clicking تصفية button
+
+// Show active filters
+document.addEventListener('DOMContentLoaded', function() {
+    const activeFilters = [];
+
+    if (document.getElementById('search').value) {
+        activeFilters.push('البحث: ' + document.getElementById('search').value);
+    }
+
+    if (document.getElementById('status').value) {
+        const statusText = document.getElementById('status').selectedOptions[0].text;
+        activeFilters.push('الحالة: ' + statusText);
+    }
+
+    if (document.getElementById('date_from').value) {
+        activeFilters.push('من: ' + document.getElementById('date_from').value);
+    }
+
+    if (document.getElementById('date_to').value) {
+        activeFilters.push('إلى: ' + document.getElementById('date_to').value);
+    }
+
+    if (activeFilters.length > 0) {
+        const filterInfo = document.createElement('div');
+        filterInfo.className = 'alert alert-info mb-3 mt-4';
+        filterInfo.style.marginTop = '20px';
+        filterInfo.style.borderRadius = '10px';
+        filterInfo.style.padding = '10px';
+        filterInfo.style.fontSize = '14px';
+        filterInfo.style.fontWeight = '600';
+
+        filterInfo.innerHTML = '<i class="fas fa-filter me-2"></i><strong>التصفية النشطة:</strong> ' + activeFilters.join(' | ');
+        document.querySelector('.admin-card-body').appendChild(filterInfo);
+    }
+});
+</script>
 @endsection
