@@ -56,284 +56,258 @@
                 <i class="fas fa-box"></i>
             </div>
             <div class="stats-number">{{ $product->stock }}</div>
-            <div class="stats-label">المخزون الحالي</div>
+            <div class="stats-label">الكمية المتوفرة</div>
         </div>
     </div>
 </div>
 
-<!-- Main Edit Form -->
+<!-- Product Creation Form -->
 <div class="row">
     <div class="col-12">
         <div class="admin-card">
             <div class="admin-card-header">
-                <h5><i class="fas fa-edit me-2"></i>تعديل المنتج: {{ $product->name }}</h5>
+                <h5><i class="fas fa-edit"></i> بيانات المنتج</h5>
+                <p class="mb-0 text-light">تعديل معلومات المنتج</p>
             </div>
 
-            <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data" id="productEditForm">
-                @csrf
-                @method('PUT')
+            <div class="admin-card-body">
+                <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data" id="productForm">
+                    @csrf
+                    @method('PUT')
 
-                <div class="admin-card-body">
-                    <div class="row">
-                        <!-- Product Image Section -->
-                        <div class="col-lg-4 mb-4">
-                            <div class="product-image-section">
-                                <div class="section-header">
-                                    <h6><i class="fas fa-image me-2"></i>صورة المنتج</h6>
-                                </div>
-
-                                <div class="current-image-container">
-                                    @if($product->image)
-                                        <img src="{{ asset('storage/' . $product->image) }}"
-                                             alt="{{ $product->name }}"
-                                             class="current-image"
-                                             id="currentImage">
-                                    @else
-                                        <div class="no-image-placeholder">
-                                            <i class="fas fa-image fa-3x"></i>
-                                            <p class="mt-2">لا توجد صورة</p>
-                                        </div>
-                                    @endif
-                                </div>
-
-                                <div class="image-upload-section">
-                                    <label for="image" class="upload-label">
-                                        <i class="fas fa-cloud-upload-alt me-2"></i>
-                                        تغيير الصورة
-                                    </label>
-                                    <input type="file"
-                                           class="form-control"
-                                           id="image"
-                                           name="image"
-                                           accept="image/*"
-                                           onchange="previewImage(this)">
-                                    <small class="upload-hint">اختر صورة جديدة (JPG, PNG, GIF) - اختياري</small>
-                                </div>
-
-                                <!-- Image Actions -->
-                                <div class="image-actions mt-3">
-                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeImage()">
-                                        <i class="fas fa-trash"></i> حذف الصورة
-                                    </button>
-                                </div>
-                            </div>
+                    <!-- Product Image Section -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h6><i class="fas fa-image"></i> صورة المنتج</h6>
+                            <p>اختر صورة عالية الجودة للمنتج</p>
                         </div>
 
-                        <!-- Product Details -->
-                        <div class="col-lg-8">
-                            <!-- Basic Information -->
-                            <div class="form-section">
-                                <div class="section-header">
-                                    <h6><i class="fas fa-info-circle me-2"></i>المعلومات الأساسية</h6>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-group">
-                                            <label for="name" class="form-label">
-                                                <i class="fas fa-tag me-1"></i>
-                                                اسم المنتج <span class="text-danger">*</span>
-                                            </label>
-                                            <input type="text"
-                                                   class="form-control @error('name') is-invalid @enderror"
-                                                   id="name"
-                                                   name="name"
-                                                   value="{{ old('name', $product->name) }}"
-                                                   placeholder="أدخل اسم المنتج"
-                                                   required>
-                                            @error('name')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-group">
-                                            <label for="price" class="form-label">
-                                                <i class="fas fa-dollar-sign me-1"></i>
-                                                السعر (درهم) <span class="text-danger">*</span>
-                                            </label>
-                                            <div class="input-group">
-                                                <input type="number"
-                                                       step="0.01"
-                                                       class="form-control @error('price') is-invalid @enderror"
-                                                       id="price"
-                                                       name="price"
-                                                       value="{{ old('price', $product->price) }}"
-                                                       placeholder="0.00"
-                                                       required>
-                                                <span class="input-group-text">درهم</span>
-                                            </div>
-                                            @error('price')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-group">
-                                            <label for="category_id" class="form-label">
-                                                <i class="fas fa-folder me-1"></i>
-                                                الفئة <span class="text-danger">*</span>
-                                            </label>
-                                            <select class="form-select @error('category_id') is-invalid @enderror"
-                                                    id="category_id"
-                                                    name="category_id"
-                                                    required>
-                                                <option value="">اختر الفئة</option>
-                                                @foreach($categories as $category)
-                                                    <option value="{{ $category->id }}"
-                                                            {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
-                                                        {{ $category->name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            @error('category_id')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-group">
-                                            <label for="stock" class="form-label">
-                                                <i class="fas fa-boxes me-1"></i>
-                                                الكمية المتاحة <span class="text-danger">*</span>
-                                            </label>
-                                            <input type="number"
-                                                   class="form-control @error('stock') is-invalid @enderror"
-                                                   id="stock"
-                                                   name="stock"
-                                                   value="{{ old('stock', $product->stock) }}"
-                                                   placeholder="0"
-                                                   min="0"
-                                                   required>
-                                            @error('stock')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Additional Information -->
-                            <div class="form-section">
-                                <div class="section-header">
-                                    <h6><i class="fas fa-cog me-2"></i>معلومات إضافية</h6>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-group">
-                                            <label class="form-label">
-                                                <i class="fas fa-ruler me-1"></i>
-                                                المقاسات المتاحة
-                                            </label>
-                                            <div class="size-options">
-                                                @php
-                                                    $availableSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
-                                                    $selectedSizes = $product->size ? explode(',', $product->size) : [];
-                                                @endphp
-                                                @foreach($availableSizes as $size)
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input size-checkbox"
-                                                               type="checkbox"
-                                                               id="size_{{ $size }}"
-                                                               name="sizes[]"
-                                                               value="{{ $size }}"
-                                                               {{ in_array($size, $selectedSizes) ? 'checked' : '' }}>
-                                                        <label class="form-check-label" for="size_{{ $size }}">
-                                                            {{ $size }}
-                                                        </label>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                            <input type="hidden" id="size" name="size" value="{{ old('size', $product->size) }}">
-                                            @error('size')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-group">
-                                            <label class="form-label">
-                                                <i class="fas fa-star me-1"></i>
-                                                حالة المنتج
-                                            </label>
-                                            <div class="product-status-options">
-                                                <div class="form-check">
-                                                    <input class="form-check-input"
-                                                           type="checkbox"
-                                                           id="is_featured"
-                                                           name="is_featured"
-                                                           value="1"
-                                                           {{ old('is_featured', $product->is_featured ?? false) ? 'checked' : '' }}>
-                                                    <label class="form-check-label" for="is_featured">
-                                                        <i class="fas fa-star text-warning me-1"></i>
-                                                        منتج مميز
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input"
-                                                           type="checkbox"
-                                                           id="is_recommended"
-                                                           name="is_recommended"
-                                                           value="1"
-                                                           {{ old('is_recommended', $product->is_recommended ?? false) ? 'checked' : '' }}>
-                                                    <label class="form-check-label" for="is_recommended">
-                                                        <i class="fas fa-thumbs-up text-success me-1"></i>
-                                                        منتج موصى به
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="description" class="form-label">
-                                        <i class="fas fa-align-right me-1"></i>
-                                        وصف المنتج
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="image-upload-area">
+                                    <input type="file"
+                                           name="image"
+                                           id="productImage"
+                                           class="file-input @error('image') is-invalid @enderror"
+                                           accept="image/*"
+                                           onchange="previewImage(event)">
+                                    <label for="productImage" class="upload-label">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <span>اختر صورة المنتج</span>
+                                        <small>PNG, JPG, GIF حتى 5MB</small>
                                     </label>
-                                    <textarea class="form-control @error('description') is-invalid @enderror"
-                                              id="description"
-                                              name="description"
-                                              rows="4"
-                                              placeholder="اكتب وصفاً مفصلاً للمنتج...">{{ old('description', $product->description) }}</textarea>
-                                    <div class="form-text">اكتب وصفاً شاملاً للمنتج يساعد العملاء على فهمه بشكل أفضل</div>
-                                    @error('description')
+                                    @error('image')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Action Buttons -->
-                <div class="admin-card-footer">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="form-actions-left">
-                            <a href="{{ route('admin.products.index') }}" class="btn-admin-outline">
-                                <i class="fas fa-arrow-right"></i> العودة للمنتجات
-                            </a>
-                            <button type="button" class="btn-admin-outline" onclick="resetForm()">
-                                <i class="fas fa-undo"></i> إعادة تعيين
-                            </button>
-                        </div>
-                        <div class="form-actions-right">
-                            <button type="button" class="btn-admin-outline" onclick="previewProduct()">
-                                <i class="fas fa-eye"></i> معاينة
-                            </button>
-                            <button type="submit" class="btn-admin" id="saveButton">
-                                <i class="fas fa-save"></i> حفظ التغييرات
-                            </button>
+                            <div class="col-md-6">
+                                <div class="image-preview-container">
+                                    <div id="imagePreview" class="image-preview">
+                                        @if($product->image)
+                                            <img src="{{ asset('storage/' . $product->image) }}" alt="صورة المنتج الحالية">
+                                            <div class="mt-2">
+                                                <small class="text-info">
+                                                    <i class="fas fa-image"></i> الصورة الحالية
+                                                </small>
+                                            </div>
+                                        @else
+                                            <i class="fas fa-image fa-3x"></i>
+                                            <p>معاينة الصورة ستظهر هنا</p>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </form>
+
+                    <!-- Basic Information -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h6><i class="fas fa-info-circle"></i> المعلومات الأساسية</h6>
+                            <p>أدخل المعلومات الأساسية للمنتج</p>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label">
+                                    اسم المنتج <span class="text-danger">*</span>
+                                </label>
+                                <input type="text"
+                                       name="name"
+                                       id="name"
+                                       class="form-control @error('name') is-invalid @enderror"
+                                       value="{{ old('name', $product->name) }}"
+                                       placeholder="أدخل اسم المنتج"
+                                       required>
+                                @error('name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="price" class="form-label">
+                                    السعر (درهم مغربي) <span class="text-danger">*</span>
+                                </label>
+                                <input type="number"
+                                       name="price"
+                                       id="price"
+                                       class="form-control @error('price') is-invalid @enderror"
+                                       value="{{ old('price', $product->price) }}"
+                                       step="0.01"
+                                       placeholder="0.00"
+                                       required>
+                                @error('price')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="category_id" class="form-label">
+                                    الفئة <span class="text-danger">*</span>
+                                </label>
+                                <select name="category_id"
+                                        id="category_id"
+                                        class="form-select @error('category_id') is-invalid @enderror"
+                                        required>
+                                    <option value="">اختر الفئة</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('category_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="stock" class="form-label">
+                                    الكمية المتوفرة <span class="text-danger">*</span>
+                                </label>
+                                <input type="number"
+                                       name="stock"
+                                       id="stock"
+                                       class="form-control @error('stock') is-invalid @enderror"
+                                       value="{{ old('stock', $product->stock) }}"
+                                       min="0"
+                                       placeholder="0"
+                                       required>
+                                @error('stock')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Details -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h6><i class="fas fa-cog"></i> تفاصيل المنتج</h6>
+                            <p>أدخل التفاصيل الإضافية للمنتج</p>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="size" class="form-label">المقاسات المتوفرة</label>
+                                <div class="size-options">
+                                    <div class="row">
+                                        @php
+                                            $availableSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+                                            $selectedSizes = old('sizes', explode(',', $product->size ?? ''));
+                                            $selectedSizes = array_filter($selectedSizes);
+                                        @endphp
+                                        @foreach($availableSizes as $size)
+                                            <div class="col-4 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input"
+                                                           type="checkbox"
+                                                           name="sizes[]"
+                                                           value="{{ $size }}"
+                                                           id="size_{{ $size }}"
+                                                           {{ in_array($size, $selectedSizes) ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="size_{{ $size }}">
+                                                        {{ $size }}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <input type="hidden" name="size" id="sizeInput" value="{{ old('size', $product->size) }}">
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">خيارات المنتج</label>
+                                <div class="product-options">
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input"
+                                               type="checkbox"
+                                               name="is_featured"
+                                               id="is_featured"
+                                               value="1"
+                                               {{ old('is_featured', $product->is_featured) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="is_featured">
+                                            <i class="fas fa-star"></i> منتج مميز
+                                            <small class="d-block text-muted">يظهر في الصفحة الرئيسية</small>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input"
+                                               type="checkbox"
+                                               name="is_recommended"
+                                               id="is_recommended"
+                                               value="1"
+                                               {{ old('is_recommended', $product->is_recommended) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="is_recommended">
+                                            <i class="fas fa-thumbs-up"></i> منتج موصى به
+                                            <small class="d-block text-muted">يظهر في قسم التوصيات</small>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">وصف المنتج</label>
+                            <textarea name="description"
+                                      id="description"
+                                      class="form-control @error('description') is-invalid @enderror"
+                                      rows="5"
+                                      placeholder="اكتب وصفاً مفصلاً للمنتج...">{{ old('description', $product->description) }}</textarea>
+                            @error('description')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="form-actions">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="form-info">
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle"></i> جميع الحقول المميزة بـ * مطلوبة
+                                </small>
+                            </div>
+                            <div class="action-buttons">
+                                <button type="button" class="btn-admin-outline" onclick="previewProduct()">
+                                    <i class="fas fa-eye"></i> معاينة المنتج
+                                </button>
+                                <button type="button" class="btn-admin-outline" onclick="resetForm()">
+                                    <i class="fas fa-undo"></i> إعادة تعيين
+                                </button>
+                                <button type="submit" class="btn-admin">
+                                    <i class="fas fa-save"></i> حفظ التغييرات
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
@@ -342,455 +316,377 @@
 
 @section('scripts')
 <style>
-/* Page Header Styles */
-.admin-page-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 2rem;
-    border-radius: 15px;
-    margin-bottom: 2rem;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
-
-.admin-page-header h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin: 0;
-}
-
-.admin-page-header p {
-    font-size: 1.1rem;
-    opacity: 0.9;
-    margin: 0.5rem 0 0 0;
-}
-
-.btn-back-admin {
-    background: rgba(255,255,255,0.2);
-    color: white;
-    border: 2px solid rgba(255,255,255,0.3);
-    padding: 0.75rem 1.5rem;
-    border-radius: 10px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.btn-back-admin:hover {
-    background: rgba(255,255,255,0.3);
-    color: white;
-    transform: translateY(-2px);
-}
-
-/* Statistics Cards */
-.stats-card {
-    background: white;
-    border-radius: 15px;
-    padding: 1.5rem;
-    text-align: center;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-    border: 1px solid #f0f0f0;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.stats-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #667eea, #764ba2);
-}
-
-.stats-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-}
-
-.stats-icon {
-    font-size: 2.5rem;
-    color: #667eea;
-    margin-bottom: 1rem;
-}
-
-.stats-number {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #333;
-    margin-bottom: 0.5rem;
-}
-
-.stats-label {
-    color: #666;
-    font-size: 0.9rem;
-    font-weight: 500;
-}
-
-/* Form Sections */
-.form-section {
-    background: #f8f9fa;
-    border-radius: 15px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    border: 1px solid #e9ecef;
-}
-
-.section-header {
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 2px solid #e9ecef;
-}
-
-.section-header h6 {
-    color: #495057;
-    font-weight: 600;
-    margin: 0;
-    font-size: 1.1rem;
-}
-
-/* Product Image Section */
-.product-image-section {
-    background: white;
-    border-radius: 15px;
-    padding: 1.5rem;
-    border: 2px solid #e9ecef;
-    text-align: center;
-}
-
-.current-image-container {
-    margin-bottom: 1.5rem;
-}
-
-.current-image {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-    border-radius: 10px;
-    border: 3px solid #667eea;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.no-image-placeholder {
-    background: #f8f9fa;
-    border: 2px dashed #dee2e6;
-    border-radius: 10px;
-    padding: 3rem;
-    color: #6c757d;
-}
-
-.image-upload-section {
-    margin-bottom: 1rem;
-}
-
-.upload-label {
-    display: block;
-    background: #667eea;
-    color: white;
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    text-align: center;
-}
-
-.upload-label:hover {
-    background: #5a6fd8;
-    transform: translateY(-2px);
-}
-
-/* File input styling */
-#image {
-    display: none;
-}
-
-/* Custom file input button */
-.image-upload-section {
-    position: relative;
-}
-
-.image-upload-section::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: transparent;
-    pointer-events: none;
-}
-
-.upload-hint {
-    font-size: 0.875rem;
-    color: #6c757d;
-    margin-top: 0.5rem;
-}
-
-.image-actions {
-    text-align: center;
-}
-
-/* Form Elements */
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.form-label {
-    font-weight: 600;
-    color: #495057;
-    margin-bottom: 0.75rem;
-    display: block;
-}
-
-.form-control, .form-select {
-    border: 2px solid #e9ecef;
-    border-radius: 10px;
-    padding: 0.875rem 1rem;
-    font-size: 0.95rem;
-    transition: all 0.3s ease;
-    background: white;
-}
-
-.form-control:focus, .form-select:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    outline: none;
-}
-
-.form-control.is-invalid, .form-select.is-invalid {
-    border-color: #dc3545;
-}
-
-.invalid-feedback {
-    color: #dc3545;
-    font-size: 0.875rem;
-    margin-top: 0.5rem;
-    font-weight: 500;
-}
-
-.input-group-text {
-    background: #667eea;
-    color: white;
-    border: 2px solid #667eea;
-    font-weight: 600;
-}
-
-/* Size Options */
-.size-options {
-    background: white;
-    padding: 1rem;
-    border-radius: 10px;
-    border: 1px solid #e9ecef;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-.size-options .form-check-inline {
-    margin: 0;
-    padding: 0.5rem 1rem;
-    background: #f8f9fa;
-    border-radius: 8px;
-    border: 1px solid #dee2e6;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.size-options .form-check-inline:hover {
-    background: #e9ecef;
-    border-color: #667eea;
-}
-
-.size-options .form-check-input {
-    margin: 0;
-    margin-left: 0.5rem;
-    transform: scale(1.2);
-}
-
-.size-options .form-check-input:checked {
-    background-color: #667eea;
-    border-color: #667eea;
-}
-
-.size-options .form-check-label {
-    margin: 0;
-    padding: 0;
-    font-weight: 500;
-    color: #495057;
-    cursor: pointer;
-    font-size: 0.9rem;
-}
-
-.size-options .form-check-input:checked + .form-check-label {
-    color: #667eea;
-    font-weight: 600;
-}
-
-/* Product Status Options */
-.product-status-options {
-    background: white;
-    padding: 1rem;
-    border-radius: 10px;
-    border: 1px solid #e9ecef;
-}
-
-.form-check {
-    margin-bottom: 0.75rem;
-}
-
-.form-check-input {
-    margin-left: 0.75rem;
-    transform: scale(1.2);
-}
-
-.form-check-input:checked {
-    background-color: #667eea;
-    border-color: #667eea;
-}
-
-.form-check-label {
-    font-weight: 500;
-    color: #495057;
-}
-
-.form-text {
-    font-size: 0.875rem;
-    color: #6c757d;
-    margin-top: 0.5rem;
-    font-style: italic;
-}
-
-/* Action Buttons */
-.admin-card-footer {
-    background: #f8f9fa;
-    border-top: 1px solid #e9ecef;
-    padding: 1.5rem;
-    border-radius: 0 0 15px 15px;
-}
-
-.form-actions-left, .form-actions-right {
-    display: flex;
-    gap: 0.75rem;
-}
-
-.btn-admin, .btn-admin-outline {
-    padding: 0.75rem 1.5rem;
-    border-radius: 10px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    border: 2px solid;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.btn-admin {
-    background: #667eea;
-    color: white;
-    border-color: #667eea;
-}
-
-.btn-admin:hover {
-    background: #5a6fd8;
-    border-color: #5a6fd8;
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-}
-
-.btn-admin-outline {
-    background: transparent;
-    color: #667eea;
-    border-color: #667eea;
-}
-
-.btn-admin-outline:hover {
-    background: #667eea;
-    color: white;
-    transform: translateY(-2px);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
     .admin-page-header {
-        padding: 1.5rem;
+        background: linear-gradient(135deg, #ad8f53 0%, #8b6f3f 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        box-shadow: 0 10px 30px rgba(173, 143, 83, 0.3);
     }
 
     .admin-page-header h1 {
-        font-size: 2rem;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 0;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
 
-    .form-actions-left, .form-actions-right {
-        flex-direction: column;
+    .admin-page-header p {
+        font-size: 1.1rem;
+        margin: 0.5rem 0 0 0;
+        opacity: 0.9;
+    }
+
+    .btn-back-admin {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-back-admin:hover {
+        background: rgba(255, 255, 255, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    .stats-card {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        border-left: 4px solid #ad8f53;
+        transition: transform 0.3s ease;
+    }
+
+    .stats-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .stats-icon {
+        font-size: 2.5rem;
+        color: #ad8f53;
+        margin-bottom: 1rem;
+    }
+
+    .stats-number {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+
+    .stats-label {
+        color: #666;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    .admin-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        border: none;
+        margin-bottom: 2rem;
+    }
+
+    .admin-card-header {
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        color: white;
+        padding: 1.5rem 2rem;
+        border: none;
+    }
+
+    .admin-card-header h5 {
+        margin: 0;
+        font-weight: 700;
+        font-size: 1.3rem;
+    }
+
+    .admin-card-body {
+        padding: 2rem;
+    }
+
+    .form-section {
+        padding: 2rem;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .form-section:last-of-type {
+        border-bottom: none;
+    }
+
+    .section-header {
+        margin-bottom: 1.5rem;
+    }
+
+    .section-header h6 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+
+    .section-header p {
+        color: #666;
+        margin-bottom: 0;
+    }
+
+    .image-upload-area {
+        position: relative;
+    }
+
+    .file-input {
+        position: absolute;
+        opacity: 0;
         width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+
+    .upload-label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem;
+        border: 2px dashed #dee2e6;
+        border-radius: 15px;
+        background: #f8f9fa;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+
+    .upload-label:hover {
+        border-color: #ad8f53;
+        background: #f0f4ff;
+    }
+
+    .upload-label i {
+        font-size: 3rem;
+        color: #ad8f53;
+        margin-bottom: 1rem;
+    }
+
+    .upload-label span {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+
+    .upload-label small {
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .image-preview-container {
+        height: 100%;
+    }
+
+    .image-preview {
+        width: 100%;
+        height: 200px;
+        border: 2px dashed #dee2e6;
+        border-radius: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: #f8f9fa;
+        color: #666;
+        transition: all 0.3s ease;
+    }
+
+    .image-preview img {
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 10px;
+        object-fit: cover;
+    }
+
+    .size-options {
+        background: #f8f9fa;
+        padding: 1rem;
+        border-radius: 10px;
+        border: 1px solid #dee2e6;
+    }
+
+    .size-options .form-check {
+        margin-bottom: 0.5rem;
+        padding-right: 30px;
+    }
+
+    .size-options .form-check-input {
+        width: 16px;
+        height: 16px;
+    }
+
+    .size-options .form-check-label {
+        font-weight: 600;
+        color: #333;
+        font-size: 0.95rem;
+    }
+
+    .form-check {
+        margin-bottom: 0.8rem;
+        padding-right: 25px;
+        position: relative;
+    }
+
+    .form-check-input {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 18px;
+        height: 18px;
+        margin: 0;
+        cursor: pointer;
+        border: 2px solid #dee2e6;
+        border-radius: 4px;
+        background-color: white;
+        transition: all 0.3s ease;
+    }
+
+    .form-check-input:checked {
+        background-color: #ad8f53;
+        border-color: #ad8f53;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+    }
+
+    .form-check-input:hover {
+        border-color: #ad8f53;
+        box-shadow: 0 0 0 3px rgba(173, 143, 83, 0.1);
+    }
+
+    .form-check-label {
+        font-weight: 500;
+        color: #333;
+        cursor: pointer;
+        padding-right: 5px;
+        line-height: 1.4;
+    }
+
+    .form-check-label small {
+        display: block;
+        margin-top: 3px;
+        font-size: 0.85rem;
+        color: #666;
+        font-weight: 400;
+    }
+
+    .product-options {
+        background: #f8f9fa;
+        padding: 1rem;
+        border-radius: 10px;
+        border: 1px solid #dee2e6;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 8px;
+    }
+
+    .form-control, .form-select {
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        padding: 12px 15px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #ad8f53;
+        box-shadow: 0 0 0 3px rgba(173, 143, 83, 0.1);
+    }
+
+    .form-control.is-invalid, .form-select.is-invalid {
+        border-color: #dc3545;
+    }
+
+    .invalid-feedback {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: 5px;
+    }
+
+    .form-actions {
+        padding: 2rem;
+        background: #f8f9fa;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 10px;
     }
 
     .btn-admin, .btn-admin-outline {
-        width: 100%;
-        justify-content: center;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
     }
-}
 
-/* Loading Animation */
-.loading {
-    opacity: 0.6;
-    pointer-events: none;
-}
+    .btn-admin {
+        background: #ad8f53;
+        color: white;
+    }
 
-.loading::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 20px;
-    height: 20px;
-    margin: -10px 0 0 -10px;
-    border: 2px solid #667eea;
-    border-top: 2px solid transparent;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
+    .btn-admin:hover {
+        background: #8b6f3f;
+        transform: translateY(-2px);
+    }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
+    .btn-admin-outline {
+        background: transparent;
+        color: #ad8f53;
+        border: 2px solid #ad8f53;
+    }
+
+    .btn-admin-outline:hover {
+        background: #ad8f53;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .text-danger {
+        color: #dc3545 !important;
+    }
 </style>
 
 <script>
-// Enhanced Image Preview Function
-function previewImage(input) {
-    if (input.files && input.files[0]) {
-        const file = input.files[0];
-
-        // Check file size (max 5MB)
+function previewImage(event) {
+    const file = event.target.files[0];
+    if (file) {
+        // Validate file size (5MB max)
         if (file.size > 5 * 1024 * 1024) {
-            alert('حجم الصورة كبير جداً. الحد الأقصى 5 ميجابايت');
-            input.value = '';
+            alert('حجم الملف يجب أن يكون أقل من 5 ميجابايت');
             return;
         }
 
-        // Check file type
+        // Validate file type
         if (!file.type.startsWith('image/')) {
             alert('يرجى اختيار ملف صورة صالح');
-            input.value = '';
             return;
         }
 
         const reader = new FileReader();
-
         reader.onload = function(e) {
-            const container = document.querySelector('.current-image-container');
-            container.innerHTML = `
-                <img src="${e.target.result}"
-                     alt="معاينة الصورة الجديدة"
-                     class="current-image">
+            const preview = document.getElementById('imagePreview');
+            preview.innerHTML = `
+                <img src="${e.target.result}" alt="معاينة الصورة">
                 <div class="mt-2">
                     <small class="text-success">
                         <i class="fas fa-check-circle"></i> تم اختيار صورة جديدة
@@ -798,186 +694,74 @@ function previewImage(input) {
                 </div>
             `;
         };
-
         reader.readAsDataURL(file);
     }
 }
 
-// Remove Image Function
-function removeImage() {
-    if (confirm('هل أنت متأكد من حذف الصورة؟')) {
-        const container = document.querySelector('.current-image-container');
-        container.innerHTML = `
-            <div class="no-image-placeholder">
-                <i class="fas fa-image fa-3x"></i>
-                <p class="mt-2">لا توجد صورة</p>
-            </div>
-        `;
-        document.getElementById('image').value = '';
-    }
-}
-
-// Reset Form Function
 function resetForm() {
-    if (confirm('هل أنت متأكد من إعادة تعيين النموذج؟ سيتم فقدان جميع التغييرات غير المحفوظة.')) {
-        document.getElementById('productEditForm').reset();
-        // Reload the page to get original values
-        window.location.reload();
+    if (confirm('هل أنت متأكد من إعادة تعيين النموذج؟ سيتم مسح جميع البيانات المدخلة.')) {
+        location.reload();
     }
 }
 
-// Preview Product Function
 function previewProduct() {
-    const form = document.getElementById('productEditForm');
-    const formData = new FormData(form);
+    const formData = new FormData(document.getElementById('productForm'));
+    const productData = {};
 
-    // Get current image source
-    const currentImage = document.querySelector('.current-image');
-    const imageSrc = currentImage ? currentImage.src : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjhmOWZhIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzZjNzU3ZCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0i>لا توجد صورة</text></svg>';
+    for (let [key, value] of formData.entries()) {
+        productData[key] = value;
+    }
 
-    // Create a preview window
-    const previewWindow = window.open('', '_blank', 'width=900,height=700,scrollbars=yes');
-
+    // Create preview window
+    const previewWindow = window.open('', '_blank', 'width=800,height=600');
     previewWindow.document.write(`
-        <!DOCTYPE html>
-        <html dir="rtl" lang="ar">
+        <html>
         <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>معاينة المنتج</title>
             <style>
-                * { margin: 0; padding: 0; box-sizing: border-box; }
-                body {
-                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                    padding: 20px;
-                    direction: rtl;
-                    min-height: 100vh;
-                }
-                .preview-container {
-                    max-width: 800px;
-                    margin: 0 auto;
-                    background: white;
-                    border-radius: 20px;
-                    overflow: hidden;
-                    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-                }
-                .preview-header {
-                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                    color: white;
-                    padding: 2rem;
-                    text-align: center;
-                }
-                .preview-header h1 {
-                    font-size: 2rem;
-                    margin-bottom: 0.5rem;
-                }
-                .preview-header p {
-                    opacity: 0.9;
-                }
-                .preview-content {
-                    padding: 2rem;
-                }
-                .preview-image {
-                    width: 100%;
-                    max-width: 400px;
-                    border-radius: 15px;
-                    margin: 0 auto 2rem auto;
-                    display: block;
-                    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-                }
-                .preview-info {
-                    text-align: center;
-                }
-                .preview-info h2 {
-                    color: #333;
-                    font-size: 1.8rem;
-                    margin-bottom: 1rem;
-                }
-                .preview-info .price {
-                    font-size: 2rem;
-                    color: #667eea;
-                    font-weight: bold;
-                    margin-bottom: 1rem;
-                }
-                .preview-info .details {
-                    background: #f8f9fa;
-                    padding: 1.5rem;
-                    border-radius: 15px;
-                    margin: 1rem 0;
-                }
-                .preview-info .details p {
-                    color: #666;
-                    line-height: 1.8;
-                    margin-bottom: 0.5rem;
-                    font-size: 1.1rem;
-                }
-                .preview-info .description {
-                    background: #f8f9fa;
-                    padding: 1.5rem;
-                    border-radius: 15px;
-                    margin-top: 1rem;
-                    text-align: right;
-                }
-                .preview-info .description h3 {
-                    color: #333;
-                    margin-bottom: 1rem;
-                }
-                .preview-info .description p {
-                    color: #666;
-                    line-height: 1.8;
-                }
-                .status-badges {
-                    display: flex;
-                    justify-content: center;
-                    gap: 1rem;
-                    margin: 1rem 0;
-                }
-                .status-badge {
-                    padding: 0.5rem 1rem;
-                    border-radius: 20px;
-                    font-size: 0.9rem;
-                    font-weight: bold;
-                }
-                .status-badge.featured {
-                    background: #ffc107;
-                    color: white;
-                }
-                .status-badge.recommended {
-                    background: #28a745;
-                    color: white;
-                }
+                body { font-family: Arial, sans-serif; padding: 20px; direction: rtl; }
+                .preview-container { max-width: 600px; margin: 0 auto; }
+                .preview-header { background: #ad8f53; color: white; padding: 20px; border-radius: 10px; text-align: center; margin-bottom: 20px; }
+                .preview-content { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+                .preview-image { width: 100%; max-width: 300px; height: 300px; background: #f8f9fa; border: 2px dashed #dee2e6; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+                .preview-details { margin-bottom: 15px; }
+                .preview-label { font-weight: bold; color: #333; }
+                .preview-value { color: #666; margin-right: 10px; }
+                .status-badge { display: inline-block; padding: 5px 10px; border-radius: 15px; font-size: 12px; font-weight: bold; }
+                .status-edit { background: #17a2b8; color: white; }
             </style>
         </head>
         <body>
             <div class="preview-container">
                 <div class="preview-header">
-                    <h1>معاينة المنتج</h1>
-                    <p>عرض المنتج كما سيظهر للعملاء</p>
+                    <h2>معاينة المنتج المحدث</h2>
                 </div>
                 <div class="preview-content">
-                    <img src="${imageSrc}" alt="معاينة المنتج" class="preview-image">
-                    <div class="preview-info">
-                        <h2>${formData.get('name') || 'اسم المنتج'}</h2>
-                        <div class="price">${formData.get('price') || '0'} درهم</div>
-
-                        <div class="status-badges">
-                            ${formData.get('is_featured') ? '<span class="status-badge featured">⭐ منتج مميز</span>' : ''}
-                            ${formData.get('is_recommended') ? '<span class="status-badge recommended">👍 منتج موصى به</span>' : ''}
-                        </div>
-
-                        <div class="details">
-                            <p><strong>الكمية المتاحة:</strong> ${formData.get('stock') || '0'} قطعة</p>
-                            <p><strong>المقاس:</strong> ${formData.get('size') || 'غير محدد'}</p>
-                        </div>
-
-                        ${formData.get('description') ? `
-                        <div class="description">
-                            <h3>وصف المنتج</h3>
-                            <p>${formData.get('description')}</p>
-                        </div>
-                        ` : ''}
+                    <div class="preview-image">
+                        <span>صورة المنتج</span>
                     </div>
+                    <div class="preview-details">
+                        <span class="preview-label">اسم المنتج:</span>
+                        <span class="preview-value">${productData.name || 'غير محدد'}</span>
+                    </div>
+                    <div class="preview-details">
+                        <span class="preview-label">السعر:</span>
+                        <span class="preview-value">${productData.price || '0'} درهم مغربي</span>
+                    </div>
+                    <div class="preview-details">
+                        <span class="preview-label">الكمية:</span>
+                        <span class="preview-value">${productData.stock || '0'}</span>
+                    </div>
+                    <div class="preview-details">
+                        <span class="preview-label">الحالة:</span>
+                        <span class="status-badge status-edit">منتج محدث</span>
+                    </div>
+                    ${productData.description ? `
+                    <div class="preview-details">
+                        <span class="preview-label">الوصف:</span>
+                        <span class="preview-value">${productData.description}</span>
+                    </div>
+                    ` : ''}
                 </div>
             </div>
         </body>
@@ -985,82 +769,24 @@ function previewProduct() {
     `);
 }
 
-// Auto-save functionality
+// Auto-save draft functionality
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('productEditForm');
+    const form = document.getElementById('productForm');
     const inputs = form.querySelectorAll('input, textarea, select');
-    const saveButton = document.getElementById('saveButton');
 
-    // Make upload label clickable
-    const uploadLabel = document.querySelector('.upload-label');
-    const fileInput = document.getElementById('image');
-
-    if (uploadLabel && fileInput) {
-        uploadLabel.addEventListener('click', function(e) {
-            e.preventDefault();
-            fileInput.click();
-        });
-
-        // Also handle direct file input change
-        fileInput.addEventListener('change', function(e) {
-            previewImage(this);
-        });
-    }
-
-    // Handle size checkboxes
-    const sizeCheckboxes = document.querySelectorAll('.size-checkbox');
-    const sizeHiddenInput = document.getElementById('size');
-
-    function updateSizeInput() {
-        const selectedSizes = Array.from(sizeCheckboxes)
-            .filter(checkbox => checkbox.checked)
-            .map(checkbox => checkbox.value);
-
-        sizeHiddenInput.value = selectedSizes.join(',');
-    }
-
-    sizeCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', updateSizeInput);
-    });
-
-    // Initialize size input
-    updateSizeInput();
-
-    // Auto-save every 30 seconds
-    setInterval(function() {
-        const formData = new FormData(form);
-        const data = {};
-        for (let [key, value] of formData.entries()) {
-            data[key] = value;
-        }
-        localStorage.setItem('product_edit_draft_' + {{ $product->id }}, JSON.stringify(data));
-
-        // Show auto-save indicator
-        const indicator = document.createElement('small');
-        indicator.className = 'text-muted';
-        indicator.innerHTML = '<i class="fas fa-save"></i> تم الحفظ التلقائي';
-        indicator.style.position = 'fixed';
-        indicator.style.top = '20px';
-        indicator.style.right = '20px';
-        indicator.style.background = 'white';
-        indicator.style.padding = '5px 10px';
-        indicator.style.borderRadius = '5px';
-        indicator.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
-        indicator.style.zIndex = '9999';
-
-        document.body.appendChild(indicator);
-        setTimeout(() => indicator.remove(), 2000);
-    }, 30000);
-
-    // Load draft data
-    const draftData = localStorage.getItem('product_edit_draft_' + {{ $product->id }});
-    if (draftData) {
+    // Load saved draft
+    const savedDraft = localStorage.getItem('product_edit_draft_{{ $product->id }}');
+    if (savedDraft) {
         try {
-            const data = JSON.parse(draftData);
+            const data = JSON.parse(savedDraft);
             Object.keys(data).forEach(key => {
                 const input = form.querySelector(`[name="${key}"]`);
                 if (input && input.type !== 'file') {
-                    input.value = data[key];
+                    if (input.type === 'checkbox') {
+                        input.checked = data[key];
+                    } else {
+                        input.value = data[key];
+                    }
                 }
             });
         } catch (e) {
@@ -1068,49 +794,33 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Clear draft on successful submit
-    form.addEventListener('submit', function(e) {
-        // Debug: Check if image file is selected
-        const imageFile = fileInput.files[0];
-        if (imageFile) {
-            console.log('Image file selected:', imageFile.name, imageFile.size);
-        } else {
-            console.log('No image file selected');
-        }
-
-        localStorage.removeItem('product_edit_draft_' + {{ $product->id }});
-        saveButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
-        saveButton.disabled = true;
-    });
-
-    // Form validation
-    form.addEventListener('submit', function(e) {
-        const requiredFields = form.querySelectorAll('[required]');
-        let isValid = true;
-
-        requiredFields.forEach(field => {
-            if (!field.value.trim()) {
-                field.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                field.classList.remove('is-invalid');
-            }
-        });
-
-        if (!isValid) {
-            e.preventDefault();
-            alert('يرجى ملء جميع الحقول المطلوبة');
-        }
-    });
-
-    // Real-time validation
+    // Save draft on input change
     inputs.forEach(input => {
-        input.addEventListener('blur', function() {
-            if (this.hasAttribute('required') && !this.value.trim()) {
-                this.classList.add('is-invalid');
-            } else {
-                this.classList.remove('is-invalid');
+        input.addEventListener('input', function() {
+            const formData = new FormData(form);
+            const data = {};
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
             }
+            localStorage.setItem('product_edit_draft_{{ $product->id }}', JSON.stringify(data));
+        });
+    });
+
+    // Clear draft on successful submit
+    form.addEventListener('submit', function() {
+        localStorage.removeItem('product_edit_draft_{{ $product->id }}');
+    });
+
+    // Update size input when checkboxes change
+    const sizeCheckboxes = document.querySelectorAll('input[name="sizes[]"]');
+    const sizeInput = document.getElementById('sizeInput');
+
+    sizeCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const selectedSizes = Array.from(sizeCheckboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+            sizeInput.value = selectedSizes.join(', ');
         });
     });
 });

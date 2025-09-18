@@ -1,20 +1,7 @@
-@extends('layouts.master')
+@extends('layouts.shop')
 
 @section('content')
-<!-- hero area -->
-<div class="hero-area hero-bg">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-12 text-center">
-                <div class="hero-text-tablecell">
-                    <h1 class="arabic-text">اتصل بنا</h1>
-                    <p class="arabic-text">نحن هنا لمساعدتك في أي استفسار أو طلب</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- end hero area -->
+
 
 <!-- contact section -->
 <div class="product-section mt-150 mb-150">

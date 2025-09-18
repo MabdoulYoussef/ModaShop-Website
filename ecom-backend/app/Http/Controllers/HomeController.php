@@ -5,31 +5,40 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
     // Homepage with featured products and categories
     public function index()
     {
-        $featuredProducts = Product::where('stock', '>', 0)
-                                  ->inRandomOrder()
-                                  ->take(6)
-                                  ->with('category')
-                                  ->get();
+        // Cache featured products for 1 hour
+        $featuredProducts = Cache::remember('homepage_featured_products', 3600, function () {
+            return Product::where('stock', '>', 0)
+                          ->inRandomOrder()
+                          ->take(6)
+                          ->with('category')
+                          ->get();
+        });
 
-        $categories = Category::withCount('products')
-                             ->orderBy('products_count', 'desc')
-                             ->take(8)
-                             ->get();
+        // Cache categories for 2 hours
+        $categories = Cache::remember('homepage_categories', 7200, function () {
+            return Category::withCount('products')
+                           ->orderBy('products_count', 'desc')
+                           ->take(8)
+                           ->get();
+        });
 
-        $latestProducts = Product::where('stock', '>', 0)
-                                ->latest()
-                                ->take(8)
-                                ->with('category')
-                                ->get();
+        // Cache latest products for 30 minutes
+        $latestProducts = Cache::remember('homepage_latest_products', 1800, function () {
+            return Product::where('stock', '>', 0)
+                          ->latest()
+                          ->take(8)
+                          ->with('category')
+                          ->get();
+        });
 
-
-                return view('home.index', compact(
+        return view('home.index', compact(
             'featuredProducts',
             'categories',
             'latestProducts'

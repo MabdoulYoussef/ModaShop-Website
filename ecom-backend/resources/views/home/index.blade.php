@@ -115,34 +115,12 @@
 			</div>
 			@else
 			<div class="row">
-				<div class="col-lg-4 col-md-6 text-center">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="#"><img src="assets/img/products/1.jpg" alt="عباية كلاسيكية"></a>
-						</div>
-						<h3 class="arabic-text">عباية كلاسيكية</h3>
-						<p class="product-price"><span>السعر</span> 249درهم مغربي</p>
-						<a href="#" class="cart-btn"><i class="fas fa-shopping-cart"></i> أضف إلى السلة</a>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 text-center">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="#"><img src="assets/img/products/2.jpg" alt="عباية عصرية"></a>
-						</div>
-						<h3 class="arabic-text">عباية عصرية</h3>
-						<p class="product-price"><span>السعر</span>349درهم مغربي</p>
-						<a href="#" class="cart-btn"><i class="fas fa-shopping-cart"></i> أضف إلى السلة</a>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 offset-md-3 offset-lg-0 text-center">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="#"><img src="assets/img/products/3.jpg" alt="عباية أنيقة"></a>
-						</div>
-						<h3 class="arabic-text">عباية أنيقة</h3>
-						<p class="product-price"><span>السعر</span> 349درهم مغربي</p>
-						<a href="#" class="cart-btn"><i class="fas fa-shopping-cart"></i> أضف إلى السلة</a>
+				<div class="col-12 text-center">
+					<div class="empty-state">
+						<i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+						<h4 class="arabic-text text-muted">لا توجد منتجات متاحة حالياً</h4>
+						<p class="arabic-text text-muted">سيتم إضافة المنتجات قريباً</p>
+						<p class="arabic-text text-muted small">يرجى المحاولة مرة أخرى لاحقاً</p>
 					</div>
 				</div>
 			</div>

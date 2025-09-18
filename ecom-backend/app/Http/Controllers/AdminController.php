@@ -9,6 +9,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class AdminController extends Controller
 {
@@ -20,24 +21,33 @@ class AdminController extends Controller
     // Admin dashboard
     public function dashboard()
     {
-        $stats = [
-            'total_customers' => Customer::count(),
-            'total_products' => Product::count(),
-            'total_orders' => Order::count(),
-            'total_revenue' => Order::where('status', 'completed')->sum('total_price'),
-            'pending_orders' => Order::where('status', 'pending')->count(),
-            'low_stock_products' => Product::where('stock', '<', 10)->count(),
-        ];
+        // Cache dashboard stats for 15 minutes
+        $stats = Cache::remember('admin_dashboard_stats', 900, function () {
+            return [
+                'total_customers' => Customer::count(),
+                'total_products' => Product::count(),
+                'total_orders' => Order::count(),
+                'total_revenue' => Order::where('status', 'completed')->sum('total_price'),
+                'pending_orders' => Order::where('status', 'pending')->count(),
+                'low_stock_products' => Product::where('stock', '<', 10)->count(),
+            ];
+        });
 
-        $recent_orders = Order::with('customer')
-                            ->latest()
-                            ->take(5)
-                            ->get();
+        // Cache recent orders for 5 minutes
+        $recent_orders = Cache::remember('admin_recent_orders', 300, function () {
+            return Order::with('customer')
+                        ->latest()
+                        ->take(5)
+                        ->get();
+        });
 
-        $low_stock_products = Product::where('stock', '<', 10)
-                                    ->with('category')
-                                    ->take(5)
-                                    ->get();
+        // Cache low stock products for 10 minutes
+        $low_stock_products = Cache::remember('admin_low_stock_products', 600, function () {
+            return Product::where('stock', '<', 10)
+                          ->with('category')
+                          ->take(5)
+                          ->get();
+        });
 
         return view('admin.dashboard', compact('stats', 'recent_orders', 'low_stock_products'));
     }
@@ -537,9 +547,9 @@ class AdminController extends Controller
         // Get orders data
         $orders = Order::with(['customer', 'orderItems.product'])
                       ->where('status', 'delivered')
-                      ->whereBetween('created_at', [$startDate, $endDate])
+                     ->whereBetween('created_at', [$startDate, $endDate])
                       ->orderBy('created_at', 'desc')
-                      ->get();
+                     ->get();
 
         // Generate CSV content
         $csvData = [];
@@ -601,7 +611,7 @@ class AdminController extends Controller
         }
 
         $products = $query->orderBy('stock')
-                         ->paginate(20);
+                          ->paginate(20);
 
         $categories = Category::all();
 

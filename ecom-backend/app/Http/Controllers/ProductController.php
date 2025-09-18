@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ProductController extends Controller
 {
@@ -83,6 +84,7 @@ class ProductController extends Controller
         return view('products.featured', compact('featuredProducts'));
     }
 
+
     // Show create product form (admin)
     public function create()
     {
@@ -116,6 +118,12 @@ class ProductController extends Controller
         }
 
         $product = Product::create($validated);
+
+        // Clear homepage cache when new product is added
+        Cache::forget('homepage_featured_products');
+        Cache::forget('homepage_latest_products');
+        Cache::forget('homepage_categories');
+        Cache::forget('admin_dashboard_stats');
 
         return redirect()->route('admin.products.index')
                         ->with('success', 'تم إنشاء المنتج بنجاح');

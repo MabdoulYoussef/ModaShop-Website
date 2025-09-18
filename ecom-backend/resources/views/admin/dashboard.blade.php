@@ -60,11 +60,7 @@
                 <div class="stats-label">منتجات مخزون منخفض</div>
             </div>
         </div>
-    </div>
-
-    <!-- Additional Stats -->
-    <div class="row mb-4">
-        <div class="col-xl-3 col-md-6 mb-4">
+<div class="col-xl-3 col-md-6 mb-4">
             <div class="stats-card">
                 <div class="stats-icon">
                     <i class="fas fa-clock"></i>
@@ -73,9 +69,9 @@
                 <div class="stats-label">الطلبات المعلقة</div>
             </div>
         </div>
-
-
     </div>
+
+
 
     <!-- Quick Actions -->
     <div class="row mb-4">
