@@ -6,7 +6,6 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 
@@ -61,12 +60,6 @@ Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
 Route::get('/orders/{id}/success', [OrderController::class, 'success'])->name('orders.success');
 
-// Review routes (no authentication required - customers provide info)
-Route::get('/products/{productId}/reviews/create', [ReviewController::class, 'create'])->name('reviews.create');
-Route::post('/products/{productId}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
-Route::get('/reviews/{id}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
-Route::put('/reviews/{id}', [ReviewController::class, 'update'])->name('reviews.update');
-Route::delete('/reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 
 // Admin authentication routes
 Route::middleware('guest')->group(function () {
@@ -93,6 +86,7 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
     Route::get('/orders', [AdminController::class, 'orders'])->name('orders.index');
     Route::get('/orders/{id}', [AdminController::class, 'showOrder'])->name('orders.show');
     Route::put('/orders/{id}/status', [AdminController::class, 'updateOrderStatus'])->name('orders.update-status');
+    Route::get('/orders/export', [AdminController::class, 'exportOrders'])->name('orders.export');
 
     // Customers management (instead of users)
     Route::get('/customers', [AdminController::class, 'customers'])->name('customers.index');
@@ -114,11 +108,9 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
     Route::put('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
     Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
-    // Reviews management
-    Route::get('/reviews', [AdminController::class, 'reviews'])->name('reviews.index');
-    Route::put('/reviews/{id}/status', [AdminController::class, 'updateReviewStatus'])->name('reviews.update-status');
 
     // Sales and analytics
     Route::get('/sales', [AdminController::class, 'sales'])->name('sales.index');
+    Route::get('/sales/export', [AdminController::class, 'exportSales'])->name('sales.export');
     Route::get('/low-stock', [AdminController::class, 'lowStock'])->name('low-stock.index');
 });

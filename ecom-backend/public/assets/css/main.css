@@ -2560,7 +2560,51 @@ table.order-details tbody td {
     width: 775px;
     margin-top: 100px;
     margin-right: 80px;
+}
 
+/* Make banner image responsive */
+@media (max-width: 1350px) and (min-width: 1201px) {
+    .hero-img img {
+        width: 650px;
+        margin-right: 40px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .hero-img img {
+        width: 450px;
+        margin-right: 40px;
+    }
+}
+
+@media (max-width: 991px) {
+    .hero-img img {
+        width: 500px;
+        margin-right: 20px;
+        margin-top: 80px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-img img {
+        width: 400px;
+        margin-right: 0;
+        margin-top: 60px;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-img img {
+        width: 300px;
+        margin-top: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-img img {
+        width: 250px;
+        margin-top: 30px;
+    }
 }
 
 
@@ -2873,5 +2917,6 @@ font-weight: 550; /* الوزن يكون أوضح */
     animation: slideInDown 0.5s ease-out;
     margin: 20px 0;
 }
+
 
 

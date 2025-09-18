@@ -99,8 +99,12 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'category_id' => 'nullable|exists:categories,id',
-            'size' => 'nullable|string|max:50',
+            'size' => 'nullable|string|max:255',
+            'sizes' => 'nullable|array',
+            'sizes.*' => 'string|in:XS,S,M,L,XL,XXL,XXXL',
             'stock' => 'required|integer|min:0',
+            'is_featured' => 'nullable|boolean',
+            'is_recommended' => 'nullable|boolean',
         ]);
 
         // Handle image upload
@@ -139,14 +143,25 @@ class ProductController extends Controller
             abort(404, 'Product not found');
         }
 
+        // Debug: Log request data
+        \Log::info('Product Update Request:', [
+            'has_file' => $request->hasFile('image'),
+            'file_name' => $request->hasFile('image') ? $request->file('image')->getClientOriginalName() : 'No file',
+            'all_data' => $request->all()
+        ]);
+
         $validated = $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'sometimes|required|numeric|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'category_id' => 'nullable|exists:categories,id',
-            'size' => 'nullable|string|max:50',
+            'size' => 'nullable|string|max:255',
+            'sizes' => 'nullable|array',
+            'sizes.*' => 'string|in:XS,S,M,L,XL,XXL,XXXL',
             'stock' => 'sometimes|required|integer|min:0',
+            'is_featured' => 'nullable|boolean',
+            'is_recommended' => 'nullable|boolean',
         ]);
 
         // Handle image upload
@@ -160,6 +175,10 @@ class ProductController extends Controller
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('storage/products'), $imageName);
             $validated['image'] = 'products/' . $imageName;
+
+            \Log::info('Image uploaded successfully:', ['path' => $validated['image']]);
+        } else {
+            \Log::info('No image file in request');
         }
 
         $product->update($validated);
