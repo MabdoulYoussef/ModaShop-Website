@@ -14,50 +14,33 @@
                 <h5><i class="fas fa-edit"></i> تعديل الفئة: {{ $category->name }}</h5>
             </div>
 
-            <form action="{{ route('admin.categories.update', $category->id) }}" method="POST">
+            <form action="{{ route('admin.categories.update', $category->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
                 <div class="row">
-                    <!-- Category Icon Selection -->
+                    <!-- Category Image Upload -->
                     <div class="col-md-4 mb-4">
-                        <div class="category-icon-section">
-                            <label class="form-label">أيقونة الفئة</label>
-                            <div class="icon-grid">
-                                <div class="icon-option {{ $category->icon == 'fas fa-tag' ? 'selected' : '' }}" data-icon="fas fa-tag">
-                                    <i class="fas fa-tag"></i>
-                                    <span>علامة</span>
-                                </div>
-                                <div class="icon-option {{ $category->icon == 'fas fa-tshirt' ? 'selected' : '' }}" data-icon="fas fa-tshirt">
-                                    <i class="fas fa-tshirt"></i>
-                                    <span>ملابس</span>
-                                </div>
-                                <div class="icon-option {{ $category->icon == 'fas fa-shoe-prints' ? 'selected' : '' }}" data-icon="fas fa-shoe-prints">
-                                    <i class="fas fa-shoe-prints"></i>
-                                    <span>أحذية</span>
-                                </div>
-                                <div class="icon-option {{ $category->icon == 'fas fa-handbag' ? 'selected' : '' }}" data-icon="fas fa-handbag">
-                                    <i class="fas fa-handbag"></i>
-                                    <span>حقائب</span>
-                                </div>
-                                <div class="icon-option {{ $category->icon == 'fas fa-gem' ? 'selected' : '' }}" data-icon="fas fa-gem">
-                                    <i class="fas fa-gem"></i>
-                                    <span>مجوهرات</span>
-                                </div>
-                                <div class="icon-option {{ $category->icon == 'fas fa-watch' ? 'selected' : '' }}" data-icon="fas fa-watch">
-                                    <i class="fas fa-watch"></i>
-                                    <span>ساعات</span>
-                                </div>
-                                <div class="icon-option {{ $category->icon == 'fas fa-glasses' ? 'selected' : '' }}" data-icon="fas fa-glasses">
-                                    <i class="fas fa-glasses"></i>
-                                    <span>نظارات</span>
-                                </div>
-                                <div class="icon-option {{ $category->icon == 'fas fa-ring' ? 'selected' : '' }}" data-icon="fas fa-ring">
-                                    <i class="fas fa-ring"></i>
-                                    <span>خواتم</span>
+                        <div class="category-image-section">
+                            <label class="form-label">صورة الفئة</label>
+                            <div class="image-upload-area">
+                                <input type="file" name="image" id="categoryImage" accept="image/*" onchange="previewImage(event)">
+                                <div id="imagePreview" class="image-preview">
+                                    @if($category->image)
+                                        <img src="{{ asset('assets/img/' . $category->image) }}" alt="{{ $category->name }}" class="preview-img">
+                                        <div class="image-overlay">
+                                            <i class="fas fa-edit"></i>
+                                            <span>تغيير الصورة</span>
+                                        </div>
+                                    @else
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <p>اضغط لرفع صورة</p>
+                                    @endif
                                 </div>
                             </div>
-                            <input type="hidden" name="icon" id="selectedIcon" value="{{ $category->icon ?? 'fas fa-tag' }}">
+                            @error('image')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
 
@@ -224,57 +207,126 @@
 
 @section('scripts')
 <style>
-    .category-icon-section {
-        background: #f8f9fa;
-        padding: 20px;
-        border-radius: 10px;
-        border: 2px dashed #dee2e6;
-    }
-
-    .icon-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 10px;
-        margin-top: 15px;
-    }
-
-    .icon-option {
-        background: white;
-        border: 2px solid #dee2e6;
-        border-radius: 8px;
-        padding: 15px;
-        text-align: center;
-        cursor: pointer;
+    .category-image-section {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        padding: 25px;
+        border-radius: 15px;
+        border: 2px solid #e9ecef;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         transition: all 0.3s ease;
     }
 
-    .icon-option:hover {
+    .category-image-section:hover {
         border-color: #ceb57f;
-        background: #fff;
+        box-shadow: 0 6px 20px rgba(206, 181, 127, 0.15);
+        transform: translateY(-1px);
+    }
+
+    .image-upload-area {
+        position: relative;
+        margin-top: 15px;
+    }
+
+    .image-upload-area input[type="file"] {
+        position: absolute;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    .image-preview {
+        width: 100%;
+        height: 300px;
+        border: 2px dashed #dee2e6;
+        border-radius: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .image-preview:hover {
+        border-color: #ceb57f;
+        background: linear-gradient(135deg, #fff5e6 0%, #f0e6d2 100%);
         transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(206, 181, 127, 0.2);
     }
 
-    .icon-option.selected {
-        border-color: #ceb57f;
-        background: linear-gradient(135deg, #ceb57f 0%, #8b6f3f 100%);
-        color: white;
+    .image-preview i {
+        font-size: 4rem;
+        color: #ceb57f;
+        margin-bottom: 15px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
-    .icon-option i {
-        font-size: 1.5rem;
-        display: block;
-        margin-bottom: 5px;
-    }
-
-    .icon-option span {
-        font-size: 0.8rem;
+    .image-preview p {
+        color: #8b6f3f;
         font-weight: 600;
+        margin: 0;
+        font-size: 1.1rem;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .preview-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .image-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: all 0.3s ease;
+        border-radius: 8px;
+    }
+
+    .image-preview:hover .image-overlay {
+        opacity: 1;
+    }
+
+    .image-overlay i {
+        font-size: 2rem;
+        margin-bottom: 8px;
+    }
+
+    .image-overlay span {
+        font-weight: 600;
+        font-size: 0.9rem;
     }
 
     .form-label {
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 8px;
+        font-weight: 700;
+        color: #8b6f3f;
+        margin-bottom: 12px;
+        font-size: 1.1rem;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .form-label::before {
+        content: "📸";
+        font-size: 1.2rem;
     }
 
     .form-control, .form-select {
@@ -357,25 +409,25 @@
 </style>
 
 <script>
-// Icon selection
-document.addEventListener('DOMContentLoaded', function() {
-    const iconOptions = document.querySelectorAll('.icon-option');
-    const selectedIconInput = document.getElementById('selectedIcon');
+// Image preview functionality
+function previewImage(event) {
+    const file = event.target.files[0];
+    const preview = document.getElementById('imagePreview');
 
-    iconOptions.forEach(option => {
-        option.addEventListener('click', function() {
-            // Remove selected class from all options
-            iconOptions.forEach(opt => opt.classList.remove('selected'));
-
-            // Add selected class to clicked option
-            this.classList.add('selected');
-
-            // Update hidden input
-            const iconClass = this.dataset.icon;
-            selectedIconInput.value = iconClass;
-        });
-    });
-});
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.innerHTML = `
+                <img src="${e.target.result}" alt="Preview" class="preview-img">
+                <div class="image-overlay">
+                    <i class="fas fa-edit"></i>
+                    <span>تغيير الصورة</span>
+                </div>
+            `;
+        };
+        reader.readAsDataURL(file);
+    }
+}
 
 // Auto-generate slug from name
 document.getElementById('name').addEventListener('input', function() {

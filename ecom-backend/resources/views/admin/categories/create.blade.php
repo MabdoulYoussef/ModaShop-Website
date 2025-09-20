@@ -178,10 +178,18 @@
 @section('scripts')
 <style>
     .category-image-section {
-        background: #f8f9fa;
-        padding: 20px;
-        border-radius: 10px;
-        border: 2px dashed #dee2e6;
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        padding: 25px;
+        border-radius: 15px;
+        border: 2px solid #e9ecef;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+    }
+
+    .category-image-section:hover {
+        border-color: #ceb57f;
+        box-shadow: 0 6px 20px rgba(206, 181, 127, 0.15);
+        transform: translateY(-1px);
     }
 
     .image-upload-area {
@@ -201,39 +209,57 @@
 
     .image-preview {
         width: 100%;
-        height: 200px;
-        border: 2px dashed #ddd;
-        border-radius: 8px;
+        height: 300px;
+        border: 2px dashed #dee2e6;
+        border-radius: 15px;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        background: white;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        position: relative;
+        overflow: hidden;
         transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         cursor: pointer;
     }
 
     .image-preview:hover {
         border-color: #ceb57f;
-        background: #f8f9fa;
+        background: linear-gradient(135deg, #fff5e6 0%, #f0e6d2 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(206, 181, 127, 0.2);
     }
 
     .image-preview i {
-        font-size: 2rem;
-        color: #ad8f53;
-        margin-bottom: 10px;
+        font-size: 4rem;
+        color: #ceb57f;
+        margin-bottom: 15px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
     .image-preview p {
-        color: #666;
-        font-weight: 500;
+        color: #8b6f3f;
+        font-weight: 600;
         margin: 0;
+        font-size: 1.1rem;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.1);
     }
 
     .form-label {
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 8px;
+        font-weight: 700;
+        color: #8b6f3f;
+        margin-bottom: 12px;
+        font-size: 1.1rem;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .form-label::before {
+        content: "📸";
+        font-size: 1.2rem;
     }
 
     .form-control, .form-select {
