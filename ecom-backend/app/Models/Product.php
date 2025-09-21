@@ -16,12 +16,18 @@ class Product extends Model
         'image',
         'category_id',
         'size',
+        'colors',
         'stock',
+        'is_featured',
+        'is_recommended',
     ];
 
     protected $casts = [
         'price' => 'decimal:2',
         'stock' => 'integer',
+        'colors' => 'array',
+        'is_featured' => 'boolean',
+        'is_recommended' => 'boolean',
     ];
 
     // Relationships

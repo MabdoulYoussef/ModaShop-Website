@@ -63,8 +63,20 @@ class CategoryController extends Controller
     // Store a new category
     public function store(Request $request)
     {
+        // Debug: Log request data
+        \Log::info('Category Store Request:', [
+            'has_file' => $request->hasFile('image'),
+            'file_name' => $request->hasFile('image') ? $request->file('image')->getClientOriginalName() : 'No file',
+            'all_data' => $request->all()
+        ]);
+
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:categories,name',
+            'slug' => 'nullable|string|max:255|unique:categories,slug',
+            'description' => 'nullable|string',
+            'sort_order' => 'nullable|integer|min:0',
+            'is_active' => 'nullable|boolean',
+            'show_in_menu' => 'nullable|boolean',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -72,8 +84,28 @@ class CategoryController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('assets/img/categories'), $imageName);
+            $imagePath = public_path('assets/img/categories');
+
+            \Log::info('Image upload details:', [
+                'original_name' => $image->getClientOriginalName(),
+                'extension' => $image->getClientOriginalExtension(),
+                'size' => $image->getSize(),
+                'mime_type' => $image->getMimeType(),
+                'target_path' => $imagePath,
+                'target_file' => $imageName
+            ]);
+
+            // Ensure directory exists
+            if (!file_exists($imagePath)) {
+                mkdir($imagePath, 0755, true);
+            }
+
+            $image->move($imagePath, $imageName);
             $validated['image'] = 'categories/' . $imageName;
+
+            \Log::info('Image uploaded successfully:', ['path' => $validated['image']]);
+        } else {
+            \Log::info('No image file in request');
         }
 
         $category = Category::create($validated);
@@ -105,6 +137,11 @@ class CategoryController extends Controller
 
         $validated = $request->validate([
             'name' => 'sometimes|required|string|max:255|unique:categories,name,' . $id,
+            'slug' => 'nullable|string|max:255|unique:categories,slug,' . $id,
+            'description' => 'nullable|string',
+            'sort_order' => 'nullable|integer|min:0',
+            'is_active' => 'nullable|boolean',
+            'show_in_menu' => 'nullable|boolean',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
