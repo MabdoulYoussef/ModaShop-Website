@@ -25,7 +25,7 @@
                             <div class="image-upload-area">
                                 <input type="file" name="image" id="categoryImage" accept="image/*"
                                        onchange="previewImage(event)">
-                                <div id="imagePreview" class="image-preview">
+                                <div id="imagePreview" class="image-preview" onclick="document.getElementById('categoryImage').click()">
                                     <i class="fas fa-cloud-upload-alt"></i>
                                     <p>اضغط لرفع صورة</p>
                                 </div>
@@ -202,9 +202,10 @@
         top: 0;
         left: 0;
         width: 100%;
-        height: 100%;
+        height: 300px;
         opacity: 0;
         cursor: pointer;
+        z-index: 10;
     }
 
     .image-preview {
@@ -415,10 +416,10 @@ document.querySelectorAll('#name, #description, #slug').forEach(input => {
 function clearForm() {
     if (confirm('هل أنت متأكد من مسح جميع البيانات؟')) {
         document.querySelector('form').reset();
-        document.querySelectorAll('.icon-option').forEach(opt => opt.classList.remove('selected'));
-        document.querySelector('.icon-option').classList.add('selected');
-        document.getElementById('selectedIcon').value = 'fas fa-tag';
-        document.getElementById('previewIcon').className = 'fas fa-tag';
+        document.getElementById('imagePreview').innerHTML = `
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>اضغط لرفع صورة</p>
+        `;
         updatePreview();
     }
 }

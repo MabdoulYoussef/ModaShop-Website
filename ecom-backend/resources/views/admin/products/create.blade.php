@@ -230,6 +230,92 @@
                         </div>
 
                         <div class="col-md-6 mb-3">
+                            <label class="form-label">الألوان المتوفرة</label>
+                            <div class="color-selection-container">
+
+                                <!-- Predefined Colors -->
+                                <div class="predefined-colors-section">
+                                    <h6 class="colors-section-title">الألوان الأساسية</h6>
+                                    <div class="predefined-colors-grid">
+                                        <div class="color-checkbox-item">
+                                            <input type="checkbox" name="predefined_colors[]" value="أسود" id="color_black">
+                                            <label for="color_black" class="color-label">
+                                                <span class="color-swatch" style="background: #000;"></span>
+                                                <span class="color-name">أسود</span>
+                                            </label>
+                                        </div>
+                                        <div class="color-checkbox-item">
+                                            <input type="checkbox" name="predefined_colors[]" value="أبيض" id="color_white">
+                                            <label for="color_white" class="color-label">
+                                                <span class="color-swatch" style="background: #fff; border: 1px solid #ccc;"></span>
+                                                <span class="color-name">أبيض</span>
+                                            </label>
+                                        </div>
+                                        <div class="color-checkbox-item">
+                                            <input type="checkbox" name="predefined_colors[]" value="أزرق" id="color_blue">
+                                            <label for="color_blue" class="color-label">
+                                                <span class="color-swatch" style="background: #0066cc;"></span>
+                                                <span class="color-name">أزرق</span>
+                                            </label>
+                                        </div>
+                                        <div class="color-checkbox-item">
+                                            <input type="checkbox" name="predefined_colors[]" value="أخضر" id="color_green">
+                                            <label for="color_green" class="color-label">
+                                                <span class="color-swatch" style="background: #00cc66;"></span>
+                                                <span class="color-name">أخضر</span>
+                                            </label>
+                                        </div>
+                                        <div class="color-checkbox-item">
+                                            <input type="checkbox" name="predefined_colors[]" value="أصفر" id="color_yellow">
+                                            <label for="color_yellow" class="color-label">
+                                                <span class="color-swatch" style="background: #ffcc00;"></span>
+                                                <span class="color-name">أصفر</span>
+                                            </label>
+                                        </div>
+                                        <div class="color-checkbox-item">
+                                            <input type="checkbox" name="predefined_colors[]" value="بنفسجي" id="color_purple">
+                                            <label for="color_purple" class="color-label">
+                                                <span class="color-swatch" style="background: #9900cc;"></span>
+                                                <span class="color-name">بنفسجي</span>
+                                            </label>
+                                        </div>
+                                        <div class="color-checkbox-item">
+                                            <input type="checkbox" name="predefined_colors[]" value="بني" id="color_brown">
+                                            <label for="color_brown" class="color-label">
+                                                <span class="color-swatch" style="background: #8B4513;"></span>
+                                                <span class="color-name">بني</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Custom Colors -->
+                                <div class="custom-colors-section">
+                                    <h6 class="colors-section-title">ألوان مخصصة</h6>
+                                    <div class="color-inputs" id="colorInputs">
+                                        <div class="color-input-group">
+                                            <input type="text"
+                                                   name="custom_colors[]"
+                                                   class="form-control color-input"
+                                                   placeholder="اكتب اسم اللون بالعربية (مثل: وردي فاتح، أزرق داكن)"
+                                                   value="{{ old('custom_colors.0') }}">
+                                            <button type="button" class="btn-remove-color" onclick="removeColorInput(this)" style="display: none;">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn-add-color" onclick="addColorInput()">
+                                        <i class="fas fa-plus"></i> إضافة لون مخصص آخر
+                                    </button>
+                                </div>
+
+                                <small class="form-text text-muted">
+                                    يمكنك اختيار الألوان الأساسية أو إضافة ألوان مخصصة
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
                             <label class="form-label">خيارات المنتج</label>
                             <div class="product-options">
                                 <div class="form-check mb-3">
@@ -304,7 +390,7 @@
 @section('scripts')
 <style>
     .admin-page-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #ceb57f 0%, #8b6f3f 100%);
         color: white;
         padding: 2rem;
         border-radius: 15px;
@@ -345,7 +431,7 @@
         padding: 1.5rem;
         text-align: center;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-        border-left: 4px solid #667eea;
+        border-left: 4px solid #ceb57f;
         transition: transform 0.3s ease;
     }
 
@@ -355,7 +441,7 @@
 
     .stats-icon {
         font-size: 2.5rem;
-        color: #667eea;
+        color: #ceb57f;
         margin-bottom: 1rem;
     }
 
@@ -444,13 +530,13 @@
     }
 
     .upload-label:hover {
-        border-color: #667eea;
+        border-color: #ceb57f;
         background: #f0f4ff;
     }
 
     .upload-label i {
         font-size: 3rem;
-        color: #667eea;
+        color: #ceb57f;
         margin-bottom: 1rem;
     }
 
@@ -536,14 +622,14 @@
     }
 
     .form-check-input:checked {
-        background-color: #667eea;
-        border-color: #667eea;
+        background-color: #ceb57f;
+        border-color: #ceb57f;
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
     }
 
     .form-check-input:hover {
-        border-color: #667eea;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        border-color: #ceb57f;
+        box-shadow: 0 0 0 3px rgba(206, 181, 127, 0.1);
     }
 
     .form-check-label {
@@ -642,6 +728,373 @@
 
     .text-danger {
         color: #dc3545 !important;
+    }
+
+    /* Enhanced Color Selection Styling */
+    .color-selection-container {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 15px;
+        padding: 1.5rem;
+        border: 2px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
+
+    .color-selection-container:hover {
+        border-color: #ceb57f;
+        box-shadow: 0 5px 20px rgba(206, 181, 127, 0.1);
+    }
+
+    .color-inputs {
+        margin-bottom: 1rem;
+    }
+
+    .color-input-group {
+        position: relative;
+        margin-bottom: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .color-input {
+        flex: 1;
+        border: 2px solid #dee2e6;
+        border-radius: 12px;
+        padding: 12px 15px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        background: white;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .color-input:focus {
+        border-color: #ceb57f;
+        box-shadow: 0 0 0 3px rgba(206, 181, 127, 0.1);
+        transform: translateY(-1px);
+    }
+
+    .color-input::placeholder {
+        color: #999;
+        font-style: italic;
+    }
+
+    .btn-remove-color {
+        background: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+    }
+
+    .btn-remove-color:hover {
+        background: #c82333;
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+    }
+
+    .btn-add-color {
+        background: linear-gradient(135deg, #ceb57f 0%, #8b6f3f 100%);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 12px 20px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 15px rgba(206, 181, 127, 0.3);
+    }
+
+    .btn-add-color:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(206, 181, 127, 0.4);
+    }
+
+    .btn-add-color i {
+        font-size: 14px;
+    }
+
+    /* Predefined Colors Styling */
+    .predefined-colors-section {
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 2px solid #e9ecef;
+    }
+
+    .custom-colors-section {
+        margin-top: 1rem;
+    }
+
+    .colors-section-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .colors-section-title::before {
+        content: "🎨";
+        font-size: 1.1rem;
+    }
+
+    /* Color-specific label styling */
+    .form-label[for="colors"]::before,
+    .form-label:has(+ .color-selection-container)::before {
+        content: "🎨";
+        font-size: 1.2rem;
+    }
+
+    .predefined-colors-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 12px;
+    }
+
+    .color-checkbox-item {
+        position: relative;
+    }
+
+    .color-checkbox-item input[type="checkbox"] {
+        position: absolute;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    .color-label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 15px 10px;
+        background: white;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        text-align: center;
+    }
+
+    .color-label:hover {
+        border-color: #ceb57f;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(206, 181, 127, 0.15);
+    }
+
+    .color-checkbox-item input[type="checkbox"]:checked + .color-label {
+        border-color: #ceb57f;
+        background: linear-gradient(135deg, #f0f4ff 0%, #e6f0ff 100%);
+        box-shadow: 0 4px 15px rgba(206, 181, 127, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .color-checkbox-item input[type="checkbox"]:checked + .color-label .color-swatch {
+        transform: scale(1.1);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .color-swatch {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin-bottom: 8px;
+        transition: all 0.3s ease;
+        border: 2px solid rgba(255,255,255,0.3);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .color-name {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #333;
+        transition: color 0.3s ease;
+    }
+
+    .color-checkbox-item input[type="checkbox"]:checked + .color-label .color-name {
+        color: #ceb57f;
+        font-weight: 700;
+    }
+
+    /* Enhanced Form Styling */
+    .form-section {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        margin-bottom: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        border: 1px solid #e9ecef;
+        overflow: hidden;
+    }
+
+    .section-header {
+        background: linear-gradient(135deg, #ceb57f 0%, #8b6f3f 100%);
+        color: white;
+        padding: 1.5rem 2rem;
+        margin: -2rem -2rem 1.5rem -2rem;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .section-header h6 {
+        color: white;
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .section-header p {
+        color: rgba(255,255,255,0.9);
+        margin-bottom: 0;
+        font-size: 0.95rem;
+    }
+
+    .form-label {
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 12px;
+        font-size: 1.05rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .form-label::before {
+        content: "";
+        font-size: 1.2rem;
+    }
+
+    /* Enhanced Input Styling */
+    .form-control, .form-select {
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        padding: 15px 18px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        background: white;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #ceb57f;
+        box-shadow: 0 0 0 4px rgba(206, 181, 127, 0.1);
+        transform: translateY(-1px);
+    }
+
+    /* Enhanced Size Options */
+    .size-options {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 1.5rem;
+        border-radius: 15px;
+        border: 2px solid #e9ecef;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+
+    .size-options .form-check {
+        background: white;
+        padding: 12px 15px;
+        border-radius: 10px;
+        margin-bottom: 8px;
+        border: 1px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
+
+    .size-options .form-check:hover {
+        border-color: #ceb57f;
+        box-shadow: 0 2px 8px rgba(206, 181, 127, 0.1);
+        transform: translateY(-1px);
+    }
+
+    /* Enhanced Product Options */
+    .product-options {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 1.5rem;
+        border-radius: 15px;
+        border: 2px solid #e9ecef;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+
+    .product-options .form-check {
+        background: white;
+        padding: 15px 20px;
+        border-radius: 12px;
+        margin-bottom: 12px;
+        border: 1px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
+
+    .product-options .form-check:hover {
+        border-color: #ceb57f;
+        box-shadow: 0 3px 12px rgba(206, 181, 127, 0.15);
+        transform: translateY(-2px);
+    }
+
+    /* Enhanced Image Upload */
+    .image-upload-area {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 20px;
+        padding: 2rem;
+        border: 3px dashed #dee2e6;
+        transition: all 0.3s ease;
+    }
+
+    .image-upload-area:hover {
+        border-color: #ceb57f;
+        background: linear-gradient(135deg, #f0f4ff 0%, #e6f0ff 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(206, 181, 127, 0.15);
+    }
+
+    .upload-label {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    /* Enhanced Action Buttons */
+    .form-actions {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-top: 3px solid #ceb57f;
+    }
+
+    .btn-admin {
+        background: linear-gradient(135deg, #ceb57f 0%, #8b6f3f 100%);
+        border-radius: 12px;
+        padding: 15px 25px;
+        font-weight: 700;
+        font-size: 1rem;
+        box-shadow: 0 6px 20px rgba(206, 181, 127, 0.3);
+    }
+
+    .btn-admin:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(206, 181, 127, 0.4);
+    }
+
+    .btn-admin-outline {
+        border-radius: 12px;
+        padding: 15px 25px;
+        font-weight: 700;
+        font-size: 1rem;
+        border: 2px solid #ceb57f;
+        box-shadow: 0 4px 15px rgba(206, 181, 127, 0.2);
+    }
+
+    .btn-admin-outline:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(206, 181, 127, 0.3);
     }
 </style>
 
@@ -753,6 +1206,60 @@ function previewProduct() {
     `);
 }
 
+// Color Selection Functions
+function addColorInput() {
+    const colorInputs = document.getElementById('colorInputs');
+    const colorCount = colorInputs.children.length;
+
+    const colorGroup = document.createElement('div');
+    colorGroup.className = 'color-input-group';
+    colorGroup.innerHTML = `
+        <input type="text"
+               name="custom_colors[]"
+               class="form-control color-input"
+               placeholder="اكتب اسم اللون بالعربية (مثل: وردي فاتح، أزرق داكن)">
+        <button type="button" class="btn-remove-color" onclick="removeColorInput(this)">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
+
+    colorInputs.appendChild(colorGroup);
+
+    // Show remove buttons for all inputs
+    updateRemoveButtons();
+
+    // Focus on the new input
+    colorGroup.querySelector('.color-input').focus();
+}
+
+function removeColorInput(button) {
+    const colorGroup = button.parentElement;
+    colorGroup.remove();
+    updateRemoveButtons();
+}
+
+function updateRemoveButtons() {
+    const colorInputs = document.getElementById('colorInputs');
+    const removeButtons = colorInputs.querySelectorAll('.btn-remove-color');
+
+    // Show remove button only if there's more than one input
+    removeButtons.forEach(button => {
+        button.style.display = colorInputs.children.length > 1 ? 'flex' : 'none';
+    });
+}
+
+// Combine predefined and custom colors before form submission
+function combineColors() {
+    const predefinedColors = Array.from(document.querySelectorAll('input[name="predefined_colors[]"]:checked'))
+        .map(checkbox => checkbox.value);
+
+    const customColors = Array.from(document.querySelectorAll('input[name="custom_colors[]"]'))
+        .map(input => input.value.trim())
+        .filter(value => value !== '');
+
+    return [...predefinedColors, ...customColors];
+}
+
 // Auto-save draft functionality
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('productForm');
@@ -791,7 +1298,25 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Clear draft on successful submit
-    form.addEventListener('submit', function() {
+    form.addEventListener('submit', function(e) {
+        // Combine predefined and custom colors
+        const allColors = combineColors();
+
+        // Create hidden input for combined colors
+        const colorsInput = document.createElement('input');
+        colorsInput.type = 'hidden';
+        colorsInput.name = 'colors';
+        colorsInput.value = JSON.stringify(allColors);
+
+        // Remove any existing colors input
+        const existingColorsInput = form.querySelector('input[name="colors"]');
+        if (existingColorsInput) {
+            existingColorsInput.remove();
+        }
+
+        // Add the combined colors input
+        form.appendChild(colorsInput);
+
         localStorage.removeItem('product_create_draft');
     });
 

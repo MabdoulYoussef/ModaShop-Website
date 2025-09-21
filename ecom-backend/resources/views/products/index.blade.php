@@ -69,4 +69,28 @@
         </div>
     @endif
 </div>
+<style>
+.page-title {
+    text-align: center;
+    margin: 5px 0 10px 0;
+    padding: 5px 2px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+
+}
+.page-title h1 {
+    font-size: 2.5rem;
+    margin-bottom: 5px;
+    color: #333;
+}
+.page-title p {
+    font-size: 1.2rem;
+    color: #666;
+    margin: 0;
+}
+
+</style>
 @endsection
+

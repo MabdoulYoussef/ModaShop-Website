@@ -4,7 +4,6 @@
 <!-- Page Title -->
 <div class="page-title">
     <h1 class="arabic-text">فئات المنتجات</h1>
-    <p class="arabic-text">تصفح منتجاتنا حسب الفئات المختلفة</p>
 </div>
 
 <!-- Breadcrumb -->
@@ -222,8 +221,8 @@
 /* Page Title Styling */
 .page-title {
     text-align: center;
-    margin: 40px 0 60px 0;
-    padding: 40px 20px;
+    margin: 5px 0 10px 0;
+    padding: 5px 2px;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     border-radius: 20px;
     position: relative;
