@@ -314,36 +314,6 @@
                                 </small>
                             </div>
                         </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">خيارات المنتج</label>
-                            <div class="product-options">
-                                <div class="form-check mb-3">
-                                    <input class="form-check-input"
-                                           type="checkbox"
-                                           name="is_featured"
-                                           id="is_featured"
-                                           value="1"
-                                           {{ old('is_featured') ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="is_featured">
-                                        <i class="fas fa-star"></i> منتج مميز
-                                        <small class="d-block text-muted">يظهر في الصفحة الرئيسية</small>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input"
-                                           type="checkbox"
-                                           name="is_recommended"
-                                           id="is_recommended"
-                                           value="1"
-                                           {{ old('is_recommended') ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="is_recommended">
-                                        <i class="fas fa-thumbs-up"></i> منتج موصى به
-                                        <small class="d-block text-muted">يظهر في قسم التوصيات</small>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="mb-3">
@@ -1004,17 +974,39 @@
 
     .size-options .form-check {
         background: white;
-        padding: 12px 15px;
-        border-radius: 10px;
-        margin-bottom: 8px;
-        border: 1px solid #e9ecef;
+        padding: 15px 20px;
+        border-radius: 12px;
+        margin-bottom: 10px;
+        border: 2px solid #e9ecef;
         transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 12px;
     }
 
     .size-options .form-check:hover {
         border-color: #ceb57f;
-        box-shadow: 0 2px 8px rgba(206, 181, 127, 0.1);
-        transform: translateY(-1px);
+        box-shadow: 0 4px 15px rgba(206, 181, 127, 0.15);
+        transform: translateY(-2px);
+    }
+
+    .size-options .form-check-input {
+        position: static;
+        transform: none;
+        width: 20px;
+        height: 20px;
+        margin: 0;
+        flex-shrink: 0;
+    }
+
+    .size-options .form-check-label {
+        font-weight: 600;
+        color: #333;
+        font-size: 1rem;
+        margin: 0;
+        padding: 0;
+        cursor: pointer;
+        flex: 1;
     }
 
     /* Enhanced Product Options */
@@ -1137,7 +1129,28 @@ function resetForm() {
             <i class="fas fa-image fa-3x"></i>
             <p>معاينة الصورة ستظهر هنا</p>
         `;
+
+        // Reset color inputs
+        const colorInputs = document.getElementById('colorInputs');
+        colorInputs.innerHTML = `
+            <div class="color-input-group">
+                <input type="text"
+                       name="custom_colors[]"
+                       class="form-control color-input"
+                       placeholder="اكتب اسم اللون بالعربية (مثل: وردي فاتح، أزرق داكن)">
+                <button type="button" class="btn-remove-color" onclick="removeColorInput(this)" style="display: none;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        `;
+
+        // Reset predefined colors
+        document.querySelectorAll('input[name="predefined_colors[]"]').forEach(checkbox => {
+            checkbox.checked = false;
+        });
+
         localStorage.removeItem('product_create_draft');
+        alert('تم مسح النموذج بنجاح');
     }
 }
 
@@ -1145,9 +1158,21 @@ function previewProduct() {
     const formData = new FormData(document.getElementById('productForm'));
     const productData = {};
 
+    // Get basic form data
     for (let [key, value] of formData.entries()) {
-        productData[key] = value;
+        if (key !== 'image' && key !== 'predefined_colors[]' && key !== 'custom_colors[]') {
+            productData[key] = value;
+        }
     }
+
+    // Get colors
+    const allColors = combineColors();
+    productData.colors = allColors;
+
+    // Get sizes
+    const selectedSizes = Array.from(document.querySelectorAll('input[name="sizes[]"]:checked'))
+        .map(cb => cb.value);
+    productData.sizes = selectedSizes;
 
     // Create preview window
     const previewWindow = window.open('', '_blank', 'width=800,height=600');
@@ -1156,9 +1181,9 @@ function previewProduct() {
         <head>
             <title>معاينة المنتج</title>
             <style>
-                body { font-family: Arial, sans-serif; padding: 20px; direction: rtl; }
+                body { font-family: Arial, sans-serif; padding: 20px; direction: rtl; background: #f8f9fa; }
                 .preview-container { max-width: 600px; margin: 0 auto; }
-                .preview-header { background: #667eea; color: white; padding: 20px; border-radius: 10px; text-align: center; margin-bottom: 20px; }
+                .preview-header { background: linear-gradient(135deg, #ceb57f 0%, #8b6f3f 100%); color: white; padding: 20px; border-radius: 10px; text-align: center; margin-bottom: 20px; }
                 .preview-content { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
                 .preview-image { width: 100%; max-width: 300px; height: 300px; background: #f8f9fa; border: 2px dashed #dee2e6; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
                 .preview-details { margin-bottom: 15px; }
@@ -1166,6 +1191,8 @@ function previewProduct() {
                 .preview-value { color: #666; margin-right: 10px; }
                 .status-badge { display: inline-block; padding: 5px 10px; border-radius: 15px; font-size: 12px; font-weight: bold; }
                 .status-new { background: #28a745; color: white; }
+                .colors-list { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; }
+                .color-tag { background: #ceb57f; color: white; padding: 3px 8px; border-radius: 12px; font-size: 12px; }
             </style>
         </head>
         <body>
@@ -1188,6 +1215,16 @@ function previewProduct() {
                     <div class="preview-details">
                         <span class="preview-label">الكمية:</span>
                         <span class="preview-value">${productData.stock || '0'}</span>
+                    </div>
+                    <div class="preview-details">
+                        <span class="preview-label">الألوان:</span>
+                        <div class="colors-list">
+                            ${allColors.map(color => `<span class="color-tag">${color}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div class="preview-details">
+                        <span class="preview-label">المقاسات:</span>
+                        <span class="preview-value">${selectedSizes.join(', ') || 'غير محدد'}</span>
                     </div>
                     <div class="preview-details">
                         <span class="preview-label">الحالة:</span>
@@ -1316,6 +1353,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Add the combined colors input
         form.appendChild(colorsInput);
+
+        // Debug: Log form data before submission
+        console.log('Form submitting with colors:', allColors);
+        console.log('Form action:', form.action);
+        console.log('Form method:', form.method);
+
+        // Show loading state
+        const submitBtn = form.querySelector('button[type="submit"]');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+        }
+
+        // Add error handling
+        form.addEventListener('error', function(e) {
+            console.error('Form submission error:', e);
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> حفظ المنتج';
+            }
+        });
 
         localStorage.removeItem('product_create_draft');
     });

@@ -95,31 +95,60 @@ class ProductController extends Controller
     // Store a new product
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'category_id' => 'nullable|exists:categories,id',
-            'size' => 'nullable|string|max:255',
-            'sizes' => 'nullable|array',
-            'sizes.*' => 'string|in:XS,S,M,L,XL,XXL,XXXL',
-            'predefined_colors' => 'nullable|array',
-            'predefined_colors.*' => 'string|max:255',
-            'custom_colors' => 'nullable|array',
-            'custom_colors.*' => 'string|max:255',
-            'colors' => 'nullable|string', // JSON string from JavaScript
-            'stock' => 'required|integer|min:0',
-            'is_featured' => 'nullable|boolean',
-            'is_recommended' => 'nullable|boolean',
+        \Log::info('Product Store Request:', [
+            'has_file' => $request->hasFile('image'),
+            'file_name' => $request->hasFile('image') ? $request->file('image')->getClientOriginalName() : 'No file',
+            'all_data' => $request->all()
         ]);
+
+        try {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'price' => 'required|numeric|min:0',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'category_id' => 'nullable|exists:categories,id',
+                'size' => 'nullable|string|max:255',
+                'sizes' => 'nullable|array',
+                'sizes.*' => 'string|in:XS,S,M,L,XL,XXL,XXXL',
+                'predefined_colors' => 'nullable|array',
+                'predefined_colors.*' => 'string|max:255',
+                'custom_colors' => 'nullable|array',
+                'custom_colors.*' => 'nullable|string|max:255',
+                'colors' => 'nullable|string', // JSON string from JavaScript
+                'stock' => 'required|integer|min:0',
+                'is_featured' => 'nullable|boolean',
+                'is_recommended' => 'nullable|boolean',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            \Log::error('Product validation failed:', [
+                'errors' => $e->errors(),
+                'request_data' => $request->all()
+            ]);
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
+        }
 
         // Handle image upload
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('storage/products'), $imageName);
+            $imagePath = public_path('storage/products');
+
+            // Ensure directory exists
+            if (!file_exists($imagePath)) {
+                mkdir($imagePath, 0755, true);
+            }
+
+            $image->move($imagePath, $imageName);
             $validated['image'] = 'products/' . $imageName;
+
+            \Log::info('Product image uploaded successfully:', [
+                'original_name' => $image->getClientOriginalName(),
+                'saved_as' => $imageName,
+                'path' => $validated['image']
+            ]);
         }
 
         // Handle colors - combine predefined and custom colors
@@ -129,11 +158,20 @@ class ProductController extends Controller
         } else {
             // Fallback: combine predefined and custom colors manually
             $predefinedColors = $request->input('predefined_colors', []);
-            $customColors = array_filter($request->input('custom_colors', []));
+            $customColors = array_filter($request->input('custom_colors', []), function($value) {
+                return !is_null($value) && trim($value) !== '';
+            });
             $validated['colors'] = array_merge($predefinedColors, $customColors);
         }
 
+        \Log::info('Creating product with validated data:', $validated);
+
         $product = Product::create($validated);
+
+        \Log::info('Product created successfully:', [
+            'product_id' => $product->id,
+            'product_name' => $product->name
+        ]);
 
         // Clear homepage cache when new product is added
         Cache::forget('homepage_featured_products');
@@ -217,7 +255,9 @@ class ProductController extends Controller
         } else {
             // Fallback: combine predefined and custom colors manually
             $predefinedColors = $request->input('predefined_colors', []);
-            $customColors = array_filter($request->input('custom_colors', []));
+            $customColors = array_filter($request->input('custom_colors', []), function($value) {
+                return !is_null($value) && trim($value) !== '';
+            });
             $validated['colors'] = array_merge($predefinedColors, $customColors);
         }
 

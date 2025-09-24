@@ -22,7 +22,11 @@
                                 @if($category->image)
                                     <img src="{{ asset('assets/img/' . $category->image) }}"
                                          alt="{{ $category->name }}"
-                                         class="category-image">
+                                         class="category-image"
+                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                    <div class="category-placeholder" style="display: none;">
+                                        <i class="fas fa-image" style="font-size: 4rem; color: #ad8f53;"></i>
+                                    </div>
                                 @else
                                     <div class="category-placeholder">
                                         <i class="fas fa-image" style="font-size: 4rem; color: #ad8f53;"></i>
