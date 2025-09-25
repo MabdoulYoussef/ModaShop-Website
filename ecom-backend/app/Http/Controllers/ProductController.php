@@ -134,7 +134,7 @@ class ProductController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $imagePath = public_path('storage/products');
+            $imagePath = public_path('assets/img/products');
 
             // Ensure directory exists
             if (!file_exists($imagePath)) {
@@ -234,13 +234,20 @@ class ProductController extends Controller
         // Handle image upload
         if ($request->hasFile('image')) {
             // Delete old image if exists
-            if ($product->image && file_exists(public_path('storage/' . $product->image))) {
-                unlink(public_path('storage/' . $product->image));
+            if ($product->image && file_exists(public_path('assets/img/' . $product->image))) {
+                unlink(public_path('assets/img/' . $product->image));
             }
 
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('storage/products'), $imageName);
+            $imagePath = public_path('assets/img/products');
+
+            // Ensure directory exists
+            if (!file_exists($imagePath)) {
+                mkdir($imagePath, 0755, true);
+            }
+
+            $image->move($imagePath, $imageName);
             $validated['image'] = 'products/' . $imageName;
 
             \Log::info('Image uploaded successfully:', ['path' => $validated['image']]);
