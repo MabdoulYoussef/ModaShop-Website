@@ -11,9 +11,14 @@
         <div class="col-lg-6">
             <!-- Product Image -->
             <div class="single-product-img">
-                <img src="{{ asset('assets/img/products/' . $product->image) }}"
+                <img src="/assets/img/{{ $product->image }}"
                      alt="{{ $product->name }}"
-                     class="img-fluid">
+                     class="img-fluid"
+                     onload="this.nextElementSibling.style.display='none';"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="product-placeholder" style="display: none; width: 100%; height: 400px; background: #f8f9fa; border: 2px dashed #dee2e6; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-image" style="font-size: 4rem; color: #ad8f53;"></i>
+                </div>
             </div>
         </div>
 
@@ -85,13 +90,17 @@
                         </div>
 
                         <div class="row mt-3">
-                            <div class="col-12">
-                                <div class="d-flex justify-content-center">
-                                    <a href="{{ route('products.index') }}" class="cart-btn btn-lg">
-                                        <i class="fas fa-arrow-right"></i>
-                                        <span>العودة للمنتجات</span>
-                                    </a>
-                                </div>
+                            <div class="col-md-6">
+                                <button type="submit" class="cart-btn btn-lg w-100">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <span>أضف إلى السلة</span>
+                                </button>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="{{ route('products.index') }}" class="btn-back-to-products btn-lg w-100">
+                                    <i class="fas fa-arrow-right"></i>
+                                    <span>العودة للمنتجات</span>
+                                </a>
                             </div>
                         </div>
                     </form>
@@ -152,28 +161,34 @@
 
 .cart-btn {
     font-family: 'Poppins', sans-serif;
-
     background-color: #ad8f53;
     color: #fff;
     border: none;
     border-radius: 8px;
     text-decoration: none;
-    transition: all 0.5s ease;
-    margin-left: 20px;
+    transition: all 0.3s ease;
     text-align: center;
-    padding: 1px;
+    padding: 15px 20px;
+    font-weight: 600;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 50px;
 }
 
 .cart-btn:hover {
     background-color: #8b6f3f;
     color: #fff;
     text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(173, 143, 83, 0.3);
 }
 
 .cart-btn i {
-    font-size: 24px;
-    margin-bottom: 8px;
-    display: block;
+    font-size: 18px;
 }
 
 .product-actions {
@@ -187,47 +202,35 @@
 }
 
 .btn-back-to-products {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
-    color: white;
-    padding: 20px 25px;
+    font-family: 'Poppins', sans-serif;
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
     border-radius: 8px;
     text-decoration: none;
-    font-weight: 600;
-    font-size: 14px;
-    transition: all 0.5s ease;
-    box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
-    border: none;
-    cursor: pointer;
-    min-height: 120px;
+    transition: all 0.3s ease;
     text-align: center;
+    padding: 15px 20px;
+    font-weight: 600;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 50px;
 }
 
 .btn-back-to-products:hover {
-    background: linear-gradient(135deg, #495057 0%, #343a40 100%);
-    color: white;
+    background-color: #5a6268;
+    color: #fff;
     text-decoration: none;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
-}
-
-.btn-back-to-products:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 10px rgba(108, 117, 125, 0.3);
+    box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
 }
 
 .btn-back-to-products i {
-    font-size: 24px;
-    margin-bottom: 8px;
-    display: block;
-    transition: transform 0.3s ease;
-}
-
-.btn-back-to-products:hover i {
-    transform: translateX(-3px);
+    font-size: 18px;
 }
 
 /* Quantity Label Styling */

@@ -46,8 +46,13 @@
                     <div class="single-product-item" onclick="window.location.href='{{ route('products.show', $product->id) }}'">
                         <div class="product-image">
                             <a href="{{ route('products.show', $product->id) }}">
-                                <img src="{{ asset('assets/img/products/' . $product->image) }}"
-                                     alt="{{ $product->name }}">
+                                <img src="/assets/img/{{ $product->image }}"
+                                     alt="{{ $product->name }}"
+                                     onload="this.nextElementSibling.style.display='none';"
+                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="product-placeholder" style="display: none; width: 100%; height: 200px; background: #f8f9fa; border: 2px dashed #dee2e6; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-image" style="font-size: 3rem; color: #ad8f53;"></i>
+                                </div>
                             </a>
                         </div>
                         <h3 class="arabic-text">{{ $product->name }}</h3>
@@ -113,7 +118,7 @@
 <style>
 .category-header {
     background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-    padding: 40px 20px;
+    padding: 20px 10px;
     border-radius: 15px;
     margin-bottom: 30px;
     border: 2px solid #ad8f53;
@@ -162,7 +167,7 @@
 
 @media only screen and (max-width: 575.96px) {
     .category-header {
-        padding: 30px 15px;
+        padding: 15px 8px;
     }
 
     .category-header h1 {

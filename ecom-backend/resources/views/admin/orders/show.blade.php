@@ -158,9 +158,14 @@
                                 <td>
                                     <div class="product-info">
                                         @if($item->product->image)
-                                            <img src="{{ asset('storage/' . $item->product->image) }}"
+                                            <img src="/assets/img/{{ $item->product->image }}"
                                                  alt="{{ $item->product->name }}"
-                                                 class="product-image">
+                                                 class="product-image"
+                                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                                                 onload="this.nextElementSibling.style.display='none';">
+                                            <div class="no-image" style="display: none;">
+                                                <i class="fas fa-image"></i>
+                                            </div>
                                         @else
                                             <div class="no-image">
                                                 <i class="fas fa-image"></i>
@@ -397,23 +402,40 @@
 }
 
 .product-image {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    border-radius: 8px;
-    border: 2px solid #f0f0f0;
+    width: 30px !important;
+    height: 30px !important;
+    object-fit: cover !important;
+    border-radius: 4px !important;
+    border: 1px solid #e0e0e0 !important;
+    flex-shrink: 0 !important;
+    max-width: 30px !important;
+    max-height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+    display: block !important;
+}
+
+/* Force table cell to not expand */
+.admin-table td {
+    max-width: 200px !important;
+    overflow: hidden !important;
+}
+
+.admin-table .product-info {
+    max-width: 180px !important;
 }
 
 .no-image {
-    width: 50px;
-    height: 50px;
+    width: 30px !important;
+    height: 30px !important;
     background: #f8f9fa;
-    border-radius: 8px;
+    border-radius: 4px !important;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #999;
-    border: 2px solid #e9ecef;
+    border: 1px solid #e0e0e0 !important;
+    flex-shrink: 0 !important;
 }
 
 .product-details h6 {
