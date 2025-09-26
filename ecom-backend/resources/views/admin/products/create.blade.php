@@ -84,27 +84,31 @@
                         <div class="col-md-6">
                             <div class="image-upload-area">
                                 <input type="file"
-                                       name="image"
-                                       id="productImage"
-                                       class="file-input @error('image') is-invalid @enderror"
+                                       name="images[]"
+                                       id="productImages"
+                                       class="file-input @error('images') is-invalid @enderror"
                                        accept="image/*"
-                                       onchange="previewImage(event)">
-                                <label for="productImage" class="upload-label">
+                                       multiple
+                                       onchange="previewImages(event)">
+                                <label for="productImages" class="upload-label">
                                     <i class="fas fa-cloud-upload-alt"></i>
-                                    <span>اختر صورة المنتج</span>
-                                    <small>PNG, JPG, GIF حتى 5MB</small>
+                                    <span>اختر صور المنتج</span>
+                                    <small>PNG, JPG, GIF حتى 5MB (يمكن رفع عدة صور)</small>
                                 </label>
-                                @error('image')
+                                @error('images')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                @error('images.*')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
 
                         <div class="col-md-6">
-                            <div class="image-preview-container">
-                                <div id="imagePreview" class="image-preview">
-                                    <i class="fas fa-image fa-3x"></i>
-                                    <p>معاينة الصورة ستظهر هنا</p>
+                            <div class="images-preview-container">
+                                <div id="imagesPreview" class="images-preview">
+                                    <i class="fas fa-images fa-3x"></i>
+                                    <p>معاينة الصور ستظهر هنا</p>
                                 </div>
                             </div>
                         </div>
@@ -1087,47 +1091,232 @@
     .btn-admin-outline:hover {
         transform: translateY(-3px);
         box-shadow: 0 6px 20px rgba(206, 181, 127, 0.3);
+    /* Multiple Images Preview */
+    .images-preview-container {
+        background: #f8f9fa;
+        border: 2px dashed #dee2e6;
+        border-radius: 15px;
+        padding: 20px;
+        min-height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .images-preview {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+
+    /* Override global body img rule for this page only - More specific */
+    body .images-preview-container .preview-image-item img,
+    .images-preview-container .preview-image-item img,
+    .preview-image-item img {
+        max-width: 80px !important;
+        width: 80px !important;
+        height: 80px !important;
+        object-fit: cover !important;
+        display: block !important;
+        min-width: 80px !important;
+        min-height: 80px !important;
+    }
+
+    /* Multiple Images Preview - Specific targeting */
+    .images-preview-container .preview-image-item {
+        position: relative;
+        width: 80px !important;
+        height: 80px !important;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 2px solid #ceb57f;
+        max-width: 80px !important;
+        max-height: 80px !important;
+        flex-shrink: 0;
+    }
+
+    .preview-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        font-size: 10px;
+    }
+
+    .preview-image-item:hover .preview-overlay {
+        opacity: 1;
+    }
+
+    .btn-remove-preview {
+        background: #dc3545;
+        border: none;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        cursor: pointer;
+        margin-top: 5px;
     }
 </style>
 
 <script>
-function previewImage(event) {
-    const file = event.target.files[0];
-    if (file) {
+// Global variable to store all selected files
+let allSelectedFiles = [];
+
+function previewImages(event) {
+    const files = event.target.files;
+    const previewContainer = document.getElementById('imagesPreview');
+
+    console.log('Files selected:', files.length);
+    console.log('Files:', files);
+
+    // Add new files to the existing collection
+    Array.from(files).forEach(file => {
+        // Check if file already exists
+        const exists = allSelectedFiles.some(existingFile =>
+            existingFile.name === file.name && existingFile.size === file.size
+        );
+
+        if (!exists) {
+            allSelectedFiles.push(file);
+            console.log('Added file:', file.name);
+        }
+    });
+
+    console.log('Total files:', allSelectedFiles.length);
+
+    // Clear previous previews
+    previewContainer.innerHTML = '';
+
+    if (allSelectedFiles.length === 0) {
+        previewContainer.innerHTML = '<i class="fas fa-images fa-3x"></i><p>معاينة الصور ستظهر هنا</p>';
+        return;
+    }
+
+    // Validate all files
+    for (let i = 0; i < allSelectedFiles.length; i++) {
+        const file = allSelectedFiles[i];
+
         // Validate file size (5MB max)
         if (file.size > 5 * 1024 * 1024) {
-            alert('حجم الملف يجب أن يكون أقل من 5 ميجابايت');
-            return;
+            alert(`حجم الملف ${file.name} يجب أن يكون أقل من 5 ميجابايت`);
+            // Remove the invalid file
+            allSelectedFiles.splice(i, 1);
+            continue;
         }
 
         // Validate file type
         if (!file.type.startsWith('image/')) {
-            alert('يرجى اختيار ملف صورة صالح');
-            return;
+            alert(`الملف ${file.name} ليس صورة صالحة`);
+            // Remove the invalid file
+            allSelectedFiles.splice(i, 1);
+            continue;
         }
+    }
 
+    // Create preview for each image
+    allSelectedFiles.forEach((file, index) => {
+        console.log(`Processing file ${index + 1}:`, file.name, file.size);
         const reader = new FileReader();
         reader.onload = function(e) {
-            const preview = document.getElementById('imagePreview');
-            preview.innerHTML = `
-                <img src="${e.target.result}" alt="معاينة الصورة">
-                <div class="mt-2">
-                    <small class="text-success">
-                        <i class="fas fa-check-circle"></i> تم اختيار الصورة بنجاح
-                    </small>
+            const imagePreview = document.createElement('div');
+            imagePreview.className = 'preview-image-item';
+            imagePreview.innerHTML = `
+                <img src="${e.target.result}" alt="معاينة ${index + 1}" style="width: 250px !important; height: 400px !important; max-width: 250px !important; max-height: 400px !important; object-fit: cover !important; display: block !important; border-radius : 10px !important;20px !important; ">
+                <div class="preview-overlay">
+                    <span>صورة ${index + 1}</span>
+                    <button type="button" class="btn-remove-preview" onclick="removePreviewImage(this, ${index})">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
             `;
+            previewContainer.appendChild(imagePreview);
+            console.log(`Preview added for file ${index + 1}`);
         };
         reader.readAsDataURL(file);
+    });
+
+    // Update the file input to include all selected files
+    updateFileInput();
+}
+
+function updateFileInput() {
+    const fileInput = document.getElementById('productImages');
+    const dt = new DataTransfer();
+
+    allSelectedFiles.forEach(file => {
+        dt.items.add(file);
+    });
+
+    fileInput.files = dt.files;
+    console.log('File input updated with', allSelectedFiles.length, 'files');
+}
+
+function removePreviewImage(button, index) {
+    // Remove from array
+    allSelectedFiles.splice(index, 1);
+
+    // Remove from DOM
+    const previewItem = button.closest('.preview-image-item');
+    previewItem.remove();
+
+    // Update file input
+    updateFileInput();
+
+    // Re-render all previews to update numbering
+    const previewContainer = document.getElementById('imagesPreview');
+    previewContainer.innerHTML = '';
+
+    if (allSelectedFiles.length === 0) {
+        previewContainer.innerHTML = '<i class="fas fa-images fa-3x"></i><p>معاينة الصور ستظهر هنا</p>';
+        return;
     }
+
+    // Recreate all previews
+    allSelectedFiles.forEach((file, index) => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const imagePreview = document.createElement('div');
+            imagePreview.className = 'preview-image-item';
+            imagePreview.innerHTML = `
+                <img src="${e.target.result}" alt="معاينة ${index + 1}" style="width: 80px !important; height: 80px !important; max-width: 80px !important; max-height: 80px !important; object-fit: cover !important; display: block !important;">
+                <div class="preview-overlay">
+                    <span>صورة ${index + 1}</span>
+                    <button type="button" class="btn-remove-preview" onclick="removePreviewImage(this, ${index})">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            previewContainer.appendChild(imagePreview);
+        };
+        reader.readAsDataURL(file);
+    });
 }
 
 function resetForm() {
     if (confirm('هل أنت متأكد من إعادة تعيين النموذج؟ سيتم مسح جميع البيانات المدخلة.')) {
         document.getElementById('productForm').reset();
-        document.getElementById('imagePreview').innerHTML = `
-            <i class="fas fa-image fa-3x"></i>
-            <p>معاينة الصورة ستظهر هنا</p>
+        // Clear the global files array
+        allSelectedFiles = [];
+        document.getElementById('imagesPreview').innerHTML = `
+            <i class="fas fa-images fa-3x"></i>
+            <p>معاينة الصور ستظهر هنا</p>
         `;
 
         // Reset color inputs

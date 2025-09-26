@@ -9,16 +9,67 @@
 </div>
     <div class="row">
         <div class="col-lg-6">
-            <!-- Product Image -->
+            <!-- Product Images -->
             <div class="single-product-img">
-                <img src="/assets/img/{{ $product->image }}"
-                     alt="{{ $product->name }}"
-                     class="img-fluid"
-                     onload="this.nextElementSibling.style.display='none';"
-                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div class="product-placeholder" style="display: none; width: 100%; height: 400px; background: #f8f9fa; border: 2px dashed #dee2e6; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                    <i class="fas fa-image" style="font-size: 4rem; color: #ad8f53;"></i>
-                </div>
+                @if($product->images && count($product->images) > 0)
+                    <!-- Main Image Display -->
+                    <div class="main-image-container mb-3 position-relative">
+                        @if(count($product->images) > 1)
+                            <!-- Navigation Arrows -->
+                            <button class="image-nav-btn image-nav-prev" onclick="previousImage()" title="الصورة السابقة">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="image-nav-btn image-nav-next" onclick="nextImage()" title="الصورة التالية">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        @endif
+
+                        <img id="mainProductImage"
+                             src="/assets/img/{{ $product->images[0] }}"
+                             alt="{{ $product->name }}"
+                             class="img-fluid main-product-image"
+                             onload="this.nextElementSibling.style.display='none';"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="product-placeholder" style="display: none; width: 100%; height: 400px; background: #f8f9fa; border: 2px dashed #dee2e6; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-image" style="font-size: 4rem; color: #ad8f53;"></i>
+                        </div>
+
+                        @if(count($product->images) > 1)
+                            <!-- Image Counter -->
+                            <div class="image-counter">
+                                <span id="currentImageNumber">1</span> / <span id="totalImages">{{ count($product->images) }}</span>
+                            </div>
+                        @endif
+                    </div>
+
+                    <!-- Thumbnail Images -->
+                    @if(count($product->images) > 1)
+                        <div class="thumbnail-images">
+                            <div class="row">
+                                @foreach($product->images as $index => $image)
+                                    <div class="col-3 mb-2">
+                                        <img src="/assets/img/{{ $image }}"
+                                             alt="{{ $product->name }} - صورة {{ $index + 1 }}"
+                                             class="img-fluid thumbnail-image {{ $index === 0 ? 'active' : '' }}"
+                                             onclick="changeMainImage('/assets/img/{{ $image }}', this)"
+                                             style="cursor: pointer; border: 2px solid #ddd; border-radius: 5px; transition: all 0.3s ease;"
+                                             onerror="this.style.display='none';">
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                @else
+                    <!-- Fallback to single image -->
+                    <img src="/assets/img/{{ $product->image }}"
+                         alt="{{ $product->name }}"
+                         class="img-fluid"
+                         onload="this.nextElementSibling.style.display='none';"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-placeholder" style="display: none; width: 100%; height: 400px; background: #f8f9fa; border: 2px dashed #dee2e6; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-image" style="font-size: 4rem; color: #ad8f53;"></i>
+                    </div>
+                @endif
             </div>
         </div>
 
@@ -312,5 +363,190 @@
         gap: 1rem !important;
     }
 }
+
+/* Multiple Images Styling */
+.main-image-container {
+    position: relative;
+}
+
+.main-product-image {
+    border-radius: 5px;
+    -webkit-box-shadow: 0 0 20px #ddd;
+    box-shadow: 0 0 20px #ddd;
+    max-width: 100%;
+    height: auto;
+    min-height: 400px;
+    object-fit: cover;
+}
+
+/* Navigation Arrows */
+.image-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    color: #ad8f53;
+    border: 2px solid #ad8f53;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(5px);
+}
+
+.image-nav-btn:hover {
+    background: #ad8f53;
+    color: white;
+    transform: translateY(-50%) scale(1.05);
+    box-shadow: 0 4px 15px rgba(173, 143, 83, 0.4);
+}
+
+.image-nav-btn:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.image-nav-prev {
+    left: 21px;
+}
+
+.image-nav-next {
+    right: 1px;
+}
+
+/* Image Counter */
+.image-counter {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    background: rgba(173, 143, 83, 0.9);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 13px;
+    font-weight: 600;
+    z-index: 10;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.thumbnail-image {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.thumbnail-image:hover {
+    border-color: #ad8f53 !important;
+    transform: scale(1.05);
+}
+
+.thumbnail-image.active {
+    border-color: #ad8f53 !important;
+    border-width: 3px !important;
+}
+
+.thumbnail-images {
+    margin-top: 15px;
+}
+
+.thumbnail-images .col-3 {
+    padding: 0 5px;
+}
+
+@media (max-width: 768px) {
+    .main-product-image {
+        min-height: 300px;
+    }
+
+    .thumbnail-image {
+        height: 60px;
+    }
+}
 </style>
+
+<script>
+let currentImageIndex = 0;
+const productImages = @json($product->images ?? []);
+
+function changeMainImage(imageSrc, thumbnailElement) {
+    // Update main image
+    const mainImage = document.getElementById('mainProductImage');
+    if (mainImage) {
+        mainImage.src = imageSrc;
+    }
+
+    // Update active thumbnail
+    const thumbnails = document.querySelectorAll('.thumbnail-image');
+    thumbnails.forEach(thumb => thumb.classList.remove('active'));
+    thumbnailElement.classList.add('active');
+
+    // Update current index
+    const thumbnailIndex = Array.from(thumbnails).indexOf(thumbnailElement);
+    if (thumbnailIndex !== -1) {
+        currentImageIndex = thumbnailIndex;
+        updateImageCounter();
+    }
+}
+
+function nextImage() {
+    if (productImages.length > 1) {
+        currentImageIndex = (currentImageIndex + 1) % productImages.length;
+        updateMainImage();
+    }
+}
+
+function previousImage() {
+    if (productImages.length > 1) {
+        currentImageIndex = (currentImageIndex - 1 + productImages.length) % productImages.length;
+        updateMainImage();
+    }
+}
+
+function updateMainImage() {
+    const mainImage = document.getElementById('mainProductImage');
+    if (mainImage && productImages[currentImageIndex]) {
+        mainImage.src = '/assets/img/' + productImages[currentImageIndex];
+    }
+
+    // Update active thumbnail
+    const thumbnails = document.querySelectorAll('.thumbnail-image');
+    thumbnails.forEach(thumb => thumb.classList.remove('active'));
+    if (thumbnails[currentImageIndex]) {
+        thumbnails[currentImageIndex].classList.add('active');
+    }
+
+    updateImageCounter();
+}
+
+function updateImageCounter() {
+    const currentNumber = document.getElementById('currentImageNumber');
+    if (currentNumber) {
+        currentNumber.textContent = currentImageIndex + 1;
+    }
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', function(e) {
+    if (productImages.length > 1) {
+        if (e.key === 'ArrowLeft') {
+            previousImage();
+        } else if (e.key === 'ArrowRight') {
+            nextImage();
+        }
+    }
+});
+
+// Initialize counter on page load
+document.addEventListener('DOMContentLoaded', function() {
+    updateImageCounter();
+});
+</script>
 @endsection
