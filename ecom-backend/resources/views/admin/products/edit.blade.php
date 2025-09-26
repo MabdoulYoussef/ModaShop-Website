@@ -4,6 +4,10 @@
 @section('page-title', 'تعديل المنتج')
 @section('page-description', 'تعديل بيانات المنتج: ' . $product->name)
 
+@section('head')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+@endsection
+
 @section('content')
 
 <!-- Page Header -->
@@ -75,46 +79,67 @@
                     @csrf
                     @method('PUT')
 
-                    <!-- Product Image Section -->
+                    <!-- Hidden inputs for removed images -->
+                    <div id="removedImagesInputs"></div>
+
+                    <!-- Product Images Section -->
                     <div class="form-section">
                         <div class="section-header">
-                            <h6><i class="fas fa-image"></i> صورة المنتج</h6>
-                            <p>اختر صورة عالية الجودة للمنتج</p>
+                            <h6><i class="fas fa-images"></i> صور المنتج</h6>
+                            <p>اختر صور عالية الجودة للمنتج - يمكن رفع عدة صور</p>
                         </div>
 
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="image-upload-area">
                                     <input type="file"
-                                           name="image"
-                                           id="productImage"
-                                           class="file-input @error('image') is-invalid @enderror"
+                                           name="images[]"
+                                           id="productImages"
+                                           class="file-input @error('images') is-invalid @enderror"
                                            accept="image/*"
-                                           onchange="previewImage(event)">
-                                    <label for="productImage" class="upload-label">
+                                           multiple
+                                           onchange="previewImages(event)">
+                                    <label for="productImages" class="upload-label">
                                         <i class="fas fa-cloud-upload-alt"></i>
-                                        <span>اختر صورة المنتج</span>
-                                        <small>PNG, JPG, GIF حتى 5MB</small>
+                                        <span>اختر صور المنتج</span>
+                                        <small>يمكن رفع عدة صور - PNG, JPG, GIF حتى 5MB</small>
                                     </label>
-                                    @error('image')
+                                    @error('images')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
 
                             <div class="col-md-6">
-                                <div class="image-preview-container">
-                                    <div id="imagePreview" class="image-preview">
-                                        @if($product->image)
-                                            <img src="{{ asset('storage/' . $product->image) }}" alt="صورة المنتج الحالية">
-                                            <div class="mt-2">
-                                                <small class="text-info">
-                                                    <i class="fas fa-image"></i> الصورة الحالية
-                                                </small>
+                                <div class="images-preview-container">
+                                    <div id="imagesPreview" class="images-preview">
+                                        @if($product->images && count($product->images) > 0)
+                                            @foreach($product->images as $index => $image)
+                                                <div class="preview-image-item">
+                                                    <img src="/assets/img/{{ $image }}" alt="صورة {{ $index + 1 }}">
+                                                    <div class="preview-overlay">
+                                                        <span>صورة {{ $index + 1 }}</span>
+                                                        <button type="button" class="btn-remove-preview" onclick="removeExistingImage(this, {{ $index }})">
+                                                            <i class="fas fa-times"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        @elseif($product->image)
+                                            <div class="preview-image-item">
+                                                <img src="/assets/img/{{ $product->image }}" alt="صورة المنتج الحالية">
+                                                <div class="preview-overlay">
+                                                    <span>الصورة الحالية</span>
+                                                    <button type="button" class="btn-remove-preview" onclick="removeExistingImage(this, 0)">
+                                                        <i class="fas fa-times"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         @else
-                                            <i class="fas fa-image fa-3x"></i>
-                                            <p>معاينة الصورة ستظهر هنا</p>
+                                            <div class="no-images-placeholder">
+                                                <i class="fas fa-images fa-3x"></i>
+                                                <p>معاينة الصور ستظهر هنا</p>
+                                            </div>
                                         @endif
                                     </div>
                                 </div>
@@ -491,25 +516,106 @@
         height: 100%;
     }
 
-    .image-preview {
+    .images-preview-container {
+        height: 100%;
+    }
+
+    .images-preview {
         width: 100%;
-        height: 200px;
+        min-height: 200px;
         border: 2px dashed #dee2e6;
         border-radius: 15px;
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 15px;
         background: #f8f9fa;
         color: #666;
         transition: all 0.3s ease;
     }
 
-    .image-preview img {
-        max-width: 100%;
-        max-height: 100%;
-        border-radius: 10px;
+    .preview-image-item {
+        position: relative;
+        width: 80px;
+        height: 80px;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 2px solid #dee2e6;
+        transition: all 0.3s ease;
+    }
+
+    .preview-image-item:hover {
+        border-color: #ad8f53;
+        transform: scale(1.05);
+    }
+
+    .preview-image-item img {
+        width: 100%;
+        height: 100%;
         object-fit: cover;
+        display: block;
+    }
+
+    .preview-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        font-size: 10px;
+        text-align: center;
+    }
+
+    .preview-image-item:hover .preview-overlay {
+        opacity: 1;
+    }
+
+    .preview-overlay span {
+        margin-bottom: 5px;
+        font-weight: 600;
+    }
+
+    .btn-remove-preview {
+        background: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-remove-preview:hover {
+        background: #c82333;
+        transform: scale(1.1);
+    }
+
+    .no-images-placeholder {
+        width: 100%;
+        height: 200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #666;
+    }
+
+    .no-images-placeholder i {
+        margin-bottom: 10px;
+        color: #ad8f53;
     }
 
     .size-options {
@@ -667,39 +773,155 @@
 </style>
 
 <script>
-function previewImage(event) {
-    const file = event.target.files[0];
-    if (file) {
-        // Validate file size (5MB max)
-        if (file.size > 5 * 1024 * 1024) {
-            alert('حجم الملف يجب أن يكون أقل من 5 ميجابايت');
-            return;
-        }
+// Global variables for multiple image handling
+let allSelectedFiles = [];
+let existingImages = @json($product->images ?? []);
+let removedImageIndexes = [];
 
-        // Validate file type
-        if (!file.type.startsWith('image/')) {
-            alert('يرجى اختيار ملف صورة صالح');
-            return;
-        }
+function previewImages(event) {
+    const files = Array.from(event.target.files);
+    console.log('Files selected:', files.length);
+    console.log('Files:', files);
 
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const preview = document.getElementById('imagePreview');
-            preview.innerHTML = `
-                <img src="${e.target.result}" alt="معاينة الصورة">
-                <div class="mt-2">
-                    <small class="text-success">
-                        <i class="fas fa-check-circle"></i> تم اختيار صورة جديدة
-                    </small>
+    // Add new files to the global array
+    files.forEach(file => {
+        // Check if file already exists
+        const fileExists = allSelectedFiles.some(existingFile =>
+            existingFile.name === file.name && existingFile.size === file.size
+        );
+
+        if (!fileExists) {
+            // Validate file size (5MB max)
+            if (file.size > 5 * 1024 * 1024) {
+                alert(`حجم الملف ${file.name} يجب أن يكون أقل من 5 ميجابايت`);
+                return;
+            }
+
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                alert(`يرجى اختيار ملف صورة صالح: ${file.name}`);
+                return;
+            }
+
+            allSelectedFiles.push(file);
+        }
+    });
+
+    // Update the file input to reflect all selected files
+    updateFileInput();
+
+    // Generate previews for new files
+    generatePreviews();
+}
+
+function updateFileInput() {
+    const fileInput = document.getElementById('productImages');
+    const dataTransfer = new DataTransfer();
+
+    allSelectedFiles.forEach(file => {
+        dataTransfer.items.add(file);
+    });
+
+    fileInput.files = dataTransfer.files;
+}
+
+function generatePreviews() {
+    const previewContainer = document.getElementById('imagesPreview');
+
+    // Clear existing previews
+    previewContainer.innerHTML = '';
+
+    // Add existing images (that haven't been removed)
+    existingImages.forEach((image, index) => {
+        if (!removedImageIndexes.includes(index)) {
+            const imagePreview = document.createElement('div');
+            imagePreview.className = 'preview-image-item';
+            imagePreview.innerHTML = `
+                <img src="/assets/img/${image}" alt="صورة ${index + 1}">
+                <div class="preview-overlay">
+                    <span>صورة ${index + 1}</span>
+                    <button type="button" class="btn-remove-preview" onclick="removeExistingImage(this, ${index})">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
             `;
+            previewContainer.appendChild(imagePreview);
+        }
+    });
+
+    // Add new selected files
+    allSelectedFiles.forEach((file, index) => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const imagePreview = document.createElement('div');
+            imagePreview.className = 'preview-image-item';
+            imagePreview.innerHTML = `
+                <img src="${e.target.result}" alt="معاينة ${index + 1}" style="width: 80px !important; height: 80px !important; max-width: 80px !important; max-height: 80px !important; object-fit: cover !important; display: block !important;">
+                <div class="preview-overlay">
+                    <span>صورة ${index + 1}</span>
+                    <button type="button" class="btn-remove-preview" onclick="removePreviewImage(this, ${index})">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            previewContainer.appendChild(imagePreview);
         };
         reader.readAsDataURL(file);
-    }
+    });
+}
+
+function removePreviewImage(button, index) {
+    // Remove from allSelectedFiles array
+    allSelectedFiles.splice(index, 1);
+
+    // Update file input
+    updateFileInput();
+
+    // Regenerate previews
+    generatePreviews();
+}
+
+function removeExistingImage(button, index) {
+    // Add to removed indexes
+    removedImageIndexes.push(index);
+
+    // Update hidden inputs for removed images
+    updateRemovedImagesInputs();
+
+    // Regenerate previews
+    generatePreviews();
+}
+
+function updateRemovedImagesInputs() {
+    const container = document.getElementById('removedImagesInputs');
+    container.innerHTML = '';
+
+    removedImageIndexes.forEach(index => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'removed_image_indexes[]';
+        input.value = index;
+        container.appendChild(input);
+    });
 }
 
 function resetForm() {
     if (confirm('هل أنت متأكد من إعادة تعيين النموذج؟ سيتم مسح جميع البيانات المدخلة.')) {
+        // Clear multiple image arrays
+        allSelectedFiles = [];
+        removedImageIndexes = [];
+
+        // Clear removed images inputs
+        document.getElementById('removedImagesInputs').innerHTML = '';
+
+        // Clear preview container
+        const previewContainer = document.getElementById('imagesPreview');
+        previewContainer.innerHTML = '<div class="no-images-placeholder"><i class="fas fa-images fa-3x"></i><p>معاينة الصور ستظهر هنا</p></div>';
+
+        // Reset file input
+        document.getElementById('productImages').value = '';
+
+        // Reload page to reset everything
         location.reload();
     }
 }
@@ -769,10 +991,38 @@ function previewProduct() {
     `);
 }
 
+// CSRF Token refresh function
+function refreshCSRFToken() {
+    fetch('/admin/products/{{ $product->id }}/edit', {
+        method: 'GET',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.text())
+    .then(html => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const newToken = doc.querySelector('input[name="_token"]');
+        if (newToken) {
+            const currentToken = document.querySelector('input[name="_token"]');
+            if (currentToken) {
+                currentToken.value = newToken.value;
+            }
+        }
+    })
+    .catch(error => {
+        console.log('CSRF token refresh failed:', error);
+    });
+}
+
 // Auto-save draft functionality
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('productForm');
     const inputs = form.querySelectorAll('input, textarea, select');
+
+    // Refresh CSRF token every 30 minutes
+    setInterval(refreshCSRFToken, 30 * 60 * 1000);
 
     // Load saved draft
     const savedDraft = localStorage.getItem('product_edit_draft_{{ $product->id }}');
@@ -780,6 +1030,11 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const data = JSON.parse(savedDraft);
             Object.keys(data).forEach(key => {
+                // Skip CSRF token and method override
+                if (key === '_token' || key === '_method') {
+                    return;
+                }
+
                 const input = form.querySelector(`[name="${key}"]`);
                 if (input && input.type !== 'file') {
                     if (input.type === 'checkbox') {
@@ -800,6 +1055,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const formData = new FormData(form);
             const data = {};
             for (let [key, value] of formData.entries()) {
+                // Skip CSRF token and method override
+                if (key === '_token' || key === '_method') {
+                    continue;
+                }
                 data[key] = value;
             }
             localStorage.setItem('product_edit_draft_{{ $product->id }}', JSON.stringify(data));
@@ -807,8 +1066,24 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Clear draft on successful submit
-    form.addEventListener('submit', function() {
+    form.addEventListener('submit', function(e) {
+        // Ensure CSRF token is present
+        const csrfToken = document.querySelector('input[name="_token"]');
+        if (!csrfToken || !csrfToken.value) {
+            e.preventDefault();
+            alert('خطأ في الأمان. يرجى إعادة تحميل الصفحة والمحاولة مرة أخرى.');
+            return;
+        }
+
+        // Clear draft
         localStorage.removeItem('product_edit_draft_{{ $product->id }}');
+
+        // Show loading state
+        const submitBtn = form.querySelector('button[type="submit"]');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+        }
     });
 
     // Update size input when checkboxes change

@@ -96,8 +96,8 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         \Log::info('Product Store Request:', [
-            'has_file' => $request->hasFile('image'),
-            'file_name' => $request->hasFile('image') ? $request->file('image')->getClientOriginalName() : 'No file',
+            'has_files' => $request->hasFile('images'),
+            'files_count' => $request->hasFile('images') ? count($request->file('images')) : 0,
             'all_data' => $request->all()
         ]);
 
@@ -106,7 +106,8 @@ class ProductController extends Controller
                 'name' => 'required|string|max:255',
                 'description' => 'nullable|string',
                 'price' => 'required|numeric|min:0',
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'images' => 'required|array|min:1',
+                'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:5120',
                 'category_id' => 'nullable|exists:categories,id',
                 'size' => 'nullable|string|max:255',
                 'sizes' => 'nullable|array',
@@ -130,10 +131,9 @@ class ProductController extends Controller
                 ->withInput();
         }
 
-        // Handle image upload
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
+        // Handle multiple images upload
+        $uploadedImages = [];
+        if ($request->hasFile('images')) {
             $imagePath = public_path('assets/img/products');
 
             // Ensure directory exists
@@ -141,15 +141,23 @@ class ProductController extends Controller
                 mkdir($imagePath, 0755, true);
             }
 
-            $image->move($imagePath, $imageName);
-            $validated['image'] = 'products/' . $imageName;
+            foreach ($request->file('images') as $image) {
+                $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $image->move($imagePath, $imageName);
+                $uploadedImages[] = 'products/' . $imageName;
 
-            \Log::info('Product image uploaded successfully:', [
-                'original_name' => $image->getClientOriginalName(),
-                'saved_as' => $imageName,
-                'path' => $validated['image']
-            ]);
+                \Log::info('Image uploaded:', [
+                    'original_name' => $image->getClientOriginalName(),
+                    'saved_name' => $imageName,
+                    'path' => 'products/' . $imageName
+                ]);
+            }
         }
+
+        // Set the first image as the main image for backward compatibility
+        $mainImage = !empty($uploadedImages) ? $uploadedImages[0] : null;
+        $validated['image'] = $mainImage;
+        $validated['images'] = $uploadedImages;
 
         // Handle colors - combine predefined and custom colors
         if ($request->has('colors')) {
@@ -217,6 +225,10 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'price' => 'sometimes|required|numeric|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:5120',
+            'removed_image_indexes' => 'nullable|array',
+            'removed_image_indexes.*' => 'integer|min:0',
             'category_id' => 'nullable|exists:categories,id',
             'size' => 'nullable|string|max:255',
             'sizes' => 'nullable|array',
@@ -231,15 +243,37 @@ class ProductController extends Controller
             'is_recommended' => 'nullable|boolean',
         ]);
 
-        // Handle image upload
-        if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($product->image && file_exists(public_path('assets/img/' . $product->image))) {
-                unlink(public_path('assets/img/' . $product->image));
+        // Handle image removal and upload
+        $existingImages = $product->images ?? [];
+        $removedIndexes = $request->input('removed_image_indexes', []);
+
+        // Remove deleted images from existing images array
+        if (!empty($removedIndexes)) {
+            // Sort indexes in descending order to avoid index shifting issues
+            rsort($removedIndexes);
+
+            foreach ($removedIndexes as $index) {
+                if (isset($existingImages[$index])) {
+                    // Delete file from storage
+                    $imagePath = public_path('assets/img/' . $existingImages[$index]);
+                    if (file_exists($imagePath)) {
+                        unlink($imagePath);
+                        \Log::info('Deleted image file:', ['path' => $imagePath]);
+                    }
+
+                    // Remove from array
+                    unset($existingImages[$index]);
+                }
             }
 
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            // Re-index array to remove gaps
+            $existingImages = array_values($existingImages);
+            \Log::info('Removed images:', ['indexes' => $removedIndexes, 'remaining_count' => count($existingImages)]);
+        }
+
+        // Handle new images upload
+        if ($request->hasFile('images')) {
+            $uploadedImages = [];
             $imagePath = public_path('assets/img/products');
 
             // Ensure directory exists
@@ -247,12 +281,26 @@ class ProductController extends Controller
                 mkdir($imagePath, 0755, true);
             }
 
-            $image->move($imagePath, $imageName);
-            $validated['image'] = 'products/' . $imageName;
+            foreach ($request->file('images') as $image) {
+                $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $image->move($imagePath, $imageName);
+                $uploadedImages[] = 'products/' . $imageName;
+            }
 
-            \Log::info('Image uploaded successfully:', ['path' => $validated['image']]);
+            // Combine remaining existing images with new ones
+            $allImages = array_merge($existingImages, $uploadedImages);
+
+            $validated['images'] = $allImages;
+            $validated['image'] = $allImages[0]; // Set first image as main image for backward compatibility
+
+            \Log::info('Multiple images uploaded successfully:', ['count' => count($uploadedImages), 'paths' => $uploadedImages]);
         } else {
-            \Log::info('No image file in request');
+            // No new images uploaded, just update with remaining existing images
+            $validated['images'] = $existingImages;
+            if (!empty($existingImages)) {
+                $validated['image'] = $existingImages[0]; // Set first image as main image
+            }
+            \Log::info('No new images uploaded, updated existing images only');
         }
 
         // Handle colors - combine predefined and custom colors

@@ -2430,6 +2430,9 @@ button.cart-btn i {
   border-radius: 5px;
   -webkit-box-shadow: 0 0 20px #ddd;
   box-shadow: 0 0 20px #ddd;
+    width: 340px;
+    display: block;
+    margin-top: 5px;
 }
 
 .single-product-content h3 {

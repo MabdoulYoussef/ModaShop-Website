@@ -14,6 +14,7 @@ class Product extends Model
         'description',
         'price',
         'image',
+        'images',
         'category_id',
         'size',
         'colors',
@@ -26,6 +27,7 @@ class Product extends Model
         'price' => 'decimal:2',
         'stock' => 'integer',
         'colors' => 'array',
+        'images' => 'array',
         'is_featured' => 'boolean',
         'is_recommended' => 'boolean',
     ];

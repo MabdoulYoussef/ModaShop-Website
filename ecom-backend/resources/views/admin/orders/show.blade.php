@@ -6,6 +6,9 @@
 
 @section('content')
 
+<!-- Add unique class to this page -->
+<div class="admin-orders-detail-page">
+
 <!-- Order Status Alert -->
 @if(session('error'))
 <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -161,6 +164,7 @@
                                             <img src="/assets/img/{{ $item->product->image }}"
                                                  alt="{{ $item->product->name }}"
                                                  class="product-image"
+                                                 style="width: 170 !important; height: auto !important; max-width: 100px !important; max-height: 100px !important;"
                                                  onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
                                                  onload="this.nextElementSibling.style.display='none';">
                                             <div class="no-image" style="display: none;">
@@ -401,19 +405,21 @@
     gap: 12px;
 }
 
+
 .product-image {
-    width: 30px !important;
-    height: 30px !important;
+    width: 100px !important;
+    height: auto !important;
     object-fit: cover !important;
     border-radius: 4px !important;
     border: 1px solid #e0e0e0 !important;
     flex-shrink: 0 !important;
-    max-width: 30px !important;
-    max-height: 30px !important;
-    min-width: 30px !important;
-    min-height: 30px !important;
+    max-width: 100px !important;
+    max-height: 100px !important;
+    min-width: 100px !important;
+    min-height: auto !important;
     display: block !important;
 }
+
 
 /* Force table cell to not expand */
 .admin-table td {
