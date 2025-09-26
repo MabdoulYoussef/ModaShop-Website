@@ -15,10 +15,17 @@ class HomeController extends Controller
         // Cache featured products for 1 hour
         $featuredProducts = Cache::remember('homepage_featured_products', 3600, function () {
             return Product::where('stock', '>', 0)
-                          ->inRandomOrder()
-                          ->take(6)
+                          ->where('is_featured', true)
+                          ->take(3)
                           ->with('category')
                           ->get();
+        });
+
+        // Cache monthly offer product for 1 hour
+        $monthlyOfferProduct = Cache::remember('homepage_monthly_offer', 3600, function () {
+            return Product::where('stock', '>', 0)
+                          ->where('is_monthly_offer', true)
+                          ->first();
         });
 
         // Cache categories for 2 hours
@@ -40,6 +47,7 @@ class HomeController extends Controller
 
         return view('home.index', compact(
             'featuredProducts',
+            'monthlyOfferProduct',
             'categories',
             'latestProducts'
         ));

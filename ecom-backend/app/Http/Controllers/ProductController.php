@@ -120,6 +120,7 @@ class ProductController extends Controller
                 'stock' => 'required|integer|min:0',
                 'is_featured' => 'nullable|boolean',
                 'is_recommended' => 'nullable|boolean',
+                'is_monthly_offer' => 'nullable|boolean',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             \Log::error('Product validation failed:', [
@@ -241,6 +242,7 @@ class ProductController extends Controller
             'stock' => 'sometimes|required|integer|min:0',
             'is_featured' => 'nullable|boolean',
             'is_recommended' => 'nullable|boolean',
+            'is_monthly_offer' => 'nullable|boolean',
         ]);
 
         // Handle image removal and upload

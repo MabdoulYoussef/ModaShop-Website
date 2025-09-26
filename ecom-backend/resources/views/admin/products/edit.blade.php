@@ -278,7 +278,19 @@
                                                {{ old('is_featured', $product->is_featured) ? 'checked' : '' }}>
                                         <label class="form-check-label" for="is_featured">
                                             <i class="fas fa-star"></i> منتج مميز
-                                            <small class="d-block text-muted">يظهر في الصفحة الرئيسية</small>
+                                            <small class="d-block text-muted">يظهر في قسم "منتجاتنا المميزة" (حد أقصى 3 منتجات)</small>
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input"
+                                               type="checkbox"
+                                               name="is_monthly_offer"
+                                               id="is_monthly_offer"
+                                               value="1"
+                                               {{ old('is_monthly_offer', $product->is_monthly_offer) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="is_monthly_offer">
+                                            <i class="fas fa-percentage"></i> عرض الشهر
+                                            <small class="d-block text-muted">يظهر في قسم "عرض الشهر" (منتج واحد فقط)</small>
                                         </label>
                                     </div>
                                     <div class="form-check">

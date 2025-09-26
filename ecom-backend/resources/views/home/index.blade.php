@@ -131,6 +131,7 @@
 
 
 	<!-- cart banner section -->
+	@if($monthlyOfferProduct)
 	<section class="cart-banner pt-100 pb-100">
 		<div class="container">
 			<div class="row clearfix">
@@ -145,14 +146,21 @@
 								</span>
 							</div>
 						</div>
-						<img src="assets/img/8.jpg" alt="عرض خاص">
+						@if($monthlyOfferProduct->images && count($monthlyOfferProduct->images) > 0)
+							<img src="/assets/img/{{ $monthlyOfferProduct->images[0] }}" alt="{{ $monthlyOfferProduct->name }}">
+						@else
+							<img src="/assets/img/{{ $monthlyOfferProduct->image }}" alt="{{ $monthlyOfferProduct->name }}">
+						@endif
 					</div>
 				</div>
 				<!--Content Column-->
 				<div class="content-column col-lg-6">
 					<h3><span class="orange-text">عرض الشهر</span></h3>
-					<h4 class="arabic-text">عباية مميزة</h4>
-					<div class="text arabic-text">اكتشف مجموعتنا المميزة من العبايات الأنيقة والعصرية. جودة عالية وأسعار منافسة مع خصم خاص هذا الشهر</div>
+					<h4 class="arabic-text">{{ $monthlyOfferProduct->name }}</h4>
+					<div class="text arabic-text">{{ $monthlyOfferProduct->description }}</div>
+					<div class="price-display mb-3">
+						<span class="current-price">{{ number_format($monthlyOfferProduct->price, 2) }} درهم مغربي</span>
+					</div>
 					<!--Countdown Timer-->
 					<div class="time-counter">
 						<div class="time-countdown clearfix" data-countdown="2025-10-01">
@@ -171,11 +179,19 @@
 							</div>
 						</div>
 					</div>
-					<a href="cart.html" class="cart-btn mt-3"><i class="fas fa-shopping-cart"></i> أضف إلى السلة</a>
+					<form action="{{ route('cart.add') }}" method="POST" class="d-inline">
+						@csrf
+						<input type="hidden" name="product_id" value="{{ $monthlyOfferProduct->id }}">
+						<input type="hidden" name="quantity" value="1">
+						<button type="submit" class="cart-btn mt-3">
+							<i class="fas fa-shopping-cart"></i> أضف إلى السلة
+						</button>
+					</form>
 				</div>
 			</div>
 		</div>
 	</section>
+	@endif
 	<!-- end cart banner section -->
 
 

@@ -113,10 +113,14 @@
                                     <td>
                                         <div class="product-image-thumb">
                                             @if($product->image)
-                                                <img src="{{ asset('storage/' . $product->image) }}"
+                                                <img src="/assets/img/{{ $product->image }}"
                                                      alt="{{ $product->name }}"
                                                      class="img-thumbnail"
-                                                     style="width: 60px; height: 60px; object-fit: cover;">
+                                                     style="width: 60px; height: 60px; object-fit: cover;"
+                                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                                <div class="no-image-placeholder" style="display: none; width: 60px; height: 60px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px; align-items: center; justify-content: center; flex-direction: column;">
+                                                    <i class="fas fa-image" style="color: #6c757d;"></i>
+                                                </div>
                                             @else
                                                 <div class="no-image-placeholder">
                                                     <i class="fas fa-image"></i>
