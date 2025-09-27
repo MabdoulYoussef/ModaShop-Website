@@ -21,6 +21,7 @@ class Product extends Model
         'stock',
         'is_featured',
         'is_recommended',
+        'is_monthly_offer',
     ];
 
     protected $casts = [
@@ -30,6 +31,7 @@ class Product extends Model
         'images' => 'array',
         'is_featured' => 'boolean',
         'is_recommended' => 'boolean',
+        'is_monthly_offer' => 'boolean',
     ];
 
     // Relationships

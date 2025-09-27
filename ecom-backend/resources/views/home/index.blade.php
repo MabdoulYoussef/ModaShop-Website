@@ -94,8 +94,14 @@
 					<div class="single-product-item">
 						<div class="product-image">
 							<a href="{{ route('products.show', $product->id) }}">
-								<img src="{{ $product->image ? asset('storage/' . $product->image) : asset('assets/img/placeholder.jpg') }}"
-									 alt="{{ $product->name }}">
+								<img src="{{ $product->image ? '/assets/img/' . $product->image : '/assets/img/placeholder.jpg' }}"
+									 alt="{{ $product->name }}"
+									 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+									 onload="this.style.display='block'; this.nextElementSibling.style.display='none';">
+								<div class="product-placeholder" style="display: none; width: 100%; height: 250px; background: #f8f9fa; border-radius: 8px; align-items: center; justify-content: center; flex-direction: column;">
+									<i class="fas fa-image" style="font-size: 3rem; color: #ccc; margin-bottom: 1rem;"></i>
+									<span style="color: #999; font-size: 0.9rem;">صورة غير متاحة</span>
+								</div>
 							</a>
 						</div>
 						<h3 class="arabic-text">{{ $product->name }}</h3>
@@ -147,19 +153,19 @@
 							</div>
 						</div>
 						@if($monthlyOfferProduct->images && count($monthlyOfferProduct->images) > 0)
-							<img src="/assets/img/{{ $monthlyOfferProduct->images[0] }}" alt="{{ $monthlyOfferProduct->name }}">
+							<img src="/assets/img/{{ $monthlyOfferProduct->images[0] }}" alt="{{ $monthlyOfferProduct->name }}" style="width: 420px !important; height: 700px !important; object-fit: cover !important; border-radius: 20px !important;">
 						@else
-							<img src="/assets/img/{{ $monthlyOfferProduct->image }}" alt="{{ $monthlyOfferProduct->name }}">
+							<img src="/assets/img/{{ $monthlyOfferProduct->image }}" alt="{{ $monthlyOfferProduct->name }}" style="width: 420px !important; height: 700px !important; object-fit: cover !important; border-radius: 20px !important; ">
 						@endif
 					</div>
 				</div>
 				<!--Content Column-->
 				<div class="content-column col-lg-6">
 					<h3><span class="orange-text">عرض الشهر</span></h3>
-					<h4 class="arabic-text">{{ $monthlyOfferProduct->name }}</h4>
-					<div class="text arabic-text">{{ $monthlyOfferProduct->description }}</div>
+					<h4 class="arabic-text product-name" style="font-size: 2.2rem !important; font-weight: 500 !important; color: #3d2e03 !important; margin-bottom: 1rem !important; text-shadow: 1px 1px 2px rgba(0,0,0,0.1) !important;">{{ $monthlyOfferProduct->name }}</h4>
+					<div class="text arabic-text product-description" style="font-size: 1.1rem !important; line-height: 1.6 !important; color: #666 !important; margin-bottom: 1.5rem !important;">{{ $monthlyOfferProduct->description }}</div>
 					<div class="price-display mb-3">
-						<span class="current-price">{{ number_format($monthlyOfferProduct->price, 2) }} درهم مغربي</span>
+						<span class="current-price" style="font-size: 1.4rem !important; font-weight: 900 !important; color: #64490d !important; background: linear-gradient(45deg, #644e1f, #765107) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; background-clip: text !important; text-shadow: 1px 1px 2px rgba(0,0,0,0.1) !important;">{{ number_format($monthlyOfferProduct->price, 2) }} درهم مغربي</span>
 					</div>
 					<!--Countdown Timer-->
 					<div class="time-counter">

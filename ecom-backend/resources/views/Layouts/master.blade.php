@@ -167,12 +167,22 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
-					<span class="close-btn"><i class="fas fa-window-close"></i></span>
+					<span class="close-btn"><i class="fas fa-times"></i></span>
 					<div class="search-bar">
 						<div class="search-bar-tablecell">
-							<h3>البحث عن:</h3>
-							<input type="text" placeholder="الكلمات المفتاحية">
-							<button type="submit">بحث <i class="fas fa-search"></i></button>
+							<div class="search-header">
+								<h3>ابحث عن منتجاتك المفضلة</h3>
+								<p>اكتشف مجموعة واسعة من الملابس العربية العصرية</p>
+							</div>
+							<form action="{{ route('products.search') }}" method="GET" class="search-form">
+								<div class="search-input-group">
+									<input type="text" name="q" placeholder="مثال: فستان نسائي أنيق" class="search-input" autocomplete="off">
+									<button type="submit" class="search-btn">
+										<i class="fas fa-search"></i>
+										<span>بحث</span>
+									</button>
+								</div>
+							</form>
 						</div>
 					</div>
 				</div>
@@ -283,6 +293,276 @@
 	<script src="{{ asset('assets/js/sticker.js') }}"></script>
 	<!-- main js -->
 	<script src="{{ asset('assets/js/main.js') }}"></script>
+
+	<!-- Modern Search Bar Styles -->
+	<style>
+	/* Modern Search Bar Styles */
+	.search-area {
+		position: fixed !important;
+		top: 0 !important;
+		left: 0 !important;
+		width: 100% !important;
+		height: 100vh !important;
+		background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 249, 250, 0.95)) !important;
+		backdrop-filter: blur(15px) !important;
+		z-index: 9999 !important;
+		display: flex !important;
+		align-items: center !important;
+		justify-content: center !important;
+		opacity: 0;
+		visibility: hidden;
+		transition: all 0.3s ease;
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+
+	.search-area.search-active {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.close-btn {
+		position: absolute;
+		top: 30px;
+		right: 30px;
+		color: #000000;
+		font-size: 2rem;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		z-index: 10000;
+	}
+
+	.close-btn:hover {
+		color: #000000;
+		transform: rotate(90deg);
+	}
+
+	.search-bar-tablecell {
+		text-align: center !important;
+		max-width: 800px !important;
+		width: 100% !important;
+		padding: 0 20px !important;
+		margin: 0 !important;
+		position: relative !important;
+		top: auto !important;
+		transform: none !important;
+	}
+
+	.search-header h3 {
+		font-size: 3rem;
+		font-weight: 700;
+		color: #2c3e50;
+		margin-bottom: 1rem;
+		text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+	}
+
+	.search-header p {
+		font-size: 1.2rem;
+		color: #666;
+		margin-bottom: 3rem;
+		font-weight: 300;
+	}
+
+	.search-input-group {
+		position: relative;
+		margin-bottom: 2rem;
+	}
+
+	.search-input {
+		width: 100%;
+		padding: 25px 30px;
+		font-size: 0.7rem;
+		border: none;
+		border-radius: 50px;
+		background: rgba(255,255,255,0.9);
+		color: #333 !important;
+		backdrop-filter: blur(10px);
+		border: 2px solid rgba(206, 181, 127, 0.3);
+		transition: all 0.3s ease;
+		text-align: center;
+		box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+		height: 70px;
+	}
+
+	.search-input:focus {
+		outline: none;
+		border-color: #ceb57f;
+		background: rgba(255,255,255,0.95);
+		box-shadow: 0 0 30px rgba(206, 181, 127, 0.3);
+	}
+
+	.search-input::placeholder {
+		color: #999 !important;
+		font-weight: 300;
+	}
+
+	.search-btn {
+		position: absolute;
+		right: 5px;
+		top: 50%;
+		transform: translateY(-50%);
+		background: linear-gradient(45deg, #ceb57f, #ad8f53);
+		border: none;
+		padding: 15px 25px;
+		border-radius: 45px;
+		color: #fff;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+
+	.search-btn:hover {
+		background: linear-gradient(45deg, #ad8f53, #ceb57f);
+		transform: translateY(-50%) scale(1.05);
+		box-shadow: 0 5px 15px rgba(206, 181, 127, 0.4);
+	}
+
+
+	/* Override any existing search area styles */
+	.search-area .search-bar {
+		height: auto !important;
+		display: block !important;
+		width: 100% !important;
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+
+	.search-area .search-bar div {
+		height: auto !important;
+		display: block !important;
+	}
+
+	.search-area div {
+		height: auto !important;
+	}
+
+	/* Ensure proper centering */
+	.search-area .container {
+		height: 100vh !important;
+		display: flex !important;
+		align-items: center !important;
+		justify-content: center !important;
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+
+	.search-area .row {
+		height: auto !important;
+		margin: 0 !important;
+		display: flex !important;
+		align-items: center !important;
+		justify-content: center !important;
+	}
+
+	.search-area .col-lg-12 {
+		height: auto !important;
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+
+	/* Responsive Design */
+	@media (max-width: 768px) {
+		.search-header h3 {
+			font-size: 2rem;
+		}
+
+		.search-header p {
+			font-size: 1rem;
+		}
+
+		.search-input {
+			font-size: 1.1rem;
+			padding: 15px 20px;
+		}
+
+		.search-btn {
+			padding: 12px 20px;
+			font-size: 0.9rem;
+		}
+
+		.close-btn {
+			top: 20px;
+			right: 20px;
+			font-size: 1.5rem;
+            color: #000000;
+		}
+	}
+
+	@media (max-width: 576px) {
+		.search-header h3 {
+			font-size: 1.8rem;
+		}
+
+		.search-input {
+			font-size: 1rem;
+			padding: 12px 15px;
+		}
+
+		.search-btn {
+			padding: 10px 15px;
+			font-size: 0.8rem;
+		}
+
+		.tag {
+			font-size: 0.8rem;
+			padding: 6px 12px;
+		}
+	}
+	</style>
+
+	<!-- Search Bar JavaScript -->
+	<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		// Search functionality
+		const searchIcon = document.querySelector('.search-bar-icon');
+		const searchArea = document.querySelector('.search-area');
+		const closeBtn = document.querySelector('.close-btn');
+		const searchInput = document.querySelector('.search-input');
+
+		// Open search
+		searchIcon.addEventListener('click', function(e) {
+			e.preventDefault();
+			searchArea.classList.add('search-active');
+			document.body.style.overflow = 'hidden';
+			setTimeout(() => {
+				searchInput.focus();
+			}, 300);
+		});
+
+		// Close search
+		closeBtn.addEventListener('click', function() {
+			searchArea.classList.remove('search-active');
+			document.body.style.overflow = 'auto';
+		});
+
+		// Close on escape key
+		document.addEventListener('keydown', function(e) {
+			if (e.key === 'Escape' && searchArea.classList.contains('search-active')) {
+				searchArea.classList.remove('search-active');
+				document.body.style.overflow = 'auto';
+			}
+		});
+
+		// Close on background click
+		searchArea.addEventListener('click', function(e) {
+			if (e.target === searchArea) {
+				searchArea.classList.remove('search-active');
+				document.body.style.overflow = 'auto';
+			}
+		});
+
+		// Auto-submit on Enter
+		searchInput.addEventListener('keypress', function(e) {
+			if (e.key === 'Enter') {
+				e.preventDefault();
+				this.closest('form').submit();
+			}
+		});
+	});
+	</script>
 
 </body>
 </html>
