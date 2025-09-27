@@ -105,23 +105,37 @@
 
 		/* Page Title */
 		.page-title {
-			background: #ceb57f;
-			color: white;
-			padding: 20px 30px;
-			border-radius: 10px;
-			margin-bottom: 30px;
 			text-align: center;
+			margin: 5px 0 10px 0;
+			padding: 5px 2px;
+			background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+			border-radius: 20px;
+			position: relative;
+			overflow: hidden;
+		}
+
+		.page-title::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			height: 4px;
+			background: linear-gradient(135deg, #ad8f53 0%, #8b6f3f 100%);
 		}
 
 		.page-title h1 {
+			font-family: 'Tajawal', 'Cairo', sans-serif;
 			font-size: 2.5rem;
 			font-weight: 700;
-			margin: 0;
+			color: #2c3e50;
+			margin-bottom: 15px;
 		}
 
 		.page-title p {
 			font-size: 1.1rem;
-			margin: 10px 0 0 0;
+			color: #7f8c8d;
+			margin: 0;
 		}
 
 		/* Product/Category Cards */
@@ -237,6 +251,17 @@
 			.admin-login {
 				margin: 0 5px;
 				padding: 6px;
+			}
+		}
+
+		@media (max-width: 576px) {
+			.page-title {
+				margin: 20px 0 40px 0;
+				padding: 30px 15px;
+			}
+
+			.page-title h1 {
+				font-size: 1.8rem;
 			}
 		}
 	</style>

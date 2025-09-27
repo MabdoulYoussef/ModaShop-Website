@@ -31,7 +31,7 @@
                         </div>
                         <h3 class="arabic-text">{{ $product->name }}</h3>
                         <p class="price">
-                            {{ number_format($product->price, 0) }} درهم مغربي
+                            {{ number_format($product->price, 2) }} درهم مغربي
                         </p>
                         @if($product->stock > 0)
                             <form action="{{ route('cart.add') }}" method="POST" class="d-inline" onclick="event.stopPropagation();">

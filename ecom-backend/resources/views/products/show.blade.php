@@ -373,10 +373,11 @@
     border-radius: 5px;
     -webkit-box-shadow: 0 0 20px #ddd;
     box-shadow: 0 0 20px #ddd;
-    max-width: 100%;
-    height: auto;
-    min-height: 400px;
+    width: 100%;
+    height: 400px;
     object-fit: cover;
+    object-position: center;
+    display: block;
 }
 
 /* Navigation Arrows */
@@ -463,7 +464,7 @@
 
 @media (max-width: 768px) {
     .main-product-image {
-        min-height: 300px;
+        height: 300px;
     }
 
     .thumbnail-image {

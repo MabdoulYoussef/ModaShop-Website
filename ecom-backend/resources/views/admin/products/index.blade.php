@@ -252,6 +252,28 @@
 
 @section('scripts')
 <style>
+    .form-control, .form-select {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 8px 12px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 40px;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #ceb57f;
+        box-shadow: 0 0 0 2px rgba(206, 181, 127, 0.25);
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
     .product-image-thumb {
         width: 60px;
         height: 60px;

@@ -331,6 +331,49 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+
+                    <!-- Product Options -->
+                    <div class="mb-3">
+                        <label class="form-label">خيارات المنتج</label>
+                        <div class="product-options">
+                            <div class="form-check mb-3">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="is_featured"
+                                       id="is_featured"
+                                       value="1"
+                                       {{ old('is_featured') ? 'checked' : '' }}>
+                                <label class="form-check-label" for="is_featured">
+                                    <i class="fas fa-star"></i> منتج مميز
+                                    <small class="d-block text-muted">يظهر في قسم "منتجاتنا المميزة" (حد أقصى 3 منتجات)</small>
+                                </label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="is_monthly_offer"
+                                       id="is_monthly_offer"
+                                       value="1"
+                                       {{ old('is_monthly_offer') ? 'checked' : '' }}>
+                                <label class="form-check-label" for="is_monthly_offer">
+                                    <i class="fas fa-percentage"></i> عرض الشهر
+                                    <small class="d-block text-muted">يظهر في قسم "عرض الشهر" (منتج واحد فقط)</small>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="is_recommended"
+                                       id="is_recommended"
+                                       value="1"
+                                       {{ old('is_recommended') ? 'checked' : '' }}>
+                                <label class="form-check-label" for="is_recommended">
+                                    <i class="fas fa-thumbs-up"></i> منتج موصى به
+                                    <small class="d-block text-muted">يظهر في قسم التوصيات</small>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Action Buttons -->
