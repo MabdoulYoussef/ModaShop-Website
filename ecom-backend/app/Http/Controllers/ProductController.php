@@ -37,14 +37,52 @@ class ProductController extends Controller
         }
 
         // Stock filter
-        if ($request->has('in_stock') && $request->get('in_stock')) {
-            $query->where('stock', '>', 0);
+        if ($request->has('stock_filter') && $request->get('stock_filter')) {
+            $stockFilter = $request->get('stock_filter');
+            switch ($stockFilter) {
+                case 'in_stock':
+                    $query->where('stock', '>', 0);
+                    break;
+                case 'out_of_stock':
+                    $query->where('stock', '=', 0);
+                    break;
+                case 'low_stock':
+                    $query->where('stock', '>', 0)->where('stock', '<=', 10);
+                    break;
+            }
         }
 
         // Sort by
-        $sortBy = $request->get('sort_by', 'created_at');
-        $sortOrder = $request->get('sort_order', 'desc');
-        $query->orderBy($sortBy, $sortOrder);
+        $sort = $request->get('sort', 'created_at_desc');
+        switch ($sort) {
+            case 'created_at_desc':
+                $query->orderBy('created_at', 'desc');
+                break;
+            case 'created_at_asc':
+                $query->orderBy('created_at', 'asc');
+                break;
+            case 'name_asc':
+                $query->orderBy('name', 'asc');
+                break;
+            case 'name_desc':
+                $query->orderBy('name', 'desc');
+                break;
+            case 'price_asc':
+                $query->orderBy('price', 'asc');
+                break;
+            case 'price_desc':
+                $query->orderBy('price', 'desc');
+                break;
+            case 'stock_asc':
+                $query->orderBy('stock', 'asc');
+                break;
+            case 'stock_desc':
+                $query->orderBy('stock', 'desc');
+                break;
+            default:
+                $query->orderBy('created_at', 'desc');
+                break;
+        }
 
         // Pagination
         $perPage = $request->get('per_page', 12);
