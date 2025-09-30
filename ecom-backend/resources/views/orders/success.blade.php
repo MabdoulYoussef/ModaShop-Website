@@ -132,6 +132,16 @@
         color: #2c3e50;
     }
 
+    .tracking-code {
+        color: #ad8f53 !important;
+        font-weight: 700 !important;
+        font-size: 1.1rem;
+        background: rgba(173, 143, 83, 0.1);
+        padding: 5px 10px;
+        border-radius: 8px;
+        letter-spacing: 1px;
+    }
+
     .action-buttons {
         display: flex;
         gap: 1rem;
@@ -309,6 +319,11 @@
             <div class="detail-row">
                 <span class="detail-label">رقم الطلب:</span>
                 <span class="detail-value">#{{ $order->id }}</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="detail-label">رقم التتبع:</span>
+                <span class="detail-value tracking-code">{{ $order->tracking_code }}</span>
             </div>
 
             <div class="detail-row">

@@ -104,6 +104,16 @@
         color: #2c3e50;
     }
 
+    .tracking-code {
+        color: #ad8f53 !important;
+        font-weight: 700 !important;
+        font-size: 1.1rem;
+        background: rgba(173, 143, 83, 0.1);
+        padding: 5px 10px;
+        border-radius: 8px;
+        letter-spacing: 1px;
+    }
+
     .status-badge {
         padding: 0.5rem 1rem;
         border-radius: 20px;
@@ -362,6 +372,10 @@
                             <span class="info-value">#{{ $order->id }}</span>
                         </div>
                         <div class="info-row">
+                            <span class="info-label">رقم التتبع:</span>
+                            <span class="info-value tracking-code">{{ $order->tracking_code }}</span>
+                        </div>
+                        <div class="info-row">
                             <span class="info-label">الاسم:</span>
                             <span class="info-value">{{ $order->customer->firstname }} {{ $order->customer->lastname }}</span>
                         </div>
@@ -446,12 +460,16 @@
                             <div class="item-card">
                                 <div class="item-info">
                                     @if($item->product->image)
-                                        <img src="/assets/img/{{ $item->product->image }}"
+                                        <!-- Debug: Image path: {{ asset('assets/img/products/' . $item->product->image) }} -->
+                                        <img src="{{ asset('assets/img/products/' . $item->product->image) }}"
                                              alt="{{ $item->product->name }}"
                                              class="item-image"
-                                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
-                                             onload="this.nextElementSibling.style.display='none';">
+                                             onerror="console.log('Image failed to load: {{ asset('assets/img/products/' . $item->product->image) }}'); this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                         <div class="product-placeholder" style="display: none; width: 80px; height: 80px; background: #f8f9fa; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #6c757d;">
+                                            <i class="fas fa-image"></i>
+                                        </div>
+                                    @else
+                                        <div class="product-placeholder" style="width: 80px; height: 80px; background: #f8f9fa; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #6c757d;">
                                             <i class="fas fa-image"></i>
                                         </div>
                                     @endif

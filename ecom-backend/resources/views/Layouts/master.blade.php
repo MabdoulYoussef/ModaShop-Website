@@ -51,28 +51,47 @@
 			direction: rtl;
 		}
 
-		/* Admin Login Icon */
-		.admin-login {
+		/* Header Icons Container */
+		.header-icons {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 7px;
+		}
+
+		/* Common styles for all header icons */
+		.header-icons a {
 			color: white;
 			font-size: 1.2rem;
-			margin: 0 10px;
 			transition: all 0.3s ease;
 			text-decoration: none;
-			display: inline-block;
-			padding: 8px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 40px;
+			height: 40px;
 			border-radius: 50%;
 			background: rgba(255,255,255,0.1);
 		}
 
-		.admin-login:hover {
+		.header-icons a:hover {
 			color: #f0f0f0;
 			background: rgba(255,255,255,0.2);
 			transform: scale(1.1);
 			text-decoration: none;
 		}
 
-		.admin-login i {
+		.header-icons a i {
 			display: block;
+			line-height: 1;
+		}
+
+		/* Specific icon styles */
+		.shopping-cart,
+		.search-bar-icon,
+		.tracking-icon,
+		.admin-login {
+			/* Inherits from .header-icons a */
 		}
 
 		.hero-text-tablecell .subtitle {
@@ -151,6 +170,7 @@
 					<div class="header-icons">
 						<a class="shopping-cart" href="cart.html"><i class="fas fa-shopping-cart"></i></a>
 						<a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+						<a class="tracking-icon" href="{{ route('tracking.index') }}" title="تتبع الطلب"><i class="fas fa-truck"></i></a>
 						<a class="admin-login" href="{{ route('admin.login') }}" title="تسجيل دخول المدير"><i class="fas fa-user-shield"></i></a>
 					</div>
 				</div>

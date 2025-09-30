@@ -531,10 +531,12 @@
                                             <i class="fas fa-hand-holding-usd"></i>
                                             <span>الدفع عند الاستلام</span>
                                         </div>
+                                        @if(config('app.credit_card_enabled'))
                                         <div class="payment-option" data-value="بطاقة ائتمان">
                                             <i class="fas fa-credit-card"></i>
                                             <span>بطاقة ائتمان</span>
                                         </div>
+                                        @endif
                                     </div>
                                     <input type="hidden" name="payment_method" id="payment_method" value="{{ old('payment_method') }}" required>
                                     @error('payment_method')

@@ -489,5 +489,6 @@ function exportReport() {
     font-weight: bold;
     font-size: 1rem;
 }
+
 </style>
 @endsection
