@@ -75,8 +75,8 @@ class OrderController extends Controller
 
         $total = $this->calculateSessionCartTotal($sessionCart);
 
-        // If credit card payment, redirect to payment page
-        if ($validated['payment_method'] === 'بطاقة ائتمان') {
+        // If credit card payment, redirect to payment page (only if enabled)
+        if ($validated['payment_method'] === 'بطاقة ائتمان' && config('app.credit_card_enabled')) {
             // Store customer info in session for payment page
             session([
                 'checkout_data' => [
@@ -106,8 +106,12 @@ class OrderController extends Controller
                 $validated['city']
             );
 
+            // Generate unique tracking code
+            $trackingCode = $this->generateTrackingCode();
+
             // Create order
             $order = Order::create([
+                'tracking_code' => $trackingCode,
                 'customer_id' => $customer->id,
                 'status' => 'pending',
                 'shipping_address' => $validated['shipping_address'],
@@ -312,5 +316,17 @@ class OrderController extends Controller
             $total += $item['quantity'] * $item['product']['price'];
         }
         return $total;
+    }
+
+    /**
+     * Generate unique tracking code
+     */
+    private function generateTrackingCode(): string
+    {
+        do {
+            $code = str_pad(random_int(10000000, 99999999), 8, '0', STR_PAD_LEFT);
+        } while (Order::where('tracking_code', $code)->exists());
+
+        return $code;
     }
 }

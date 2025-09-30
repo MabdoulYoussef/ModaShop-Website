@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 
@@ -59,6 +60,11 @@ Route::post('/payment/credit-card', [OrderController::class, 'processCreditCard'
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
 Route::get('/orders/{id}/success', [OrderController::class, 'success'])->name('orders.success');
+
+// Tracking routes (public - no authentication required)
+Route::get('/tracking', [TrackingController::class, 'index'])->name('tracking.index');
+Route::post('/tracking', [TrackingController::class, 'track'])->name('tracking.track');
+Route::get('/tracking/{code}', [TrackingController::class, 'show'])->name('tracking.show');
 
 
 // Admin authentication routes
