@@ -169,7 +169,7 @@
 					</div>
 					<!--Countdown Timer-->
 					<div class="time-counter">
-						<div class="time-countdown clearfix" data-countdown="2025-01-25">
+						<div class="time-countdown clearfix" data-countdown="2025-10-01">
 							<div class="counter-column">
 								<div class="inner"><span class="count">00</span>أيام</div>
 							</div>

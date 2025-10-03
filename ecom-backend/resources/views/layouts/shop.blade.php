@@ -256,7 +256,101 @@
 			/* Inherits from .header-icons a */
 		}
 
-		/* Mobile Responsive */
+		/* Large Desktop Monitors: 1440px+ */
+		@media (min-width: 1440px) {
+			.shop-content {
+				margin: 30px auto;
+				padding: 60px;
+				max-width: 1400px;
+			}
+
+			.page-title h1 {
+				font-size: 3rem;
+			}
+
+			.main-menu ul li {
+				margin: 0 25px;
+			}
+
+			.main-menu ul li a {
+				padding: 15px 20px;
+				font-size: 1.1rem;
+			}
+		}
+
+		/* MacBook Pro 15" and Medium Laptops: 1200px - 1440px */
+		@media (min-width: 1200px) and (max-width: 1440px) {
+			.shop-content {
+				margin: 25px auto;
+				padding: 50px;
+				max-width: 1200px;
+			}
+
+			.page-title h1 {
+				font-size: 2.8rem;
+			}
+
+			.main-menu ul li {
+				margin: 0 18px;
+			}
+
+			.main-menu ul li a {
+				padding: 12px 18px;
+				font-size: 1rem;
+			}
+		}
+
+		/* MacBook Air/Pro 13" and Small Laptops: 1024px - 1200px */
+		@media (min-width: 1024px) and (max-width: 1200px) {
+			.shop-content {
+				margin: 20px auto;
+				padding: 40px;
+				max-width: 980px;
+			}
+
+			.page-title h1 {
+				font-size: 2.5rem;
+			}
+
+			.main-menu ul li {
+				margin: 0 15px;
+			}
+
+			.main-menu ul li a {
+				padding: 10px 15px;
+				font-size: 0.95rem;
+			}
+
+			.header-icons a {
+				width: 35px;
+				height: 35px;
+				font-size: 1.1rem;
+			}
+		}
+
+		/* Desktop: 992px - 1024px */
+		@media (min-width: 992px) and (max-width: 1024px) {
+			.shop-content {
+				margin: 20px auto;
+				padding: 35px;
+				max-width: 960px;
+			}
+
+			.page-title h1 {
+				font-size: 2.3rem;
+			}
+
+			.main-menu ul li {
+				margin: 0 12px;
+			}
+
+			.main-menu ul li a {
+				padding: 10px 12px;
+				font-size: 0.9rem;
+			}
+		}
+
+		/* Tablet Responsive */
 		@media (max-width: 768px) {
 			.shop-content {
 				margin: 10px;
@@ -271,8 +365,18 @@
 				margin: 0 5px;
 				padding: 6px;
 			}
+
+			.main-menu ul {
+				flex-direction: column;
+				gap: 10px;
+			}
+
+			.main-menu ul li {
+				margin: 0;
+			}
 		}
 
+		/* Mobile Responsive */
 		@media (max-width: 576px) {
 			.page-title {
 				margin: 20px 0 40px 0;
@@ -281,6 +385,16 @@
 
 			.page-title h1 {
 				font-size: 1.8rem;
+			}
+
+			.header-icons {
+				gap: 5px;
+			}
+
+			.header-icons a {
+				width: 30px;
+				height: 30px;
+				font-size: 1rem;
 			}
 		}
 	</style>
