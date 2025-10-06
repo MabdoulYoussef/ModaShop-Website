@@ -168,23 +168,49 @@
 						<span class="current-price" style="font-size: 1.4rem !important; font-weight: 900 !important; color: #64490d !important; background: linear-gradient(45deg, #644e1f, #765107) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; background-clip: text !important; text-shadow: 1px 1px 2px rgba(0,0,0,0.1) !important;">{{ number_format($monthlyOfferProduct->price, 2) }} درهم مغربي</span>
 					</div>
 					<!--Countdown Timer-->
-					<div class="time-counter">
-						<div class="time-countdown clearfix" data-countdown="2025-10-01">
-							<div class="counter-column">
-								<div class="inner"><span class="count">00</span>أيام</div>
-							</div>
-							<div class="counter-column">
-								<div class="inner">
-									<span class="count">00</span>ساعات</div>
-							</div>
-							<div class="counter-column">
-								<div class="inner"><span class="count">00</span>دقائق</div>
-							</div>
-							<div class="counter-column">
-								<div class="inner"><span class="count">00</span>ثواني</div>
+					@if($monthlyOfferProduct)
+						@php
+							// If no deadline is set, set a default deadline (30 days from now)
+							$deadline = $monthlyOfferProduct->monthly_offer_deadline;
+							if (!$deadline) {
+								$deadline = now()->addDays(30);
+								// Update the product in database with default deadline
+								$monthlyOfferProduct->update(['monthly_offer_deadline' => $deadline]);
+							}
+						@endphp
+
+						@if($deadline && $deadline->isFuture())
+						<div class="time-counter">
+							<div class="time-countdown clearfix" data-countdown="{{ $deadline->format('Y-m-d H:i:s') }}">
+								<div class="counter-column">
+									<div class="inner"><span class="count">00</span>أيام</div>
+								</div>
+								<div class="counter-column">
+									<div class="inner">
+										<span class="count">00</span>ساعات</div>
+								</div>
+								<div class="counter-column">
+									<div class="inner"><span class="count">00</span>دقائق</div>
+								</div>
+								<div class="counter-column">
+									<div class="inner"><span class="count">00</span>ثواني</div>
+								</div>
 							</div>
 						</div>
+						@else
+						<div class="time-counter">
+							<div class="countdown-finished">
+								<i class="fas fa-clock"></i> العرض متاح الآن
+							</div>
+						</div>
+						@endif
+					@else
+					<div class="time-counter">
+						<div class="countdown-finished">
+							<i class="fas fa-info-circle"></i> لا يوجد عرض شهري حالياً
+						</div>
 					</div>
+					@endif
 					<form action="{{ route('cart.add') }}" method="POST" class="d-inline">
 						@csrf
 						<input type="hidden" name="product_id" value="{{ $monthlyOfferProduct->id }}">

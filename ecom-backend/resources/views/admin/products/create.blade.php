@@ -360,6 +360,20 @@
                                     <small class="d-block text-muted">يظهر في قسم "عرض الشهر" (منتج واحد فقط)</small>
                                 </label>
                             </div>
+
+                            <!-- Monthly Offer Deadline -->
+                            <div class="monthly-offer-deadline" id="monthly-offer-deadline" style="display: none;">
+                                <label for="monthly_offer_deadline" class="form-label">
+                                    <i class="fas fa-calendar-alt"></i> تاريخ انتهاء العرض
+                                </label>
+                                <input type="datetime-local"
+                                       class="form-control"
+                                       id="monthly_offer_deadline"
+                                       name="monthly_offer_deadline"
+                                       value="{{ old('monthly_offer_deadline') }}"
+                                       min="{{ now()->format('Y-m-d\TH:i') }}">
+                                <small class="form-text text-muted">حدد تاريخ ووقت انتهاء العرض الشهري</small>
+                            </div>
                             <div class="form-check">
                                 <input class="form-check-input"
                                        type="checkbox"
@@ -403,6 +417,34 @@
 </div>
 
 @endsection
+
+<script>
+    // Monthly offer deadline functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const monthlyOfferCheckbox = document.getElementById('is_monthly_offer');
+        const monthlyOfferDeadline = document.getElementById('monthly-offer-deadline');
+
+        if (monthlyOfferCheckbox && monthlyOfferDeadline) {
+            monthlyOfferCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    monthlyOfferDeadline.style.display = 'block';
+                    // Set default deadline to 30 days from now
+                    const defaultDate = new Date();
+                    defaultDate.setDate(defaultDate.getDate() + 30);
+                    document.getElementById('monthly_offer_deadline').value = defaultDate.toISOString().slice(0, 16);
+                } else {
+                    monthlyOfferDeadline.style.display = 'none';
+                    document.getElementById('monthly_offer_deadline').value = '';
+                }
+            });
+
+            // Initialize monthly offer deadline visibility
+            if (monthlyOfferCheckbox.checked) {
+                monthlyOfferDeadline.style.display = 'block';
+            }
+        }
+    });
+</script>
 
 @section('scripts')
 <style>

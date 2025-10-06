@@ -90,15 +90,59 @@ $(document).ready(function() {
         // count down
         if($('.time-countdown').length){
             $('.time-countdown').each(function() {
-            var $this = $(this), finalDate = $(this).data('countdown');
-            console.log('Countdown date:', finalDate);
-            console.log('Current date:', new Date());
-            console.log('Parsed countdown date:', new Date(finalDate));
-            $this.countdown(finalDate, function(event) {
-                console.log('Countdown update:', event.strftime('%D days, %H hours, %M minutes, %S seconds'));
-                var $this = $(this).html(event.strftime('' + '<div class="counter-column"><div class="inner"><span class="count">%D</span>أيام</div></div> ' + '<div class="counter-column"><div class="inner"><span class="count">%H</span>ساعات</div></div>  ' + '<div class="counter-column"><div class="inner"><span class="count">%M</span>دقائق</div></div>  ' + '<div class="counter-column"><div class="inner"><span class="count">%S</span>ثواني</div></div>'));
+                var $this = $(this);
+                var finalDate = $(this).data('countdown');
+
+                // Validate the date
+                var targetDate = new Date(finalDate);
+                var currentDate = new Date();
+
+                console.log('Countdown date:', finalDate);
+                console.log('Current date:', currentDate);
+                console.log('Target date:', targetDate);
+
+                // Check if the date is valid and in the future
+                if (isNaN(targetDate.getTime())) {
+                    console.error('Invalid countdown date:', finalDate);
+                    return;
+                }
+
+                if (targetDate <= currentDate) {
+                    console.warn('Countdown date is in the past:', finalDate);
+                    // Set to 30 days from now if date is in the past
+                    targetDate = new Date();
+                    targetDate.setDate(targetDate.getDate() + 30);
+                    console.log('Setting new countdown date to:', targetDate);
+                }
+
+                // Initialize countdown
+                $this.countdown(targetDate, function(event) {
+                    var $this = $(this);
+                    var timeLeft = event.strftime('%D days, %H hours, %M minutes, %S seconds');
+                    console.log('Countdown update:', timeLeft);
+
+                    // Update the HTML with proper formatting
+                    var html = '' +
+                        '<div class="counter-column">' +
+                            '<div class="inner"><span class="count">%D</span>أيام</div>' +
+                        '</div> ' +
+                        '<div class="counter-column">' +
+                            '<div class="inner"><span class="count">%H</span>ساعات</div>' +
+                        '</div> ' +
+                        '<div class="counter-column">' +
+                            '<div class="inner"><span class="count">%M</span>دقائق</div>' +
+                        '</div> ' +
+                        '<div class="counter-column">' +
+                            '<div class="inner"><span class="count">%S</span>ثواني</div>' +
+                        '</div>';
+
+                    $this.html(event.strftime(html));
+                }).on('finish.countdown', function(event) {
+                    console.log('Countdown finished!');
+                    // Optionally hide the countdown or show a message
+                    $(this).html('<div class="countdown-finished">انتهى العرض!</div>');
+                });
             });
-         });
         }
 
         // projects filters isotop

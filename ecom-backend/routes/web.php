@@ -119,4 +119,13 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
     Route::get('/sales', [AdminController::class, 'sales'])->name('sales.index');
     Route::get('/sales/export', [AdminController::class, 'exportSales'])->name('sales.export');
     Route::get('/low-stock', [AdminController::class, 'lowStock'])->name('low-stock.index');
+
+    // Cache Management
+    Route::get('/clear-cache', function() {
+        \Cache::forget('homepage_monthly_offer');
+        \Cache::forget('homepage_featured_products');
+        \Cache::forget('homepage_categories');
+        \Cache::forget('homepage_latest_products');
+        return redirect()->back()->with('success', 'تم مسح الذاكرة المؤقتة بنجاح');
+    })->name('clear-cache');
 });

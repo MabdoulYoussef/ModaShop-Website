@@ -159,6 +159,7 @@ class ProductController extends Controller
                 'is_featured' => 'nullable|boolean',
                 'is_recommended' => 'nullable|boolean',
                 'is_monthly_offer' => 'nullable|boolean',
+                'monthly_offer_deadline' => 'nullable|date|after:now',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             \Log::error('Product validation failed:', [
@@ -215,6 +216,11 @@ class ProductController extends Controller
 
         $product = Product::create($validated);
 
+        // Clear cache when monthly offer is created
+        if ($request->has('is_monthly_offer') && $request->input('is_monthly_offer')) {
+            \Cache::forget('homepage_monthly_offer');
+        }
+
         \Log::info('Product created successfully:', [
             'product_id' => $product->id,
             'product_name' => $product->name
@@ -256,6 +262,8 @@ class ProductController extends Controller
         \Log::info('Product Update Request:', [
             'has_file' => $request->hasFile('image'),
             'file_name' => $request->hasFile('image') ? $request->file('image')->getClientOriginalName() : 'No file',
+            'monthly_offer_deadline' => $request->input('monthly_offer_deadline'),
+            'is_monthly_offer' => $request->input('is_monthly_offer'),
             'all_data' => $request->all()
         ]);
 
@@ -281,6 +289,7 @@ class ProductController extends Controller
             'is_featured' => 'nullable|boolean',
             'is_recommended' => 'nullable|boolean',
             'is_monthly_offer' => 'nullable|boolean',
+            'monthly_offer_deadline' => 'nullable|date|after:now',
         ]);
 
         // Handle image removal and upload
@@ -357,6 +366,19 @@ class ProductController extends Controller
         }
 
         $product->update($validated);
+
+        // Clear cache when monthly offer is updated
+        if ($request->has('is_monthly_offer') || $request->has('monthly_offer_deadline')) {
+            \Cache::forget('homepage_monthly_offer');
+        }
+
+        // Debug: Log after update
+        \Log::info('Product After Update:', [
+            'product_id' => $product->id,
+            'is_monthly_offer' => $product->is_monthly_offer,
+            'monthly_offer_deadline' => $product->monthly_offer_deadline,
+            'updated_at' => $product->updated_at
+        ]);
 
         return redirect()->route('admin.products.index')
                         ->with('success', 'تم تحديث المنتج بنجاح');

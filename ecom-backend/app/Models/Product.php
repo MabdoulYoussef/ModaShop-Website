@@ -22,6 +22,7 @@ class Product extends Model
         'is_featured',
         'is_recommended',
         'is_monthly_offer',
+        'monthly_offer_deadline',
     ];
 
     protected $casts = [
@@ -32,6 +33,7 @@ class Product extends Model
         'is_featured' => 'boolean',
         'is_recommended' => 'boolean',
         'is_monthly_offer' => 'boolean',
+        'monthly_offer_deadline' => 'datetime',
     ];
 
     // Relationships
