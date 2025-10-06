@@ -391,7 +391,7 @@
                                             <td>{{ $order->created_at->format('Y-m-d H:i') }}</td>
                                             <td>
                                                 <a href="{{ route('admin.orders.show', $order->id) }}"
-                                                   class="btn-admin-outline btn-sm">
+                                                    class="btn-admin-outline btn-sm">
                                                     <i class="fas fa-eye"></i> عرض
                                                 </a>
                                             </td>

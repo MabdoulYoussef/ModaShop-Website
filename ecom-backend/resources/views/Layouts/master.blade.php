@@ -111,6 +111,66 @@
 			}
 		}
 
+		/* Tablet responsive */
+		@media (min-width: 769px) and (max-width: 1024px) {
+			.hero-text-tablecell h1 {
+				font-size: 2.8rem;
+			}
+
+			.hero-text-tablecell .subtitle {
+				font-size: 1.1rem;
+			}
+
+			.main-menu ul li {
+				margin: 0 10px;
+			}
+
+			.main-menu ul li a {
+				padding: 10px 12px;
+				font-size: 0.95rem;
+			}
+		}
+
+		/* 15.6" Laptop specific fixes */
+		@media (min-width: 1366px) and (max-width: 1920px) {
+			.hero-text-tablecell {
+				padding: 0 40px;
+			}
+
+			.hero-text-tablecell h1 {
+				font-size: 2.8rem;
+				line-height: 1.3;
+			}
+
+			.hero-text-tablecell .subtitle {
+				font-size: 1.1rem;
+				margin-bottom: 1.5rem;
+			}
+
+			.hero-btns {
+				margin-top: 2rem;
+			}
+
+			.hero-btns a {
+				padding: 12px 25px;
+				font-size: 1rem;
+				margin: 0 8px;
+			}
+
+			/* Ensure proper spacing for features */
+			.list-box {
+				margin-bottom: 20px;
+			}
+
+			.list-box .content h3 {
+				font-size: 1.1rem;
+			}
+
+			.list-box .content p {
+				font-size: 0.9rem;
+			}
+		}
+
 		/* Center main menu in header */
 		.main-menu {
 			display: flex;
