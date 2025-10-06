@@ -22,8 +22,8 @@
 
 				<!-- Image -->
 				<div class="col-lg-6 text-center">
-					<div class="hero-img" style="margin-bottom: 2rem;" data-aos="fade-up" data-aos-delay="200">
-						<img src="assets/img/BANNER3m.png" alt="عرض المنتجات" class="img-fluid">
+					<div class="hero-img" data-aos="fade-up" data-aos-delay="200">
+						<img src="assets/img/BANNER3m.png" alt="عرض المنتجات">
 					</div>
 				</div>
 			</div>

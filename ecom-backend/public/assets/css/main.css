@@ -2556,58 +2556,121 @@ table.order-details tbody td {
   width: 100%;
 }
 
+/* Hero banner image - Fixed size and positioning */
 .hero-img img {
-    max-width: none;
-    height: auto;
-    display: block;
-    width: 775px;
-    margin-top: 100px;
-    margin-right: 80px;
+    max-width: none !important;
+    height: auto !important;
+    display: block !important;
+    width: 650px !important;
+    margin-top: 60px !important;
+    margin-right: 60px !important;
+    margin-bottom: 30px !important;
+    border-radius: 0 !important;
 }
 
-/* Make banner image responsive */
+/* Make banner image responsive - Enhanced */
 @media (max-width: 1350px) and (min-width: 1201px) {
     .hero-img img {
-        width: 650px;
-        margin-right: 40px;
+        width: 550px !important;
+        margin-right: 40px !important;
+        margin-bottom: 30px !important;
+        margin-top: 50px !important;
     }
 }
 
 @media (max-width: 1200px) {
     .hero-img img {
-        width: 450px;
-        margin-right: 40px;
+        width: 400px !important;
+        margin-right: 40px !important;
+        margin-bottom: 30px !important;
+        margin-top: 40px !important;
     }
 }
 
-
 @media (max-width: 991px) {
     .hero-img img {
-        width: 500px;
-        margin-right: 20px;
-        margin-top: 80px;
+        width: 100% !important;
+        max-width: 400px !important;
+        margin-right: 0 !important;
+        margin-top: 30px !important;
+        margin-bottom: 30px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        display: block !important;
+    }
+
+    .hero-text-tablecell {
+        text-align: center !important;
+        margin-bottom: 30px;
+    }
+
+    .hero-btns {
+        justify-content: center !important;
     }
 }
 
 @media (max-width: 768px) {
     .hero-img img {
-        width: 400px;
-        margin-right: 0;
-        margin-top: 60px;
+        width: 100% !important;
+        max-width: 350px !important;
+        margin-top: 25px !important;
+        margin-bottom: 30px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        display: block !important;
+    }
+
+    .hero-text-tablecell p.subtitle {
+        font-size: 2.5rem !important;
+    }
+
+    .hero-text-tablecell p {
+        font-size: 1.5rem !important;
     }
 }
 
 @media (max-width: 576px) {
     .hero-img img {
-        width: 300px;
-        margin-top: 40px;
+        width: 100% !important;
+        max-width: 280px !important;
+        margin-top: 20px !important;
+        margin-bottom: 30px !important;
+    }
+
+    .hero-text-tablecell p.subtitle {
+        font-size: 2rem !important;
+    }
+
+    .hero-text-tablecell p {
+        font-size: 1.2rem !important;
+    }
+
+    .hero-btns {
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+    }
+
+    .hero-btns a {
+        width: 200px;
+        text-align: center;
     }
 }
 
 @media (max-width: 480px) {
     .hero-img img {
-        width: 250px;
-        margin-top: 30px;
+        width: 100% !important;
+        max-width: 250px !important;
+        margin-top: 15px !important;
+        margin-bottom: 30px !important;
+    }
+
+    .hero-text-tablecell p.subtitle {
+        font-size: 1.8rem !important;
+    }
+
+    .hero-text-tablecell p {
+        font-size: 1rem !important;
     }
 }
 
@@ -2864,23 +2927,116 @@ body, .arabic-text, .hero-text-tablecell p, .hero-text-tablecell h1 {
   margin-top: 2rem;
 }
 
-/* Instagram images responsive layout */
-@media (max-width: 767px) {
+/* Instagram images responsive layout - Fixed overlapping issue */
+.insta-images-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.insta-images-row > div {
+  flex: 0 0 auto;
+  position: relative;
+  margin: 0;
+  z-index: 1;
+}
+
+.insta-post-card {
+  width: 200px;
+  height: 200px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.insta-post-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.insta-post-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Desktop layout */
+@media (min-width: 992px) {
   .insta-images-row {
-    flex-direction: row !important;
-    overflow-x: auto;
-    gap: 10px;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 20px;
   }
-  .insta-images-row > div {
-    min-width: 100px;
-    margin-left: 0 !important;
+
+  .insta-post-card {
+    width: 180px;
+    height: 180px;
+  }
+
+  .insta-right-text {
+    margin-right: 20px;
   }
 }
 
-/* Margin between Instagram images and right-side text */
-@media (min-width: 992px) {
-  .insta-right-text {
-    margin-right: 20px;
+/* Tablet layout */
+@media (max-width: 991px) and (min-width: 768px) {
+  .insta-images-row {
+    flex-direction: row;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  .insta-post-card {
+    width: 160px;
+    height: 160px;
+  }
+}
+
+/* Mobile layout - Fixed overlapping */
+@media (max-width: 767px) {
+  .insta-images-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    overflow: visible;
+    padding: 20px 0;
+  }
+
+  .insta-images-row > div {
+    min-width: auto;
+    margin-left: 0 !important;
+    margin-bottom: 15px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .insta-post-card {
+    width: 250px;
+    height: 250px;
+    margin: 0 auto;
+  }
+}
+
+/* Small mobile layout */
+@media (max-width: 480px) {
+  .insta-post-card {
+    width: 200px;
+    height: 200px;
+  }
+
+  .insta-images-row {
+    gap: 10px;
+    padding: 15px 0;
   }
 }
 
@@ -2904,9 +3060,8 @@ font-weight: 550; /* الوزن يكون أوضح */
     border-radius: 40px; /* زوايا دائرية للصورة */
     margin-right: 50px;
     margin-top: 40px;
-
-
 }
+
 
 /* Custom Alert Styles for Empty Cart */
 .alert-empty-cart {
@@ -2920,6 +3075,142 @@ font-weight: 550; /* الوزن يكون أوضح */
     box-shadow: 0 4px 15px rgba(255, 154, 86, 0.3);
     animation: slideInDown 0.5s ease-out;
     margin: 20px 0;
+}
+
+/* Additional responsive fixes for overlapping elements */
+.container {
+    position: relative;
+    z-index: 1;
+}
+
+.row {
+    position: relative;
+    z-index: 1;
+}
+
+/* Fix for any floating elements */
+.floating-element {
+    position: relative;
+    z-index: 1;
+    clear: both;
+}
+
+/* Prevent overlapping in mobile view */
+@media (max-width: 767px) {
+    .container {
+        overflow-x: hidden;
+    }
+
+    .row {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .col-lg-6, .col-md-6, .col-sm-6 {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    /* Ensure proper spacing between sections */
+    .hero-area, .product-section, .abt-section {
+        margin-bottom: 30px;
+        position: relative;
+        z-index: 1;
+    }
+}
+
+/* Fix for product cards overlapping */
+@media (max-width: 991px) {
+    .single-product-item {
+        margin-bottom: 30px;
+        position: relative;
+        z-index: 1;
+    }
+}
+
+/* Ensure proper stacking context */
+.hero-area {
+    position: relative;
+    z-index: 1;
+}
+
+.product-section {
+    position: relative;
+    z-index: 1;
+}
+
+.abt-section {
+    position: relative;
+    z-index: 1;
+}
+
+/* Enhanced mobile navigation */
+@media (max-width: 991px) {
+    .main-menu {
+        display: none;
+    }
+
+    .mean-container {
+        display: block;
+    }
+
+    .top-header-area {
+        padding: 10px 0;
+    }
+
+    .site-logo img {
+        max-width: 120px;
+    }
+}
+
+/* Mobile-first improvements */
+@media (max-width: 576px) {
+    .hero-text-tablecell h1 {
+        font-size: 2.5rem !important;
+        line-height: 1.2;
+    }
+
+    .section-title h3 {
+        font-size: 2rem !important;
+    }
+
+    .single-product-item {
+        margin-bottom: 20px;
+    }
+
+    .product-image img {
+        height: 200px;
+    }
+
+    .cart-banner {
+        padding: 40px 0;
+    }
+
+    .cart-banner .image-column img {
+        width: 100% !important;
+        max-width: 300px !important;
+        height: 400px !important;
+    }
+}
+
+/* Ultra-small screens */
+@media (max-width: 375px) {
+    .hero-text-tablecell h1 {
+        font-size: 2rem !important;
+    }
+
+    .hero-text-tablecell p.subtitle {
+        font-size: 1.5rem !important;
+    }
+
+    .hero-text-tablecell p {
+        font-size: 0.9rem !important;
+    }
+
+    .insta-post-card {
+        width: 180px;
+        height: 180px;
+    }
 }
 
 
