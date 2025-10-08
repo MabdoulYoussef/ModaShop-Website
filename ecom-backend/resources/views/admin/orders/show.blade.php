@@ -161,10 +161,10 @@
                                 <td>
                                     <div class="product-info">
                                         @if($item->product->image)
-                                            <img src="/assets/img/{{ $item->product->image }}"
+                                            <img src="{{ asset('assets/img/' . $item->product->image) }}"
                                                  alt="{{ $item->product->name }}"
                                                  class="product-image"
-                                                 style="width: 170 !important; height: auto !important; max-width: 100px !important; max-height: 100px !important;"
+                                                 style="width: 100px !important; height: auto !important; max-width: 100px !important; max-height: 100px !important;"
                                                  onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
                                                  onload="this.nextElementSibling.style.display='none';">
                                             <div class="no-image" style="display: none;">

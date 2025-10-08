@@ -157,10 +157,11 @@
                                 <td>
                                     <div class="d-flex align-items-center">
                                         @if($product->image)
-                                            <img src="{{ asset('assets/img/products/' . $product->image) }}"
+                                            <img src="{{ asset('assets/img/' . $product->image) }}"
                                                  alt="{{ $product->name }}"
                                                  class="product-thumb me-2"
-                                                 style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;">
+                                                 style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;"
+                                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                         @else
                                             <div class="product-placeholder me-2"
                                                  style="width: 40px; height: 40px; background: #f8f9fa; border-radius: 4px; display: flex; align-items: center; justify-content: center;">

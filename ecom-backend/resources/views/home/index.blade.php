@@ -106,9 +106,8 @@
 						</div>
 						<h3 class="arabic-text">{{ $product->name }}</h3>
 						<p class="product-price"><span>السعر</span> {{ number_format($product->price, 2) }} درهم مغربي</p>
-						<a href="{{ route('cart.add') }}" class="cart-btn"
-						   onclick="event.preventDefault(); document.getElementById('add-to-cart-{{ $product->id }}').submit();">
-							<i class="fas fa-shopping-cart"></i> أضف إلى السلة
+						<a href="{{ route('products.show', $product->id) }}" class="cart-btn">
+							<i class="fas fa-eye"></i> عرض المنتج
 						</a>
 						<form id="add-to-cart-{{ $product->id }}" action="{{ route('cart.add') }}" method="POST" style="display: none;">
 							@csrf
@@ -211,14 +210,9 @@
 						</div>
 					</div>
 					@endif
-					<form action="{{ route('cart.add') }}" method="POST" class="d-inline">
-						@csrf
-						<input type="hidden" name="product_id" value="{{ $monthlyOfferProduct->id }}">
-						<input type="hidden" name="quantity" value="1">
-						<button type="submit" class="cart-btn mt-3">
-							<i class="fas fa-shopping-cart"></i> أضف إلى السلة
-						</button>
-					</form>
+					<a href="{{ route('products.show', $monthlyOfferProduct->id) }}" class="cart-btn mt-3">
+						<i class="fas fa-eye"></i> عرض المنتج
+					</a>
 				</div>
 			</div>
 		</div>

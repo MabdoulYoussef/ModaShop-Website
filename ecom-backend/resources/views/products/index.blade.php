@@ -34,14 +34,9 @@
                             {{ number_format($product->price, 2) }} درهم مغربي
                         </p>
                         @if($product->stock > 0)
-                            <form action="{{ route('cart.add') }}" method="POST" class="d-inline" onclick="event.stopPropagation();">
-                                @csrf
-                                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                <input type="hidden" name="quantity" value="1">
-                                <button type="submit" class="shop-btn">
-                                    <i class="fas fa-shopping-cart"></i> أضف إلى السلة
-                                </button>
-                            </form>
+                            <a href="{{ route('products.show', $product->id) }}" class="shop-btn" onclick="event.stopPropagation();">
+                                <i class="fas fa-eye"></i> عرض المنتج
+                            </a>
                         @else
                             <span class="shop-btn" style="background-color: #ccc; cursor: not-allowed;">
                                 <i class="fas fa-times"></i> غير متوفر

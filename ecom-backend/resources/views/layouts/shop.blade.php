@@ -278,16 +278,54 @@
 			}
 		}
 
-		/* MacBook Pro 15" and Medium Laptops: 1200px - 1440px */
-		@media (min-width: 1200px) and (max-width: 1440px) {
+		/* FORCE HEADER STYLES FOR 1920px - MAXIMUM SPECIFICITY */
+		@media only screen and (min-width: 1920px) {
+			.top-header-area .row {
+				padding: 8px 0 !important;
+				min-height: 60px !important;
+			}
+
+			.main-menu ul li {
+				margin: 0 8px !important;
+			}
+
+			.main-menu ul li a {
+				padding: 6px 10px !important;
+				font-size: 0.85rem !important;
+				font-weight: 500 !important;
+			}
+
+			.header-icons a {
+				width: 32px !important;
+				height: 32px !important;
+				font-size: 1rem !important;
+			}
+
+			.logo img {
+				max-height: 40px !important;
+			}
+
 			.shop-content {
-				margin: 25px auto;
-				padding: 50px;
-				max-width: 1200px;
+				margin: 15px auto !important;
+				padding: 30px !important;
+				max-width: 1100px !important;
 			}
 
 			.page-title h1 {
-				font-size: 2.8rem;
+				font-size: 2.2rem !important;
+			}
+		}
+
+		/* Large Laptops and Desktops: 1440px - 1920px */
+		@media (min-width: 1440px) and (max-width: 1919px) {
+			.shop-content {
+				margin: 12px auto;
+				padding: 25px;
+				max-width: 1300px;
+			}
+
+			.page-title h1 {
+				font-size: 2.3rem;
 			}
 
 			.main-menu ul li {
@@ -295,21 +333,57 @@
 			}
 
 			.main-menu ul li a {
-				padding: 12px 18px;
-				font-size: 1rem;
+				padding: 8px 14px;
+				font-size: 1.1rem;
+			}
+
+			.header-icons a {
+				width: 38px;
+				height: 38px;
+				font-size: 1.2rem;
+			}
+
+			.logo img {
+				max-height: 55px;
+			}
+
+			.top-header-area .row {
+				padding: 10px 0;
 			}
 		}
 
-		/* MacBook Air/Pro 13" and Small Laptops: 1024px - 1200px */
-		@media (min-width: 1024px) and (max-width: 1200px) {
+		/* MacBook Pro 15" and Medium Laptops: 1200px - 1366px */
+		@media (min-width: 1200px) and (max-width: 1366px) {
 			.shop-content {
-				margin: 20px auto;
-				padding: 40px;
-				max-width: 980px;
+				margin: 15px auto;
+				padding: 30px;
+				max-width: 1100px;
 			}
 
 			.page-title h1 {
-				font-size: 2.5rem;
+				font-size: 2.2rem;
+			}
+
+			.main-menu ul li {
+				margin: 0 12px;
+			}
+
+			.main-menu ul li a {
+				padding: 8px 12px;
+				font-size: 0.9rem;
+			}
+		}
+
+		/* Larger Laptops: 1367px - 1440px */
+		@media (min-width: 1367px) and (max-width: 1440px) {
+			.shop-content {
+				margin: 18px auto;
+				padding: 35px;
+				max-width: 1200px;
+			}
+
+			.page-title h1 {
+				font-size: 2.4rem;
 			}
 
 			.main-menu ul li {
@@ -395,6 +469,135 @@
 				width: 30px;
 				height: 30px;
 				font-size: 1rem;
+			}
+		}
+
+		/* Product Card Styling - Same as Homepage */
+		.shop-card {
+			width: 300px !important;
+			height: 600px !important;
+			margin: 0 auto 30px auto !important;
+			background: white !important;
+			border-radius: 15px !important;
+			box-shadow: 0 5px 20px rgba(0,0,0,0.1) !important;
+			transition: all 0.3s ease !important;
+			overflow: hidden !important;
+			position: relative !important;
+			display: flex !important;
+			flex-direction: column !important;
+			cursor: pointer !important;
+		}
+
+		.shop-card:hover {
+			transform: translateY(-5px) !important;
+			box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+		}
+
+		.shop-card .product-image {
+			width: 100% !important;
+			height: 450px !important;
+			overflow: hidden !important;
+			position: relative !important;
+		}
+
+		.shop-card .product-image img {
+			width: 100% !important;
+			height: 100% !important;
+			object-fit: cover !important;
+			transition: transform 0.3s ease !important;
+		}
+
+		.shop-card:hover .product-image img {
+			transform: scale(1.05) !important;
+		}
+
+		.shop-card h3 {
+			padding: 15px 20px 10px 20px !important;
+			font-size: 1.1rem !important;
+			font-weight: 600 !important;
+			color: #333 !important;
+			margin: 0 !important;
+			line-height: 1.4 !important;
+			height: 60px !important;
+			display: flex !important;
+			align-items: center !important;
+			justify-content: center !important;
+			text-align: center !important;
+		}
+
+		.shop-card .price {
+			padding: 0 20px 15px 20px !important;
+			font-size: 1rem !important;
+			color: #ceb57f !important;
+			font-weight: 700 !important;
+			margin: 0 !important;
+			text-align: center !important;
+		}
+
+		.shop-card .shop-btn {
+			margin: 0 20px 20px 20px !important;
+			padding: 12px 20px !important;
+			background: linear-gradient(45deg, #ceb57f, #ad8f53) !important;
+			color: white !important;
+			border: none !important;
+			border-radius: 25px !important;
+			font-size: 0.9rem !important;
+			font-weight: 600 !important;
+			text-decoration: none !important;
+			display: flex !important;
+			align-items: center !important;
+			justify-content: center !important;
+			gap: 8px !important;
+			transition: all 0.3s ease !important;
+			cursor: pointer !important;
+			width: calc(100% - 40px) !important;
+		}
+
+		.shop-card .shop-btn:hover {
+			background: linear-gradient(45deg, #ad8f53, #ceb57f) !important;
+			transform: translateY(-2px) !important;
+			box-shadow: 0 5px 15px rgba(206, 181, 127, 0.4) !important;
+			color: white !important;
+			text-decoration: none !important;
+		}
+
+		/* Center product cards in their containers */
+		.col-lg-4.col-md-6.text-center {
+			display: flex !important;
+			justify-content: center !important;
+			margin-bottom: 30px !important;
+		}
+
+		/* Responsive adjustments */
+		@media (max-width: 768px) {
+			.shop-card {
+				width: 300px !important;
+				height: 600px !important;
+			}
+
+			.shop-card .product-image {
+				height: 450px !important;
+			}
+
+			.shop-card h3 {
+				font-size: 1rem !important;
+				height: 60px !important;
+			}
+		}
+
+		@media (max-width: 480px) {
+			.shop-card {
+				width: 300px !important;
+				height: 600px !important;
+			}
+
+			.shop-card .product-image {
+				height: 450px !important;
+			}
+
+			.shop-card h3 {
+				font-size: 0.9rem !important;
+				height: 60px !important;
 			}
 		}
 	</style>

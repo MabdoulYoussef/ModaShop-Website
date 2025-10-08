@@ -372,6 +372,11 @@ class ProductController extends Controller
             \Cache::forget('homepage_monthly_offer');
         }
 
+        // Clear cache when featured status is updated
+        if ($request->has('is_featured')) {
+            \Cache::forget('homepage_featured_products');
+        }
+
         // Debug: Log after update
         \Log::info('Product After Update:', [
             'product_id' => $product->id,

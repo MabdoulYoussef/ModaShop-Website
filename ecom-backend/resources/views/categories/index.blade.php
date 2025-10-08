@@ -13,10 +13,10 @@
 </div>
 
     @if($categories->count() > 0)
-        <div class="row">
+        <div class="row categories-container">
             @foreach($categories as $category)
-                <div class="col-lg-3 col-md-6 text-center mb-4">
-                    <div class="shop-card" onclick="window.location.href='{{ route('categories.show', $category->id) }}'">
+                <div class="col-lg-3 col-md-6 col-sm-6 text-center mb-5">
+                    <div class="category-card" onclick="window.location.href='{{ route('categories.show', $category->id) }}'">
                         <div class="product-image mb-3">
                             <a href="{{ route('categories.show', $category->id) }}">
                                 @if($category->image)
@@ -69,8 +69,14 @@
 </div>
 
 <style>
+/* Categories Container */
+.categories-container {
+    margin: 40px 0;
+    padding: 0 20px;
+}
+
 /* Modern Category Cards */
-.shop-card {
+.category-card {
     background: white;
     border-radius: 20px;
     padding: 0;
@@ -80,15 +86,20 @@
     cursor: pointer;
     border: 1px solid rgba(255, 255, 255, 0.2);
     position: relative;
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.shop-card:hover {
+.category-card:hover {
     transform: translateY(-12px);
     box-shadow: 0 20px 60px rgba(173, 143, 83, 0.25);
     border-color: rgba(173, 143, 83, 0.3);
 }
 
-.shop-card::before {
+.category-card::before {
     content: '';
     position: absolute;
     top: 0;
@@ -100,7 +111,7 @@
     transition: opacity 0.3s ease;
 }
 
-.shop-card:hover::before {
+.category-card:hover::before {
     opacity: 1;
 }
 
@@ -121,7 +132,7 @@
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.shop-card:hover .category-image {
+.category-card:hover .category-image {
     transform: scale(1.08);
 }
 
@@ -160,7 +171,7 @@
 }
 
 /* Category Content */
-.shop-card h3 {
+.category-card h3 {
     font-family: 'Tajawal', 'Cairo', sans-serif;
     font-size: 1.5rem;
     font-weight: 700;
@@ -170,18 +181,18 @@
     line-height: 1.3;
 }
 
-.shop-card:hover h3 {
+.category-card:hover h3 {
     color: #ad8f53;
 }
 
-.shop-card .price {
+.category-card .price {
     font-size: 1rem;
     color: #7f8c8d;
     margin: 0 20px 20px 20px;
     font-weight: 500;
 }
 
-.shop-card .price span {
+.category-card .price span {
     color: #ad8f53;
     font-weight: 700;
 }
@@ -363,15 +374,16 @@
         font-size: 2rem;
     }
 
-    .shop-card {
+    .category-card {
         margin-bottom: 30px;
+        max-width: 100%;
     }
 
     .product-image {
         height: 200px;
     }
 
-    .shop-card h3 {
+    .category-card h3 {
         font-size: 1.3rem;
     }
 }
@@ -386,16 +398,24 @@
         font-size: 1.8rem;
     }
 
+    .categories-container {
+        padding: 0 10px;
+    }
+
+    .category-card {
+        margin-bottom: 25px;
+    }
+
     .product-image {
         height: 180px;
     }
 
-    .shop-card h3 {
+    .category-card h3 {
         font-size: 1.2rem;
         margin: 15px 15px 8px 15px;
     }
 
-    .shop-card .price {
+    .category-card .price {
         margin: 0 15px 15px 15px;
     }
 
