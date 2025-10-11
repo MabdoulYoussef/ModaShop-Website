@@ -278,43 +278,6 @@
 			}
 		}
 
-		/* FORCE HEADER STYLES FOR 1920px - MAXIMUM SPECIFICITY */
-		@media only screen and (min-width: 1920px) {
-			.top-header-area .row {
-				padding: 8px 0 !important;
-				min-height: 60px !important;
-			}
-
-			.main-menu ul li {
-				margin: 0 8px !important;
-			}
-
-			.main-menu ul li a {
-				padding: 6px 10px !important;
-				font-size: 0.85rem !important;
-				font-weight: 500 !important;
-			}
-
-			.header-icons a {
-				width: 32px !important;
-				height: 32px !important;
-				font-size: 1rem !important;
-			}
-
-			.logo img {
-				max-height: 40px !important;
-			}
-
-			.shop-content {
-				margin: 15px auto !important;
-				padding: 30px !important;
-				max-width: 1100px !important;
-			}
-
-			.page-title h1 {
-				font-size: 2.2rem !important;
-			}
-		}
 
 		/* Large Laptops and Desktops: 1440px - 1920px */
 		@media (min-width: 1440px) and (max-width: 1919px) {
@@ -393,6 +356,34 @@
 			.main-menu ul li a {
 				padding: 10px 15px;
 				font-size: 0.95rem;
+			}
+
+			.header-icons a {
+				width: 35px;
+				height: 35px;
+				font-size: 1.1rem;
+			}
+		}
+
+		/* MacBook Air/Pro 13" and Small Laptops: 1024px - 1200px */
+		@media (min-width: 1024px) and (max-width: 1200px) {
+			.shop-content {
+				margin: 15px auto;
+				padding: 25px;
+				max-width: 980px;
+			}
+
+			.page-title h1 {
+				font-size: 2rem;
+			}
+
+			.main-menu ul li {
+				margin: 0 10px;
+			}
+
+			.main-menu ul li a {
+				padding: 6px 10px;
+				font-size: 0.85rem;
 			}
 
 			.header-icons a {
@@ -599,6 +590,31 @@
 				font-size: 0.9rem !important;
 				height: 60px !important;
 			}
+		}
+
+		/* Fix header overlap issue on large screens */
+		body {
+			padding-top: 120px; /* Adjust based on your header height */
+		}
+
+		@media (max-width: 991px) {
+			body {
+				padding-top: 90px; /* Slightly smaller for tablets */
+			}
+		}
+
+		/* Improve layout centering on 1920×1080 */
+		@media (min-width: 1600px) {
+			.container {
+				max-width: 1400px;
+			}
+		}
+
+		/* Prevent cards from being too tall - make them responsive */
+		.shop-card {
+			width: 300px !important;
+			height: auto !important;
+			min-height: 550px;
 		}
 	</style>
 </head>
