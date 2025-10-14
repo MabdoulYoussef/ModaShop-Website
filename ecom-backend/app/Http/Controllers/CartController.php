@@ -44,6 +44,7 @@ class CartController extends Controller
         $validated = $request->validate([
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1|max:99',
+            'size' => 'nullable|string',
         ]);
 
         // Check product stock
@@ -56,28 +57,34 @@ class CartController extends Controller
         $sessionCart = session('cart', []);
         $productId = $validated['product_id'];
         $quantity = $validated['quantity'];
+        $selectedSize = $validated['size'] ?? '';
 
-        if (isset($sessionCart[$productId])) {
+        // Create unique cart key for product + size combination
+        $cartKey = $productId . '_' . $selectedSize;
+
+        if (isset($sessionCart[$cartKey])) {
             // Update existing item in session
-            $newQuantity = $sessionCart[$productId]['quantity'] + $quantity;
+            $newQuantity = $sessionCart[$cartKey]['quantity'] + $quantity;
 
             if ($newQuantity > $product->stock) {
                 return back()->with('error', 'Total quantity exceeds available stock');
             }
 
-            $sessionCart[$productId]['quantity'] = $newQuantity;
+            $sessionCart[$cartKey]['quantity'] = $newQuantity;
             $message = 'Cart item quantity updated';
         } else {
             // Add new item to session
-            $sessionCart[$productId] = [
+            $sessionCart[$cartKey] = [
                 'product_id' => $productId,
                 'quantity' => $quantity,
+                'selected_size' => $selectedSize,
                 'product' => [
                     'id' => $product->id,
                     'name' => $product->name,
                     'price' => $product->price,
                     'image' => $product->image,
-                    'size' => $product->size,
+                    'size' => $product->size, // Keep original for reference
+                    'selected_size' => $selectedSize, // Store the selected size
                     'description' => $product->description
                 ]
             ];
@@ -100,7 +107,7 @@ class CartController extends Controller
      *
      * No login required - open to all customers
      */
-    public function updateItem(Request $request, $itemId)
+    public function updateItem(Request $request, $cartKey)
     {
         $validated = $request->validate([
             'quantity' => 'required|integer|min:1|max:99',
@@ -108,17 +115,20 @@ class CartController extends Controller
 
         $sessionCart = session('cart', []);
 
-        if (!isset($sessionCart[$itemId])) {
+        if (!isset($sessionCart[$cartKey])) {
             return back()->with('error', 'Item not found in cart');
         }
 
+        // Get the product ID from the cart item
+        $productId = $sessionCart[$cartKey]['product_id'];
+
         // Check stock
-        $product = Product::find($itemId);
+        $product = Product::find($productId);
         if ($validated['quantity'] > $product->stock) {
             return back()->with('error', 'Quantity exceeds available stock');
         }
 
-        $sessionCart[$itemId]['quantity'] = $validated['quantity'];
+        $sessionCart[$cartKey]['quantity'] = $validated['quantity'];
         session(['cart' => $sessionCart]);
 
         return redirect()->route('cart.index')->with('success', 'Cart updated successfully');
@@ -181,11 +191,13 @@ class CartController extends Controller
     {
         $cartItems = collect();
 
-        foreach ($sessionCart as $productId => $item) {
+        foreach ($sessionCart as $cartKey => $item) {
             $cartItems->push((object) [
-                'id' => $productId,
+                'id' => $cartKey, // This is now the cart key (productId_size)
+                'cart_key' => $cartKey, // Store the cart key for removal
                 'product_id' => $item['product_id'],
                 'quantity' => $item['quantity'],
+                'selected_size' => $item['selected_size'] ?? '',
                 'product' => (object) $item['product']
             ]);
         }

@@ -404,7 +404,9 @@
                                                     @endif
                                                     <div>
                                                         <h6>{{ $item->product->name }}</h6>
-                                                        @if(isset($item->product->size) && $item->product->size)
+                                                        @if(isset($item->product->selected_size) && $item->product->selected_size)
+                                                            <small>المقاس المختار: {{ $item->product->selected_size }}</small>
+                                                        @elseif(isset($item->product->size) && $item->product->size)
                                                             <small>المقاس: {{ $item->product->size }}</small>
                                                         @endif
                                                         @if(isset($item->product->description) && $item->product->description)
@@ -418,7 +420,7 @@
                                             </td>
                                             <td>
                                                 <div class="quantity-controls">
-                                                    <form method="POST" action="{{ route('cart.update', $item->product_id) }}" class="d-inline">
+                                                    <form method="POST" action="{{ route('cart.update', $item->cart_key) }}" class="d-inline">
                                                         @csrf
                                                         @method('PUT')
                                                         <input type="hidden" name="quantity" value="{{ max(1, $item->quantity - 1) }}">
@@ -429,7 +431,7 @@
 
                                                     <input type="text" value="{{ $item->quantity }}" class="quantity-input" readonly>
 
-                                                    <form method="POST" action="{{ route('cart.update', $item->product_id) }}" class="d-inline">
+                                                    <form method="POST" action="{{ route('cart.update', $item->cart_key) }}" class="d-inline">
                                                         @csrf
                                                         @method('PUT')
                                                         <input type="hidden" name="quantity" value="{{ $item->quantity + 1 }}">
@@ -444,7 +446,7 @@
                                             </td>
                                             <td>
                                                 <div class="action-buttons">
-                                                    <form method="POST" action="{{ route('cart.remove', $item->product_id) }}" class="d-inline">
+                                                    <form method="POST" action="{{ route('cart.remove', $item->cart_key) }}" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-sm btn-remove"

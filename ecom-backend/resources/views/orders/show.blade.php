@@ -460,11 +460,11 @@
                             <div class="item-card">
                                 <div class="item-info">
                                     @if($item->product->image)
-                                        <!-- Debug: Image path: {{ asset('assets/img/products/' . $item->product->image) }} -->
-                                        <img src="{{ asset('assets/img/products/' . $item->product->image) }}"
+                                        <img src="{{ asset('assets/img/' . $item->product->image) }}"
                                              alt="{{ $item->product->name }}"
                                              class="item-image"
-                                             onerror="console.log('Image failed to load: {{ asset('assets/img/products/' . $item->product->image) }}'); this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                             onload="this.nextElementSibling.style.display='none';">
                                         <div class="product-placeholder" style="display: none; width: 80px; height: 80px; background: #f8f9fa; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #6c757d;">
                                             <i class="fas fa-image"></i>
                                         </div>
