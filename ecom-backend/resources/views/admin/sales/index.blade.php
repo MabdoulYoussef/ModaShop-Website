@@ -407,20 +407,6 @@ new Chart(paymentCtx, {
     }
 });
 
-// Period filter change
-document.getElementById('period').addEventListener('change', function() {
-    const customFields = ['custom-date-from', 'custom-date-to'];
-    if (this.value === 'custom') {
-        customFields.forEach(id => {
-            document.getElementById(id).style.display = 'block';
-        });
-    } else {
-        customFields.forEach(id => {
-            document.getElementById(id).style.display = 'none';
-        });
-    }
-});
-
 // Export function
 function exportReport() {
     const period = document.getElementById('period').value;

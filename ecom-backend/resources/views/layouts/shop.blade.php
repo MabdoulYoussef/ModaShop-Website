@@ -256,6 +256,104 @@
 			/* Inherits from .header-icons a */
 		}
 
+		/* Mobile Hamburger Menu Styles */
+		.mobile-menu-toggle {
+			display: none;
+		}
+
+		.hamburger-btn {
+			background: none;
+			border: none;
+			cursor: pointer;
+			padding: 8px;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-around;
+			width: 30px;
+			height: 30px;
+		}
+
+		.hamburger-btn span {
+			display: block;
+			height: 3px;
+			width: 100%;
+			background: white;
+			border-radius: 2px;
+			transition: all 0.3s ease;
+		}
+
+		.hamburger-btn.active span:nth-child(1) {
+			transform: rotate(45deg) translate(6px, 6px);
+		}
+
+		.hamburger-btn.active span:nth-child(2) {
+			opacity: 0;
+		}
+
+		.hamburger-btn.active span:nth-child(3) {
+			transform: rotate(-45deg) translate(6px, -6px);
+		}
+
+		.mobile-menu {
+			display: none;
+			background: rgba(0, 0, 0, 0.95);
+			position: absolute;
+			top: 100%;
+			left: 0;
+			right: 0;
+			z-index: 1000;
+			padding: 20px 0;
+		}
+
+		.mobile-menu ul {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+		}
+
+		.mobile-menu ul li {
+			text-align: center;
+			padding: 15px 0;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+		}
+
+		.mobile-menu ul li:last-child {
+			border-bottom: none;
+		}
+
+		.mobile-menu ul li a {
+			color: white;
+			text-decoration: none;
+			font-size: 1.2rem;
+			font-weight: 500;
+			transition: color 0.3s ease;
+		}
+
+		.mobile-menu ul li a:hover {
+			color: #ceb57f;
+		}
+
+		/* Responsive breakpoints for hamburger menu */
+		@media (max-width: 991px) {
+			.mobile-menu-toggle {
+				display: block;
+			}
+
+			.main-menu {
+				display: none;
+			}
+
+			.header-icons {
+				display: none;
+			}
+		}
+
+		@media (min-width: 992px) {
+			.mobile-menu {
+				display: none !important;
+			}
+		}
+
 		/* Large Desktop Monitors: 1440px+ */
 		@media (min-width: 1440px) {
 			.shop-content {
@@ -465,8 +563,9 @@
 
 		/* Product Card Styling - Same as Homepage */
 		.shop-card {
-			width: 300px !important;
-			height: 600px !important;
+			width: 320px !important;
+			height: auto !important;
+			min-height: 580px !important;
 			margin: 0 auto 30px auto !important;
 			background: white !important;
 			border-radius: 15px !important;
@@ -562,33 +661,61 @@
 		/* Responsive adjustments */
 		@media (max-width: 768px) {
 			.shop-card {
-				width: 300px !important;
-				height: 600px !important;
+				width: 95% !important;
+				max-width: 420px !important;
+				height: auto !important;
+				min-height: 520px !important;
 			}
 
 			.shop-card .product-image {
-				height: 450px !important;
+				height: 370px !important;
 			}
 
 			.shop-card h3 {
 				font-size: 1rem !important;
-				height: 60px !important;
+				height: 50px !important;
+				padding: 10px 15px 5px 15px !important;
+			}
+
+			.shop-card .price {
+				padding: 0 15px 10px 15px !important;
+				font-size: 0.9rem !important;
+			}
+
+			.shop-card .shop-btn {
+				margin: 0 15px 15px 15px !important;
+				padding: 10px 15px !important;
+				font-size: 0.8rem !important;
 			}
 		}
 
 		@media (max-width: 480px) {
 			.shop-card {
-				width: 300px !important;
-				height: 600px !important;
+				width: 98% !important;
+				max-width: 400px !important;
+				height: auto !important;
+				min-height: 470px !important;
 			}
 
 			.shop-card .product-image {
-				height: 450px !important;
+				height: 320px !important;
 			}
 
 			.shop-card h3 {
 				font-size: 0.9rem !important;
-				height: 60px !important;
+				height: 45px !important;
+				padding: 8px 12px 5px 12px !important;
+			}
+
+			.shop-card .price {
+				padding: 0 12px 8px 12px !important;
+				font-size: 0.85rem !important;
+			}
+
+			.shop-card .shop-btn {
+				margin: 0 12px 12px 12px !important;
+				padding: 8px 12px !important;
+				font-size: 0.75rem !important;
 			}
 		}
 
@@ -610,11 +737,19 @@
 			}
 		}
 
-		/* Prevent cards from being too tall - make them responsive */
-		.shop-card {
-			width: 300px !important;
-			height: auto !important;
-			min-height: 550px;
+		/* MOBILE OVERRIDE FOR SHOP CARDS */
+		@media (max-width: 768px) {
+			.shop-card {
+				width: 95% !important;
+				max-width: 420px !important;
+			}
+		}
+
+		@media (max-width: 480px) {
+			.shop-card {
+				width: 98% !important;
+				max-width: 400px !important;
+			}
 		}
 	</style>
 </head>
@@ -643,7 +778,7 @@
 				<div class="col-lg-8 col-4">
 					<!-- menu start -->
 					<nav class="main-menu text-center">
-						<ul class="d-flex justify-content-center">
+						<ul class="d-flex justify-content-center" id="main-nav">
 							<li><a href="{{ route('home') }}">الرئيسية</a></li>
 							<li><a href="{{ route('about') }}">من نحن</a></li>
 							<li><a href="{{ route('products.index') }}">منتجاتنا</a></li>
@@ -661,10 +796,27 @@
 						<a class="tracking-icon" href="{{ route('tracking.index') }}" title="تتبع الطلب"><i class="fas fa-truck"></i></a>
 						<a class="admin-login" href="{{ route('admin.login') }}" title="تسجيل دخول المدير"><i class="fas fa-user-shield"></i></a>
 					</div>
+					<!-- Mobile hamburger menu button -->
+					<div class="mobile-menu-toggle">
+						<button class="hamburger-btn" onclick="toggleMobileMenu()">
+							<span></span>
+							<span></span>
+							<span></span>
+						</button>
+					</div>
 				</div>
 			</div>
+			<!-- Mobile menu -->
+			<div class="mobile-menu" id="mobile-menu">
+				<ul>
+					<li><a href="{{ route('home') }}">الرئيسية</a></li>
+					<li><a href="{{ route('about') }}">من نحن</a></li>
+					<li><a href="{{ route('products.index') }}">منتجاتنا</a></li>
+					<li><a href="{{ route('categories.index') }}">فئات</a></li>
+					<li><a href="{{ route('contact') }}">اتصل بنا</a></li>
+				</ul>
+			</div>
 			<a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
-			<div class="mobile-menu"></div>
 		</div>
 	</div>
 	<!-- end header -->
@@ -738,5 +890,42 @@
 	<!-- main js -->
 	<script src="{{ asset('assets/js/main.js') }}"></script>
 
-</body>
-</html>
+	<!-- Mobile Menu Toggle Script -->
+	<script>
+		function toggleMobileMenu() {
+			const mobileMenu = document.getElementById('mobile-menu');
+			const hamburgerBtn = document.querySelector('.hamburger-btn');
+
+			if (mobileMenu.style.display === 'block') {
+				mobileMenu.style.display = 'none';
+				hamburgerBtn.classList.remove('active');
+			} else {
+				mobileMenu.style.display = 'block';
+				hamburgerBtn.classList.add('active');
+			}
+		}
+
+		// Close mobile menu when clicking outside
+		document.addEventListener('click', function(event) {
+			const mobileMenu = document.getElementById('mobile-menu');
+			const hamburgerBtn = document.querySelector('.hamburger-btn');
+			const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+
+			if (mobileMenu.style.display === 'block' &&
+				!mobileMenu.contains(event.target) &&
+				!mobileMenuToggle.contains(event.target)) {
+				mobileMenu.style.display = 'none';
+				hamburgerBtn.classList.remove('active');
+			}
+		});
+
+		// Close mobile menu when window is resized to desktop
+		window.addEventListener('resize', function() {
+			if (window.innerWidth >= 992) {
+				const mobileMenu = document.getElementById('mobile-menu');
+				const hamburgerBtn = document.querySelector('.hamburger-btn');
+				mobileMenu.style.display = 'none';
+				hamburgerBtn.classList.remove('active');
+			}
+		});
+	</script>

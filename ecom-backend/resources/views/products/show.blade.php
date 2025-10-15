@@ -63,7 +63,7 @@
                     <!-- Fallback to single image -->
                     <img src="/assets/img/{{ $product->image }}"
                          alt="{{ $product->name }}"
-                         class="img-fluid"
+                         class="img-fluid single-product-fallback-image"
                          onload="this.nextElementSibling.style.display='none';"
                          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-placeholder" style="display: none; width: 100%; height: 400px; background: #f8f9fa; border: 2px dashed #dee2e6; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
@@ -174,6 +174,10 @@
 .single-product-img {
     text-align: center;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .single-product-img img {
@@ -182,6 +186,17 @@
     box-shadow: 0 0 20px #ddd;
     max-width: 100%;
     height: auto;
+    margin: 0 auto;
+    display: block;
+}
+
+.single-product-fallback-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    object-position: center;
+    min-height: 400px;
+    max-height: 650px;
 }
 
 .single-product-content {
@@ -378,6 +393,9 @@
     object-fit: cover;
     object-position: center;
     display: block;
+    margin: 0 auto;
+    min-height: 400px;
+    max-height: 650px;
 }
 
 /* Navigation Arrows */
@@ -414,11 +432,11 @@
 }
 
 .image-nav-prev {
-    left: 21px;
+    left: -25px;
 }
 
 .image-nav-next {
-    right: 1px;
+    right: -25px;
 }
 
 /* Image Counter */
@@ -465,6 +483,14 @@
 @media (max-width: 768px) {
     .main-product-image {
         height: 300px;
+        min-height: 300px;
+        max-height: 650px;
+    }
+
+    .single-product-fallback-image {
+        height: 300px;
+        min-height: 300px;
+        max-height: 650px;
     }
 
     .thumbnail-image {
