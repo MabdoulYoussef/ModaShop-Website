@@ -314,6 +314,75 @@
 		.badge-delivered { background: #28a745; color: white; }
 		.badge-cancelled { background: #dc3545; color: white; }
 
+		/* Mobile Hamburger Menu Styles for Admin */
+		.mobile-menu-toggle {
+			display: none;
+		}
+
+		.hamburger-btn {
+			background: none;
+			border: none;
+			cursor: pointer;
+			padding: 8px;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-around;
+			width: 30px;
+			height: 30px;
+		}
+
+		.hamburger-btn span {
+			display: block;
+			height: 3px;
+			width: 100%;
+			background: white;
+			border-radius: 2px;
+			transition: all 0.3s ease;
+		}
+
+		.hamburger-btn.active span:nth-child(1) {
+			transform: rotate(45deg) translate(6px, 6px);
+		}
+
+		.hamburger-btn.active span:nth-child(2) {
+			opacity: 0;
+		}
+
+		.hamburger-btn.active span:nth-child(3) {
+			transform: rotate(-45deg) translate(6px, -6px);
+		}
+
+		.mobile-sidebar {
+			display: none;
+			background: rgba(0, 0, 0, 0.95);
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			z-index: 9999;
+			padding: 80px 20px 20px 20px;
+		}
+
+		.mobile-sidebar .nav-link {
+			color: white !important;
+			padding: 15px 20px;
+			border-radius: 5px;
+			margin-bottom: 10px;
+			background: rgba(255, 255, 255, 0.1);
+			text-align: center;
+		}
+
+		.mobile-sidebar .nav-link:hover {
+			background: rgba(255, 255, 255, 0.2);
+			color: white !important;
+		}
+
+		.mobile-sidebar .nav-link.active {
+			background: #ceb57f;
+			color: white !important;
+		}
+
 		/* Responsive */
 		@media (max-width: 768px) {
 			.admin-content {
@@ -321,12 +390,25 @@
 			}
 
 			.admin-nav {
-				flex-direction: column;
-				gap: 10px;
+				display: none;
+			}
+
+			.mobile-menu-toggle {
+				display: block;
 			}
 
 			.admin-sidebar {
-				min-height: auto;
+				display: none;
+			}
+
+			.col-md-9.col-lg-10 {
+				width: 100%;
+			}
+		}
+
+		@media (min-width: 769px) {
+			.mobile-sidebar {
+				display: none !important;
 			}
 		}
 
@@ -464,8 +546,40 @@
 						<i class="fas fa-sign-out-alt"></i> خروج
 					</button>
 				</form>
+				<!-- Mobile hamburger menu button -->
+				<div class="mobile-menu-toggle">
+					<button class="hamburger-btn" onclick="toggleMobileSidebar()">
+						<span></span>
+						<span></span>
+						<span></span>
+					</button>
+				</div>
 			</div>
 		</div>
+	</div>
+
+	<!-- Mobile Sidebar -->
+	<div class="mobile-sidebar" id="mobile-sidebar">
+		<nav class="nav flex-column">
+			<a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
+				<i class="fas fa-tachometer-alt"></i> لوحة التحكم
+			</a>
+			<a class="nav-link {{ request()->routeIs('admin.products.*') ? 'active' : '' }}" href="{{ route('admin.products.index') }}">
+				<i class="fas fa-box"></i> إدارة المنتجات
+			</a>
+			<a class="nav-link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}" href="{{ route('admin.orders.index') }}">
+				<i class="fas fa-shopping-cart"></i> إدارة الطلبات
+			</a>
+			<a class="nav-link {{ request()->routeIs('admin.customers.*') ? 'active' : '' }}" href="{{ route('admin.customers.index') }}">
+				<i class="fas fa-users"></i> إدارة العملاء
+			</a>
+			<a class="nav-link {{ request()->routeIs('admin.sales.*') ? 'active' : '' }}" href="{{ route('admin.sales.index') }}">
+				<i class="fas fa-chart-line"></i> التقارير والمبيعات
+			</a>
+			<a class="nav-link {{ request()->routeIs('admin.low-stock.*') ? 'active' : '' }}" href="{{ route('admin.low-stock.index') }}">
+				<i class="fas fa-exclamation-triangle"></i> مخزون منخفض
+			</a>
+		</nav>
 	</div>
 
 	<!-- Main Content -->
@@ -544,5 +658,43 @@
 	<script src="{{ asset('assets/js/main.js') }}"></script>
 
 	@yield('scripts')
-</body>
-</html>
+
+	<!-- Mobile Sidebar Toggle Script -->
+	<script>
+		function toggleMobileSidebar() {
+			const mobileSidebar = document.getElementById('mobile-sidebar');
+			const hamburgerBtn = document.querySelector('.hamburger-btn');
+
+			if (mobileSidebar.style.display === 'block') {
+				mobileSidebar.style.display = 'none';
+				hamburgerBtn.classList.remove('active');
+			} else {
+				mobileSidebar.style.display = 'block';
+				hamburgerBtn.classList.add('active');
+			}
+		}
+
+		// Close mobile sidebar when clicking outside
+		document.addEventListener('click', function(event) {
+			const mobileSidebar = document.getElementById('mobile-sidebar');
+			const hamburgerBtn = document.querySelector('.hamburger-btn');
+			const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+
+			if (mobileSidebar.style.display === 'block' &&
+				!mobileSidebar.contains(event.target) &&
+				!mobileMenuToggle.contains(event.target)) {
+				mobileSidebar.style.display = 'none';
+				hamburgerBtn.classList.remove('active');
+			}
+		});
+
+		// Close mobile sidebar when window is resized to desktop
+		window.addEventListener('resize', function() {
+			if (window.innerWidth >= 769) {
+				const mobileSidebar = document.getElementById('mobile-sidebar');
+				const hamburgerBtn = document.querySelector('.hamburger-btn');
+				mobileSidebar.style.display = 'none';
+				hamburgerBtn.classList.remove('active');
+			}
+		});
+	</script>
