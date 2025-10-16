@@ -752,6 +752,8 @@
 			}
 		}
 	</style>
+
+	@yield('styles')
 </head>
 <body>
 

@@ -323,8 +323,8 @@ class AdminController extends Controller
                 $endDate = now()->endOfMonth();
         }
 
-        // Current period data
-        $currentOrders = Order::where('status', 'delivered')
+        // Current period data - Include all orders except cancelled
+        $currentOrders = Order::where('status', '!=', 'cancelled')
                             ->whereBetween('created_at', [$startDate, $endDate]);
 
         $totalRevenue = $currentOrders->sum('total_price');
@@ -337,7 +337,7 @@ class AdminController extends Controller
         $previousStartDate = $startDate->copy()->subDays($periodLength + 1);
         $previousEndDate = $startDate->copy()->subDay();
 
-        $previousOrders = Order::where('status', 'delivered')
+        $previousOrders = Order::where('status', '!=', 'cancelled')
                               ->whereBetween('created_at', [$previousStartDate, $previousEndDate]);
 
         $previousRevenue = $previousOrders->sum('total_price');
@@ -389,12 +389,12 @@ class AdminController extends Controller
                 $hour = $startDate->copy()->addHours($i);
                 $labels[] = $hour->format('H:i');
 
-                $hourRevenue = Order::where('status', 'delivered')
+                $hourRevenue = Order::where('status', '!=', 'cancelled')
                                   ->whereBetween('created_at', [$hour, $hour->copy()->addHour()])
                                   ->sum('total_price');
                 $revenue[] = $hourRevenue;
 
-                $hourOrders = Order::where('status', 'delivered')
+                $hourOrders = Order::where('status', '!=', 'cancelled')
                                  ->whereBetween('created_at', [$hour, $hour->copy()->addHour()])
                                  ->count();
                 $orders[] = $hourOrders;
@@ -413,12 +413,12 @@ class AdminController extends Controller
 
                 $labels[] = $monthNames[$month];
 
-                $monthRevenue = Order::where('status', 'delivered')
+                $monthRevenue = Order::where('status', '!=', 'cancelled')
                                    ->whereBetween('created_at', [$monthStart, $monthEnd])
                                    ->sum('total_price');
                 $revenue[] = $monthRevenue;
 
-                $monthOrders = Order::where('status', 'delivered')
+                $monthOrders = Order::where('status', '!=', 'cancelled')
                                   ->whereBetween('created_at', [$monthStart, $monthEnd])
                                   ->count();
                 $orders[] = $monthOrders;
@@ -429,12 +429,12 @@ class AdminController extends Controller
             while ($current->lte($endDate)) {
                 $labels[] = $current->format('Y-m-d');
 
-                $dayRevenue = Order::where('status', 'delivered')
+                $dayRevenue = Order::where('status', '!=', 'cancelled')
                                  ->whereDate('created_at', $current)
                                  ->sum('total_price');
                 $revenue[] = $dayRevenue;
 
-                $dayOrders = Order::where('status', 'delivered')
+                $dayOrders = Order::where('status', '!=', 'cancelled')
                                 ->whereDate('created_at', $current)
                                 ->count();
                 $orders[] = $dayOrders;
@@ -452,7 +452,7 @@ class AdminController extends Controller
                 ->join('products', 'order_items.product_id', '=', 'products.id')
                 ->join('categories', 'products.category_id', '=', 'categories.id')
                 ->join('orders', 'order_items.order_id', '=', 'orders.id')
-                ->where('orders.status', 'delivered')
+                ->where('orders.status', '!=', 'cancelled')
                 ->whereBetween('orders.created_at', [$startDate, $endDate])
                 ->select('products.id', 'products.name', 'products.price', 'products.image', 'products.category_id',
                         'categories.name as category_name',
@@ -467,11 +467,11 @@ class AdminController extends Controller
     private function getTopCustomers($startDate, $endDate)
     {
         return Customer::withCount(['orders' => function($query) use ($startDate, $endDate) {
-                        $query->where('status', 'delivered')
+                        $query->where('status', '!=', 'cancelled')
                               ->whereBetween('created_at', [$startDate, $endDate]);
                     }])
                     ->withSum(['orders' => function($query) use ($startDate, $endDate) {
-                        $query->where('status', 'delivered')
+                        $query->where('status', '!=', 'cancelled')
                               ->whereBetween('created_at', [$startDate, $endDate]);
                     }], 'total_price')
                     ->having('orders_count', '>', 0)
@@ -493,7 +493,7 @@ class AdminController extends Controller
                           ->join('products', 'order_items.product_id', '=', 'products.id')
                           ->join('categories', 'products.category_id', '=', 'categories.id')
                           ->join('orders', 'order_items.order_id', '=', 'orders.id')
-                          ->where('orders.status', 'delivered')
+                          ->where('orders.status', '!=', 'cancelled')
                           ->whereBetween('orders.created_at', [$startDate, $endDate])
                           ->select('categories.id', 'categories.name',
                                   DB::raw('SUM(order_items.quantity * order_items.price) as total_revenue'))
@@ -509,7 +509,7 @@ class AdminController extends Controller
 
     private function getSalesByCity($startDate, $endDate)
     {
-        return Order::where('status', 'delivered')
+        return Order::where('status', '!=', 'cancelled')
                    ->whereBetween('created_at', [$startDate, $endDate])
                    ->select('shipping_city as city',
                            DB::raw('COUNT(*) as orders_count'),
@@ -521,7 +521,7 @@ class AdminController extends Controller
 
     private function getPaymentData($startDate, $endDate)
     {
-        $paymentMethods = Order::where('status', 'delivered')
+        $paymentMethods = Order::where('status', '!=', 'cancelled')
                              ->whereBetween('created_at', [$startDate, $endDate])
                              ->select('payment_method',
                                      DB::raw('COUNT(*) as count'))
@@ -574,7 +574,7 @@ class AdminController extends Controller
 
         // Get orders data
         $orders = Order::with(['customer', 'orderItems.product'])
-                      ->where('status', 'delivered')
+                      ->where('status', '!=', 'cancelled')
                      ->whereBetween('created_at', [$startDate, $endDate])
                       ->orderBy('created_at', 'desc')
                      ->get();
