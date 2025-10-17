@@ -36,7 +36,6 @@
 	<!-- main style -->
 	<link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
 	<!-- responsive -->
-	<link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}">
 
 	<!-- Basic RTL Support -->
 	<style>

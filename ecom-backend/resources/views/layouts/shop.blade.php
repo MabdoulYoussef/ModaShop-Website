@@ -561,11 +561,12 @@
 			}
 		}
 
-		/* Product Card Styling - Same as Homepage */
+		/* Product Card Styling - Responsive Design */
 		.shop-card {
-			width: 320px !important;
+			width: 100% !important;
+			max-width: 350px !important;
 			height: auto !important;
-			min-height: 580px !important;
+			min-height: 550px !important;
 			margin: 0 auto 30px auto !important;
 			background: white !important;
 			border-radius: 15px !important;
@@ -585,7 +586,7 @@
 
 		.shop-card .product-image {
 			width: 100% !important;
-			height: 450px !important;
+			height: 400px !important;
 			overflow: hidden !important;
 			position: relative !important;
 		}
@@ -737,18 +738,53 @@
 			}
 		}
 
-		/* MOBILE OVERRIDE FOR SHOP CARDS */
-		@media (max-width: 768px) {
+		/* Responsive Design for Product Cards */
+
+		/* Desktop (1200px+) */
+		@media (min-width: 1200px) {
 			.shop-card {
-				width: 95% !important;
-				max-width: 420px !important;
+				max-width: 380px !important;
+				min-height: 580px !important;
+			}
+
+			.shop-card .product-image {
+				height: 450px !important;
 			}
 		}
 
-		@media (max-width: 480px) {
+		/* Tablet (768px - 1199px) */
+		@media (min-width: 768px) and (max-width: 1199px) {
 			.shop-card {
-				width: 98% !important;
-				max-width: 400px !important;
+				max-width: 350px !important;
+				min-height: 550px !important;
+			}
+
+			.shop-card .product-image {
+				height: 400px !important;
+			}
+		}
+
+		/* Mobile (480px - 767px) */
+		@media (min-width: 480px) and (max-width: 767px) {
+			.shop-card {
+				max-width: 320px !important;
+				min-height: 500px !important;
+			}
+
+			.shop-card .product-image {
+				height: 350px !important;
+			}
+		}
+
+		/* Small Mobile (320px - 479px) */
+		@media (max-width: 479px) {
+			.shop-card {
+				max-width: 300px !important;
+				min-height: 480px !important;
+			}
+
+			.shop-card .product-image {
+				height: 320px !important;
 			}
 		}
 	</style>
