@@ -58,7 +58,10 @@
             <div class="stats-label">إجمالي الإيرادات (درهم)</div>
             <div class="stats-change {{ $revenueChange >= 0 ? 'positive' : 'negative' }}">
                 <i class="fas fa-arrow-{{ $revenueChange >= 0 ? 'up' : 'down' }}"></i>
-                {{ abs($revenueChange) }}% من الفترة السابقة
+                {{ number_format(abs($revenueChange), 2) }}% من الفترة السابقة
+                @if($revenueChange == 0)
+                    <small class="text-muted d-block">لا توجد بيانات للمقارنة</small>
+                @endif
             </div>
         </div>
     </div>
@@ -72,7 +75,7 @@
             <div class="stats-label">إجمالي الطلبات</div>
             <div class="stats-change {{ $ordersChange >= 0 ? 'positive' : 'negative' }}">
                 <i class="fas fa-arrow-{{ $ordersChange >= 0 ? 'up' : 'down' }}"></i>
-                {{ abs($ordersChange) }}% من الفترة السابقة
+                {{ number_format(abs($ordersChange), 2) }}% من الفترة السابقة
             </div>
         </div>
     </div>
@@ -86,7 +89,7 @@
             <div class="stats-label">متوسط قيمة الطلب (درهم)</div>
             <div class="stats-change {{ $aovChange >= 0 ? 'positive' : 'negative' }}">
                 <i class="fas fa-arrow-{{ $aovChange >= 0 ? 'up' : 'down' }}"></i>
-                {{ abs($aovChange) }}% من الفترة السابقة
+                {{ number_format(abs($aovChange), 2) }}% من الفترة السابقة
             </div>
         </div>
     </div>
@@ -100,7 +103,7 @@
             <div class="stats-label">عملاء جدد</div>
             <div class="stats-change {{ $customersChange >= 0 ? 'positive' : 'negative' }}">
                 <i class="fas fa-arrow-{{ $customersChange >= 0 ? 'up' : 'down' }}"></i>
-                {{ abs($customersChange) }}% من الفترة السابقة
+                {{ number_format(abs($customersChange), 2) }}% من الفترة السابقة
             </div>
         </div>
     </div>
