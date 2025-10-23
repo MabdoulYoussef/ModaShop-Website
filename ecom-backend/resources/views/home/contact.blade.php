@@ -105,21 +105,9 @@
                     </div>
 
                     <div class="contact-description">
-                        <p class="arabic-text">تواصل معنا عبر الطرق التالية</p>
+                        <strong><h6 class="arabic-text">تواصل معنا عبر الطرق التالية</h6></strong>
                     </div>
 
-                    <div class="contact-info-list">
-                        <div class="contact-info-item">
-                            <div class="contact-item-header">
-                                <div class="contact-icon">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                </div>
-                                <h4 class="arabic-text">العنوان</h4>
-                            </div>
-                            <div class="contact-content">
-                                <p class="arabic-text">شارع الملك فهد<br>الرياض، المملكة العربية السعودية</p>
-                            </div>
-                        </div>
 
                         <div class="contact-info-item">
                             <div class="contact-item-header">
